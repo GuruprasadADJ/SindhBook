@@ -6,27 +6,23 @@ exports.verifyotp = (req, res) =>{
      var input=req.body.otp;
     if(!input) {
         return res.status(400).send({
-            message: "Note content can not be empty"
+            status:"Failure",message: "Otp content can not be empty"
         });
     }
      Note.find({
         "otp": input,
       }).then(note => {
-        console.log('going',note);
         if(note.length == 0){
-            console.log("!note")
-            res.status(404).send({message: 'otp not found'});
+            res.status(404).send({status:"failure",message: 'Otp not found. Please verify it again'});
         }
-        else if(note.length != 0){
-            console.log('verifiying');
+        else{
            //update otp status
            const note=Note.update(
             {otp:input},
             {otp_status:1},
             function(err,note) {
-             if (err) return res.status(500).send("There was a problem adding the information to the database.");
-             console.log("res=",note);
-                 res.status(200).send({otp_status:'1'});
+             if (err) return res.status(500).send({status:"failure",message:"There was a problem adding the information to the database."});
+            res.status(200).send({status:"success",message:"Otp verified successfully"});
             });
              //</update otp status>
         }
@@ -34,8 +30,8 @@ exports.verifyotp = (req, res) =>{
     }).catch(err => {
         console.log("Exception")
         res.status(500).send({
-           message:  err.message ||"Some error occurred while retrieving notes."
-         // message: 'user does not exist'
+           status:"failure",
+           message:"Some error occurred while verifying otp."
         });
     })
     

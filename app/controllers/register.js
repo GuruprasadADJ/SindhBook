@@ -3,21 +3,186 @@ const express=require('express');
 var qs = require("querystring");
 var http = require("http");
 var datetime = require('node-datetime');
+
 var dt = datetime.create();
 var formatted = dt.format('d/m/Y H:M:S');
+
 // Create and Save a new user
+var otp='';
+var data='';
 var last_insertid='';
 var flag1=0;
+
 exports.create = (req, res) => {
-    var flag=0;
-    var inputs=req.body;
-    last_insertid='';
-    // Validate request
- if(!req.body.mobile_no) {
-    return res.status(400).send({
-        message: "Note content can not be empty1"
+var flag=0;
+var inputs=req.body;
+last_insertid='';
+
+if(inputs.registered_by==0)
+{
+ if(!inputs.mobile_no) 
+ {
+    return res.status(404).send({status:"Failure",message: "Mobile Number can not be empty"});
+ }
+ else
+ {
+  Note.find({"mobile_no": inputs.mobile_no}).then(note => {
+    console.log('going',note);
+    if(note.length == 0){
+       flag=1;
+    }
+    if(flag==1){        
+        // Create a register           
+            otp=random(6);
+            var formatted_dob='';
+            if(!inputs.dob)
+            {
+
+            }
+            else{
+                formatted_dob=inputs.dob.format('yyyy-mm-dd')
+            }
+            const note = new Note({
+            mobile_no: inputs.mobile_no,
+            otp: otp,
+            otp_status: 0,
+            device_token: inputs.device_token || '',
+            profile_update_status: 0,
+            paid_user_status: 0,
+            user_type: 0,
+            user_login_type: 0,
+            created_at:formatted,
+            modified_at: '',
+            last_login: '',
+            registered_by: inputs.registered_by || 0,
+            first_name: inputs.first_name || '',
+            last_name: inputs.last_name || '',
+            gender:inputs.gender || '',
+            dob: formatted_dob || '',
+            email: inputs.email || '',
+            email_otp: '' ,
+            email_otp_status: 0,
+            profile_picture: inputs.profile_picture || '',
+            fb_gmail_id:inputs.fb_gmail_id || '',
+            user_block_status:inputs.user_block_status || 0
+        },function(err,note) {
+            if (err) return res.status(500).send({status:"Failure",message:"There Was A problem Inserting Data",errorMessage:err.message});
+        });
+        // Save Note in the database
+        note.save()
+        .then(data => {
+            //sendotp(data.mobile_no,otp);
+            last_insertid=data.id;
+            console.log('inserted data',last_insertid);
+            res.status(200).send({
+                status:"success",message:"Registered Successfully",data:data
+            });
+        }).catch(err => {
+            res.status(500).send({
+               status:"Failure",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
+            });
+        });
+        }
+        else
+        {   
+          res.status(500).send({status:"Failure",message:"user already exist"});
+        }
+}).catch(err => {
+    console.log("Exception")
+    res.status(500).send({
+        status:"Failure",message:"Not Registered Successfully",errorMessage:err.message
     });
-}//generates random otp
+})
+}
+}
+else{    
+    //register by facebook or gmail
+    // Create a Note
+    var formatted_dob='';
+    if(!inputs.dob)
+    {
+
+    }
+    else{
+        formatted_dob=inputs.dob.format('yyyy-mm-dd')
+    }
+    const note = new Note({
+        mobile_no: inputs.mobile_no || '',
+        otp: '',
+        otp_status: '',
+        device_token: inputs.device_token || '',
+        profile_update_status: 0,
+        paid_user_status: 0,
+        user_type: 0,
+        user_login_type: 0,
+        created_at:formatted,
+        modified_at: '',
+        last_login: formatted,
+        registered_by: inputs.registered_by || '',
+        first_name: inputs.first_name || '',
+        last_name: inputs.last_name|| '',
+        gender: 0,
+        dob: formatted_dob  || '',
+        email: inputs.email || '',
+        email_otp: '',
+        email_otp_status: 0,
+        profile_picture: inputs.profile_picture || '',
+        fb_gmail_id:inputs.fb_gmail_id || '',
+        user_block_status:inputs.user_block_status || 0
+    },function(err,note) {
+        if (err) return res.status(500).send({status:"Failure",message:"Not Registered Successfully",errorMessage:err.message});
+    });
+    
+    // Save Note in the database
+    note.save()
+    .then(data => {        
+        last_insertid=data.id;
+        console.log('inserted data',last_insertid);
+        res.status(200).send({
+            status:"success",message:"Registered Successfully",data:data
+        });
+    }).catch(err => {
+        res.status(500).send({
+            status:"Failure",message:"Not Registered Successfully",errorMessage:err.message
+        });
+    });
+}
+};
+//--------------------------Otp Send Code------------------------------------
+    console.log('sending');
+    function sendotp(phone_no,otp){
+        var options = {
+            "method": "GET",
+            "hostname": "2factor.in",
+            "port": null,
+            "path": "/API/V1/76263c6b-fc6d-11e9-9fa5-0200cd936042/SMS/"+phone_no+"/"+otp+"",
+            "headers": {
+            "content-type": "application/x-www-form-urlencoded"
+            }
+            };
+        
+            var req = http.request(options, function (res) {
+            var chunks = [];
+        
+            res.on("data", function (chunk) {
+            chunks.push(chunk);
+            });
+        
+            res.on("end", function () {
+            var body = Buffer.concat(chunks);
+            console.log(body.toString());
+            });
+            });
+        
+            req.write(qs.stringify({}));
+            req.end();
+            return otp;
+    }
+    
+//--------------------------Otp Send Code End--------------------------------
+
+//--------------------------Otp Generation Code------------------------------
+
 function random(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -27,117 +192,31 @@ function random(length) {
     }
    return result;
   }
-var otp=random(6);
-  Note.find({
-    "mobile_no": inputs.mobile_no,
-   }).then(note => {
-    console.log('going',note);
-    if(note.length == 0){
-       flag=1;
-    }else if(note.length != 0){   
-        flag=0;     
-          //  res.status(500).send({message: 'user already exist'});
-    }
-    if(flag==1){
-        //send otp sms
-    // console.log('sending');
-    // var options = {
-    //     "method": "GET",
-    //     "hostname": "2factor.in",
-    //     "port": null,
-    //     "path": "/API/V1/76263c6b-fc6d-11e9-9fa5-0200cd936042/SMS/"+data+"/"+otp+"",
-    //     "headers": {
-    //       "content-type": "application/x-www-form-urlencoded"
-    //     }
-    //   };
-      
-    //   var req = http.request(options, function (res) {
-    //     var chunks = [];
-      
-    //     res.on("data", function (chunk) {
-    //       chunks.push(chunk);
-    //     });
-      
-    //     res.on("end", function () {
-    //       var body = Buffer.concat(chunks);
-    //       console.log(body.toString());
-    //     });
-    //   });
-      
-    //   req.write(qs.stringify({}));
-    //   req.end();
-    //</send otp sms>
-        // Create a Note
-        const note = new Note({
-            mobile_no: inputs.mobile_no,
-            otp: otp,
-            otp_status: 0,
-            device_token: 0,
-            profile_update_status: 0,
-            paid_user_status: 0,
-            user_type: 0,
-            user_login_type: 0,
-            created_at:formatted,
-            modified_at: formatted,
-            last_login: formatted,
-            registered_by: 0,
-            first_name: 'enter first name',
-            last_name: 'data.last_name',
-            gender: 0,
-            dob: 'formatted',
-            email: 'data.email',
-            email_otp: 'data.email_otp',
-            email_otp_status: 0,
-            profile_picture: 'data.profile_picture'
-        },function(err,note) {
-            if (err) return res.status(500).send("There was a problem adding the information to the database.");
-        });
-        
-        // Save Note in the database
-        note.save()
-        .then(data => {
-            last_insertid=data.id;
-            console.log('inserted data',last_insertid);
-            res.send(data);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occurred while creating the Note."
-            });
-        });
-        }else{
-            res.status(500).send({message: 'user already exist'});
-        }
-}).catch(err => {
-    console.log("Exception")
-    res.status(500).send({
-       message:  err.message ||"Some error occurred while retrieving notes."
-     // message: 'user does not exist'
-    });
-})
-};
-
+//--------------------------Otp Generation Code End-----------------------------
+    
 //-------------------------- UPDATE USER PROFILE API ------------------------
 exports.update = (req, res) => {
    data=req.body;
    console.log('ok')
         const note1=Note.update(
-            {_id:last_insertid},
-            {first_name: data.first_name,
-             last_name: data.last_name,
-             gender: data.gender,
-             dob: formatted,
-             email: data.email,
-             email_otp: data.email_otp,
-             email_otp_status: data.email_otp_status,
-             profile_picture: data.profile_picture,
-             profile_update_status:1},
+            {_id:data.id},
+            {
+             first_name: data.first_name || '',
+             last_name: data.last_name || '',
+             gender: data.gender || '',
+             dob: data.dob || '',
+             modified_at: formatted,
+             email: data.email || '',
+             email_otp: 0,
+             email_otp_status: 0,
+             profile_picture: data.profile_picture || '',
+             profile_update_status:1
+            },
             function(err,note1) {
-             if (err) return res.status(500).send("There was a problem adding the information to the database.");
+             if (err) return res.status(500).send({status:"Failure",message:"Profile Not Updated",errorMessage:'Some error occured or id is not exist in database'});
              console.log("res=",note1);
-              res.status(200).send({profile_update_status:'1'});
+              res.status(200).send({status:"success",message:"Profile Updated"});
             }).catch(err => {
-                res.status(500).send({
-                    message: err.message || "Some error occurred while creating the Note."
-                });
+                res.status(500).send({status:"Failure",message:"Profile Not Updated",errorMessage:err.message || 'Some error occured'});
             });        
 }

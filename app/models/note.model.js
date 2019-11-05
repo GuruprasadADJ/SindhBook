@@ -22,6 +22,8 @@ const NoteSchema = mongoose.Schema({
     email: String,
     email_otp: String,
     email_otp_status: Number,
-    profile_picture: String
+    profile_picture: String,
+    fb_gmail_id:String,
+    user_block_status:Number
 });
 module.exports = mongoose.model('register', NoteSchema);
