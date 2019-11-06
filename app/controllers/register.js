@@ -95,7 +95,7 @@ if(inputs.registered_by==0)
 })
 }
 }
-else{    
+else if(inputs.registered_by==1||inputs.registered_by==2){    
     //register by facebook or gmail
     // Create a Note
     var formatted_dob='';
@@ -145,6 +145,11 @@ else{
         res.status(500).send({
             status:"Failure",message:"Not Registered Successfully",errorMessage:err.message
         });
+    });
+}
+else{
+    res.status(500).send({
+        status:"Failure",message:"Check the json format or registered by can not be empty"
     });
 }
 };
