@@ -9,7 +9,7 @@ exports.create1= (req, res) =>{
     data=req.body.mobile_no;
    if(!data) {
        return res.status(400).send({
-           status:"failure",message: "Mobile content can not be empty"
+        result:"failed",message: "Mobile content can not be empty"
        });
    }
 
@@ -61,8 +61,8 @@ exports.create1= (req, res) =>{
        {mobile_no:data},
        {otp:sotp},
        function(err,note) {
-        if (err) return res.status(500).send({status:"Failure",message:"Mobile Number not found"});
+        if (err) return res.status(500).send({result:"failed",message:"Mobile Number not found"});
         console.log("res=",note);
-            res.status(200).send({status:"success",message:"Otp resend",otp:sotp});
+            res.status(200).send({result:"success",message:"Otp resend",otp:sotp});
        });
 };

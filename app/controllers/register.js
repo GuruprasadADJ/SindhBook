@@ -22,7 +22,7 @@ if(inputs.registered_by==0)
 {
  if(!inputs.mobile_no) 
  {
-    return res.status(404).send({status:"Failure",message: "Mobile Number can not be empty"});
+    return res.status(404).send({result:"failed",message: "Mobile Number can not be empty"});
  }
  else
  {
@@ -66,31 +66,31 @@ if(inputs.registered_by==0)
             fb_gmail_id:inputs.fb_gmail_id || '',
             user_block_status:inputs.user_block_status || 0
         },function(err,note) {
-            if (err) return res.status(500).send({status:"Failure",message:"There Was A problem Inserting Data",errorMessage:err.message});
+            if (err) return res.status(500).send({result:"failed",message:"There Was A problem Inserting Data",errorMessage:err.message});
         });
         // Save Note in the database
         note.save()
         .then(data => {
-            //sendotp(data.mobile_no,otp);
+            sendotp(data.mobile_no,otp);
             last_insertid=data.id;
             console.log('inserted data',last_insertid);
             res.status(200).send({
-                status:"success",message:"Registered Successfully",data:data
+                result:"success",message:"Registered Successfully",data:data
             });
         }).catch(err => {
             res.status(500).send({
-               status:"Failure",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
+                result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
             });
         });
         }
         else
         {   
-          res.status(500).send({status:"Failure",message:"user already exist"});
+          res.status(500).send({result:"failed",message:"user already exist"});
         }
 }).catch(err => {
     console.log("Exception")
     res.status(500).send({
-        status:"Failure",message:"Not Registered Successfully",errorMessage:err.message
+        result:"failed",message:"Not Registered Successfully",errorMessage:err.message
     });
 })
 }
@@ -130,7 +130,7 @@ else if(inputs.registered_by==1||inputs.registered_by==2){
         fb_gmail_id:inputs.fb_gmail_id || '',
         user_block_status:inputs.user_block_status || 0
     },function(err,note) {
-        if (err) return res.status(500).send({status:"Failure",message:"Not Registered Successfully",errorMessage:err.message});
+        if (err) return res.status(500).send({result:"failed",message:"Not Registered Successfully",errorMessage:err.message});
     });
     
     // Save Note in the database
@@ -139,17 +139,17 @@ else if(inputs.registered_by==1||inputs.registered_by==2){
         last_insertid=data.id;
         console.log('inserted data',last_insertid);
         res.status(200).send({
-            status:"success",message:"Registered Successfully",data:data
+            result:"success",message:"Registered Successfully",data:data
         });
     }).catch(err => {
         res.status(500).send({
-            status:"Failure",message:"Not Registered Successfully",errorMessage:err.message
+            result:"failed",message:"Not Registered Successfully",errorMessage:err.message
         });
     });
 }
 else{
     res.status(500).send({
-        status:"Failure",message:"Check the json format or registered by can not be empty"
+        result:"failed",message:"Check the json format or registered by can not be empty"
     });
 }
 };
@@ -218,10 +218,10 @@ exports.update = (req, res) => {
              profile_update_status:1
             },
             function(err,note1) {
-             if (err) return res.status(500).send({status:"Failure",message:"Profile Not Updated",errorMessage:'Some error occured or id is not exist in database'});
+             if (err) return res.status(500).send({result:"failed",message:"Profile Not Updated",errorMessage:'Some error occured or id is not exist in database'});
              console.log("res=",note1);
-              res.status(200).send({status:"success",message:"Profile Updated"});
+              res.status(200).send({result:"success",message:"Profile Updated"});
             }).catch(err => {
-                res.status(500).send({status:"Failure",message:"Profile Not Updated",errorMessage:err.message || 'Some error occured'});
+                res.status(500).send({result:"failed",message:"Profile Not Updated",errorMessage:err.message || 'Some error occured'});
             });        
 }
