@@ -72,7 +72,7 @@ if(inputs.registered_by==0)
         // Save Note in the database
         note.save()
         .then(data => {
-            sendotp(data.mobile_no,otp);
+            //sendotp(data.mobile_no,otp);
             last_insertid=data.id;
             console.log('inserted data',last_insertid);
             res.status(200).send({
