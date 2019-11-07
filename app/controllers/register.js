@@ -85,7 +85,7 @@ if(inputs.registered_by==0)
         }
         else
         {   
-          res.status(500).send({result:"failed",message:"user already exist"});
+            res.status(500).send({result:"success",message:"user already exist",data:note});
         }
 }).catch(err => {
     console.log("Exception")
