@@ -86,7 +86,7 @@ if(inputs.registered_by==0)
         }
         else
         {   
-            res.status(200).send({result:"success",message:"user already exist",data:note});
+            res.status(200).send({result:"success",message:"user already exist",data:note[0]});
         }
 }).catch(err => {
     console.log("Exception")
@@ -108,13 +108,13 @@ else if(inputs.registered_by==1||inputs.registered_by==2){
             var formatted_dob='';
             if(!inputs.dob)
             {
-        
+                
             }
             else{
                 formatted_dob=inputs.dob.format('yyyy-mm-dd')
             }
             const note1 = new Note({
-                mobile_no: inputs.mobile_no || '',
+                mobile_no: inputs.mobile_no || 0,
                 otp: '',
                 otp_status: 0,
                 device_token: inputs.device_token || '',
@@ -155,7 +155,7 @@ else if(inputs.registered_by==1||inputs.registered_by==2){
             });
         }
         else{
-            res.status(200).send({result:"success",message:"user already exist",data:note1});
+            res.status(200).send({result:"success",message:"user already exist",data:note1[0]});
         }
     }).catch(err => {
         res.status(500).send({
