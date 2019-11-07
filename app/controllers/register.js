@@ -11,10 +11,11 @@ var formatted = dt.format('d/m/Y H:M:S');
 var otp='';
 var data='';
 var last_insertid='';
-var flag1=0;
+
 
 exports.create = (req, res) => {
 var flag=0;
+var flag1=0;
 var inputs=req.body;
 last_insertid='';
 
@@ -98,54 +99,70 @@ if(inputs.registered_by==0)
 else if(inputs.registered_by==1||inputs.registered_by==2){    
     //register by facebook or gmail
     // Create a Note
-    var formatted_dob='';
-    if(!inputs.dob)
-    {
-
-    }
-    else{
-        formatted_dob=inputs.dob.format('yyyy-mm-dd')
-    }
-    const note = new Note({
-        mobile_no: inputs.mobile_no || '',
-        otp: '',
-        otp_status: '',
-        device_token: inputs.device_token || '',
-        profile_update_status: 0,
-        paid_user_status: 0,
-        user_type: 0,
-        user_login_type: 0,
-        created_at:formatted,
-        modified_at: '',
-        last_login: formatted,
-        registered_by: inputs.registered_by || '',
-        first_name: inputs.first_name || '',
-        last_name: inputs.last_name|| '',
-        gender: 0,
-        dob: formatted_dob  || '',
-        email: inputs.email || '',
-        email_otp: '',
-        email_otp_status: 0,
-        profile_picture: inputs.profile_picture || '',
-        fb_gmail_id:inputs.fb_gmail_id || '',
-        user_block_status:inputs.user_block_status || 0
-    },function(err,note) {
-        if (err) return res.status(500).send({result:"failed",message:"Not Registered Successfully",errorMessage:err.message});
-    });
-    
-    // Save Note in the database
-    note.save()
-    .then(data => {        
-        last_insertid=data.id;
-        console.log('inserted data',last_insertid);
-        res.status(200).send({
-            result:"success",message:"Registered Successfully",data:data
-        });
+    Note.find({"fb_gmail_id": inputs.fb_gmail_id}).then(note1 => {
+        console.log('going',note1);
+        if(note1.length == 0){
+           flag1=1;
+        }
+        if(flag1==1){
+            var formatted_dob='';
+            if(!inputs.dob)
+            {
+        
+            }
+            else{
+                formatted_dob=inputs.dob.format('yyyy-mm-dd')
+            }
+            const note1 = new Note({
+                mobile_no: inputs.mobile_no || '',
+                otp: '',
+                otp_status: 0,
+                device_token: inputs.device_token || '',
+                profile_update_status: 0,
+                paid_user_status: 0,
+                user_type: 0,
+                user_login_type: 0,
+                created_at:formatted,
+                modified_at: '',
+                last_login: formatted,
+                registered_by: inputs.registered_by , //field data mandatory
+                first_name: inputs.first_name || '',
+                last_name: inputs.last_name|| '',
+                gender: 0,
+                dob: formatted_dob  || '',
+                email: inputs.email || '',
+                email_otp: '',
+                email_otp_status: 0,
+                profile_picture: inputs.profile_picture || '',
+                fb_gmail_id:inputs.fb_gmail_id , //field data mandatory
+                user_block_status:inputs.user_block_status || 0
+            },function(err,note1) {
+                if (err) return res.status(500).send({result:"failed",message:"Not Registered Successfully",errorMessage:err.message});
+            });
+            
+            // Save Note in the database
+            note1.save()
+            .then(data => {        
+                last_insertid=data.id;
+                console.log('inserted data',last_insertid);
+                res.status(200).send({
+                    result:"success",message:"Registered Successfully",data:data
+                });
+            }).catch(err => {
+                res.status(500).send({
+                    result:"failed",message:"Not Registered Successfully",errorMessage:err.message
+                });
+            });
+        }
+        else{
+            res.status(500).send({result:"success",message:"user already exist",data:note1});
+        }
     }).catch(err => {
         res.status(500).send({
-            result:"failed",message:"Not Registered Successfully",errorMessage:err.message
+            result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
         });
-    });
+   }); 
+   
 }
 else{
     res.status(500).send({
