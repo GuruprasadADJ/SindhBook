@@ -8,7 +8,7 @@ exports.create1= (req, res) =>{
     //validate input data
     data=req.body.mobile_no;
    if(!data) {
-       return res.status(400).send({
+       return res.status(200).send({
         result:"failed",message: "Mobile content can not be empty"
        });
    }

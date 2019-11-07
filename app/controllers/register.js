@@ -23,7 +23,7 @@ if(inputs.registered_by==0)
 {
  if(!inputs.mobile_no) 
  {
-    return res.status(404).send({result:"failed",message: "Mobile Number can not be empty"});
+    return res.status(200).send({result:"failed",message: "Mobile Number can not be empty"});
  }
  else
  {
@@ -58,7 +58,7 @@ if(inputs.registered_by==0)
             registered_by: inputs.registered_by || 0,
             first_name: inputs.first_name || '',
             last_name: inputs.last_name || '',
-            gender:inputs.gender || '',
+            gender:inputs.gender || 0,
             dob: formatted_dob || '',
             email: inputs.email || '',
             email_otp: '' ,
@@ -76,7 +76,7 @@ if(inputs.registered_by==0)
             last_insertid=data.id;
             console.log('inserted data',last_insertid);
             res.status(200).send({
-                result:"success",message:"Registered Successfully",data:data
+                result:"success",message:"Registered Successfully",data:{"mobile_no":data.mobile_no,"otp":data.otp}
             });
         }).catch(err => {
             res.status(500).send({
@@ -86,7 +86,7 @@ if(inputs.registered_by==0)
         }
         else
         {   
-            res.status(500).send({result:"success",message:"user already exist",data:note});
+            res.status(200).send({result:"success",message:"user already exist",data:note});
         }
 }).catch(err => {
     console.log("Exception")
@@ -155,7 +155,7 @@ else if(inputs.registered_by==1||inputs.registered_by==2){
             });
         }
         else{
-            res.status(500).send({result:"success",message:"user already exist",data:note1});
+            res.status(200).send({result:"success",message:"user already exist",data:note1});
         }
     }).catch(err => {
         res.status(500).send({
@@ -165,7 +165,7 @@ else if(inputs.registered_by==1||inputs.registered_by==2){
    
 }
 else{
-    res.status(500).send({
+    res.status(200).send({
         result:"failed",message:"Check the json format or registered by can not be empty"
     });
 }
@@ -235,7 +235,7 @@ exports.update = (req, res) => {
              profile_update_status:1
             },
             function(err,note1) {
-             if (err) return res.status(500).send({result:"failed",message:"Profile Not Updated",errorMessage:'Some error occured or id is not exist in database'});
+             if (err) return res.status(200).send({result:"failed",message:"Profile Not Updated",errorMessage:'Some error occured or id is not exist in database'});
              console.log("res=",note1);
               res.status(200).send({result:"success",message:"Profile Updated"});
             }).catch(err => {

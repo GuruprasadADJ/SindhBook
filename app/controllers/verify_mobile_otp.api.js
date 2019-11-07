@@ -5,7 +5,7 @@ var data='';
 exports.verifyotp = (req, res) =>{
      var input=req.body.otp;
     if(!input) {
-        return res.status(400).send({
+        return res.status(200).send({
             result:"failed",message: "Otp content can not be empty"
         });
     }
@@ -13,16 +13,16 @@ exports.verifyotp = (req, res) =>{
         "otp": input,
       }).then(note => {
         if(note.length == 0){
-            res.status(404).send({result:"failed",message: 'Otp not found. Please verify it again'});
+            res.status(200).send({result:"failed",message: 'Otp not found. Please verify it again'});
         }
         else{
            //update otp status
-           const note=Note.update(
+           const note1=Note.updateOne(
             {otp:input},
             {otp_status:1},
-            function(err,note) {
+            function(err,note1) {
              if (err) return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
-            res.status(200).send({result:"success",message:"Otp verified successfully"});
+            res.status(200).send({result:"success",message:"Otp verified successfully",data:note});
             });
              //</update otp status>
         }
