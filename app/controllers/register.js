@@ -216,29 +216,127 @@ function random(length) {
   }
 //--------------------------Otp Generation Code End-----------------------------
     
-//-------------------------- UPDATE USER PROFILE API ------------------------
+//========================================== UPDATE USER PROFILE API =============================================
 exports.update = (req, res) => {
-   data=req.body;
-   console.log('ok')
-        const note1=Note.update(
-            {_id:data.id},
-            {
-             first_name: data.first_name || '',
-             last_name: data.last_name || '',
-             gender: data.gender || '',
-             dob: data.dob || '',
-             modified_at: formatted,
-             email: data.email || '',
-             email_otp: 0,
-             email_otp_status: 0,
-             profile_picture: data.profile_picture || '',
-             profile_update_status:1
-            },
-            function(err,note1) {
-             if (err) return res.status(200).send({result:"failed",message:"Profile Not Updated",errorMessage:'Some error occured or id is not exist in database'});
-             console.log("res=",note1);
-              res.status(200).send({result:"success",message:"Profile Updated"});
-            }).catch(err => {
-                res.status(500).send({result:"failed",message:"Profile Not Updated",errorMessage:err.message || 'Some error occured'});
-            });        
-}
+    data=req.body;
+    var flag=0;
+    var flag1=0;
+    console.log('ok')
+    if(!data.mobile_no){
+     const note1=Note.update(
+         {_id:data.id},
+        {
+         mobile_no:data.mobile_no||'',
+         first_name: data.first_name || '',
+         last_name: data.last_name || '',
+         gender: data.gender || '',
+         dob: data.dob || '',
+         modified_at: formatted,
+         email: data.email || '',
+         email_otp: 0,
+         email_otp_status: 0,
+         profile_picture: data.profile_picture || '',
+         profile_type:data.profile_type||'',
+         profile_update_status:1
+        },
+        function(err,note1) {
+           if (err) return res.status(200).send({result:"failed",message:"Profile Not Updated",errorMessage:'Some error occured or id is not exist in database'});
+            console.log("res=",note1);
+ 
+        Note.find({"_id": data.id}).then(note => {
+           res.status(200).send({result:"success",message:"Profile Updated",data:note[0]});
+        });
+     
+         //res.status(200).send({result:"success",message:"Profile Updated"});
+        }).catch(err => {
+            res.status(500).send({result:"failed",message:"Profile Not Updated",errorMessage:err.message || 'Some error occured'});
+        }); 
+    }else{
+       Note.find({
+           "_id": data.id,
+          // "mobile_no":data.mobile_no,
+         //  "profile_update_status":data.profile_update_status
+         }).then(note => {
+             //console.log("finding mobile no");
+           if(note.length==0){
+              res.status(200).send({result:"failed",message:"id not found"});
+           }else
+           {
+             Note.find({
+                 //"_id": data.id,
+                 "mobile_no":data.mobile_no,
+               //  "profile_update_status":data.profile_update_status
+               }).then(note => {
+                 if(note.length==0){
+                     const note1=Note.update(
+                         {_id:data.id},
+                     {
+                     mobile_no:data.mobile_no||'',
+                     first_name: data.first_name || '',
+                     last_name: data.last_name || '',
+                     gender: data.gender || '',
+                     dob: data.dob || '',
+                     modified_at: formatted,
+                     email: data.email || '',
+                     email_otp: 0,
+                     email_otp_status: 0,
+                     profile_picture: data.profile_picture || '',
+                     profile_type:data.profile_type||'',
+                     profile_update_status:1
+                 },
+                 function(err,note1) {
+                     if (err) return res.status(200).send({result:"failed",message:"Profile Not Updated",errorMessage:'Some error occured or id is not exist in database'});
+                     console.log("res=",note1);
+ 
+                 Note.find({"_id": data.id}).then(note => {
+                     res.status(200).send({result:"success",message:"Profile Updated1",data:note[0]});
+                 });
+                 
+                     //res.status(200).send({result:"success",message:"Profile Updated"});
+                 }).catch(err => {
+                     res.status(500).send({result:"failed",message:"Profile Not Updated",errorMessage:err.message || 'Some error occured'});
+                 }); 
+                  }
+                  else
+                  {
+                     var server_id=note[0]._id;
+                     if(server_id==data.id){
+                         const note1=Note.update(
+                             {_id:data.id},
+                         {
+                         mobile_no:data.mobile_no||'',
+                         first_name: data.first_name || '',
+                         last_name: data.last_name || '',
+                         gender: data.gender || '',
+                         dob: data.dob || '',
+                         modified_at: formatted,
+                         email: data.email || '',
+                         email_otp: 0,
+                         email_otp_status: 0,
+                         profile_picture: data.profile_picture || '',
+                         profile_type:data.profile_type||'',
+                         profile_update_status:1
+                     },
+                     function(err,note1) {
+                         if (err) return res.status(200).send({result:"failed",message:"Profile Not Updated",errorMessage:'Some error occured or id is not exist in database'});
+                         console.log("res=",note1);
+     
+                     Note.find({"_id": data.id}).then(note => {
+                         res.status(200).send({result:"success",message:"Profile Updated1",data:note[0]});
+                     });
+                     
+                         //res.status(200).send({result:"success",message:"Profile Updated"});
+                     }).catch(err => {
+                         res.status(500).send({result:"failed",message:"Profile Not Updated",errorMessage:err.message || 'Some error occured'});
+                     });                
+                     }
+                     else
+                     {
+                         res.status(200).send({result:"failed",message:"Mobile number is already exist"});
+                     }
+                 }
+             })
+           }
+      });
+     }
+ }
