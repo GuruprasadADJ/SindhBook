@@ -58,14 +58,15 @@ if(inputs.registered_by==0)
             registered_by: inputs.registered_by || 0,
             first_name: inputs.first_name || '',
             last_name: inputs.last_name || '',
-            gender:inputs.gender || 0,
+            gender:inputs.gender || '',
             dob: formatted_dob || '',
             email: inputs.email || '',
             email_otp: '' ,
             email_otp_status: 0,
             profile_picture: inputs.profile_picture || '',
             fb_gmail_id:inputs.fb_gmail_id || '',
-            user_block_status:inputs.user_block_status || 0
+            user_block_status:inputs.user_block_status || 0,
+            profile_type:inputs.profile_type||''
         },function(err,note) {
             if (err) return res.status(500).send({result:"failed",message:"There Was A problem Inserting Data",errorMessage:err.message});
         });
@@ -128,14 +129,15 @@ else if(inputs.registered_by==1||inputs.registered_by==2){
                 registered_by: inputs.registered_by , //field data mandatory
                 first_name: inputs.first_name || '',
                 last_name: inputs.last_name|| '',
-                gender: 0,
+                gender: '',
                 dob: formatted_dob  || '',
                 email: inputs.email || '',
                 email_otp: '',
                 email_otp_status: 0,
                 profile_picture: inputs.profile_picture || '',
                 fb_gmail_id:inputs.fb_gmail_id , //field data mandatory
-                user_block_status:inputs.user_block_status || 0
+                user_block_status:inputs.user_block_status || 0,
+                profile_type:inputs.profile_type||''
             },function(err,note1) {
                 if (err) return res.status(500).send({result:"failed",message:"Not Registered Successfully",errorMessage:err.message});
             });
@@ -237,7 +239,8 @@ exports.update = (req, res) => {
          email_otp_status: 0,
          profile_picture: data.profile_picture || '',
          profile_type:data.profile_type||'',
-         profile_update_status:1
+         profile_update_status:1,
+         profile_type:data.profile_type||''
         },
         function(err,note1) {
            if (err) return res.status(200).send({result:"failed",message:"Profile Not Updated",errorMessage:'Some error occured or id is not exist in database'});
@@ -282,7 +285,8 @@ exports.update = (req, res) => {
                      email_otp_status: 0,
                      profile_picture: data.profile_picture || '',
                      profile_type:data.profile_type||'',
-                     profile_update_status:1
+                     profile_update_status:1,
+                     profile_type:data.profile_type||''
                  },
                  function(err,note1) {
                      if (err) return res.status(200).send({result:"failed",message:"Profile Not Updated",errorMessage:'Some error occured or id is not exist in database'});
@@ -299,6 +303,7 @@ exports.update = (req, res) => {
                   }
                   else
                   {
+                      console.log("gender",data.gender);
                      var server_id=note[0]._id;
                      if(server_id==data.id){
                          const note1=Note.update(
@@ -315,7 +320,8 @@ exports.update = (req, res) => {
                          email_otp_status: 0,
                          profile_picture: data.profile_picture || '',
                          profile_type:data.profile_type||'',
-                         profile_update_status:1
+                         profile_update_status:1,
+                         profile_type:data.profile_type||''
                      },
                      function(err,note1) {
                          if (err) return res.status(200).send({result:"failed",message:"Profile Not Updated",errorMessage:'Some error occured or id is not exist in database'});
