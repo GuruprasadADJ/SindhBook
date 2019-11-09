@@ -14,7 +14,7 @@ module.exports = (app) => {
     app.post('/login', login.Authenticate);
 
     //resend otp
-    app.put('/resendotp',resend.create1);
+    app.post('/resendotp',resend.create1);
 
     //verifiying mobile otp 
     app.post('/verifymobileotp',verifymobileotp.verifyotp);

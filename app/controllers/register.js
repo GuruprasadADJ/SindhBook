@@ -5,7 +5,8 @@ var http = require("http");
 var datetime = require('node-datetime');
 
 var dt = datetime.create();
-var formatted = dt.format('d/m/Y H:M:S');
+var formatted='';
+ formatted = dt.format('d/m/Y H:M:S');
 
 // Create and Save a new user
 var otp='';
@@ -18,7 +19,7 @@ var flag=0;
 var flag1=0;
 var inputs=req.body;
 last_insertid='';
-
+console.log("datetime==",formatted);
 if(inputs.registered_by==0)
 {
  if(!inputs.mobile_no) 
@@ -77,7 +78,7 @@ if(inputs.registered_by==0)
             last_insertid=data.id;
             console.log('inserted data',last_insertid);
             res.status(200).send({
-                result:"success",message:"Registered Successfully",data:{"mobile_no":data.mobile_no,"otp":data.otp}
+                result:"success",message:"Registered Successfully",data:{"id":data.id,"mobile_no":data.mobile_no,"otp":data.otp}
             });
         }).catch(err => {
             res.status(500).send({
