@@ -22,7 +22,7 @@ exports.verifyotp = (req, res) =>{
             {otp_status:1},
             function(err,note1) {
              if (err) return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
-            res.status(200).send({result:"success",message:"Otp verified successfully",data:note});
+            res.status(200).send({result:"success",message:"Otp verified successfully",data:note[0]});
             });
              //</update otp status>
         }
