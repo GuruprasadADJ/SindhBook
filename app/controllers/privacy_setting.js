@@ -9,7 +9,7 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
 
     if(!inputs.id){
         console.log("not found input");
-        return res.status(404).send({message: "id is required "});
+        return res.status(200).send({result:"success",message: "id is required "});
     }
     else
     {
@@ -20,10 +20,9 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
         .then(note => {
             console.log("checked");
             if(!note) {
-                return res.status(404).send({message: "database data not found with this id"});            
+                return res.status(200).send({result:"success",message: "database data not found with this id"});            
             }
-            console.log("data found");
-
+            else{
             privacy.find({          //checks wether the user_id exist in privacy table
                 "user_id": inputs.id
             }).then(privacy1 => {
@@ -44,7 +43,7 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
                     privacy2.save() // this creates the database as privacy
                     .then(data => { 
                         console.log("created row in privacy",data);    
-                        res.status(500).send({result:"success",message:"privacy created successfully",data:data});
+                        res.status(200).send({result:"success",message:"privacy created successfully",data:data});
                       }).catch(err => {
                         res.status(500).send({
                             result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
@@ -52,7 +51,7 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
                     });  
                  } 
                  else{
-                     res.status(500).send({result:"failed",message:"something went wrong"});
+                     res.status(200).send({result:"failed",message:"something went wrong"});
                  }         
                 }
                 else if(!privacy1.length==0) {  //if record already exist in privacy table
@@ -79,6 +78,7 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
                     }
                 }
             });
+        }
         }).catch(err => {
             res.status(500).send({
                 result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
@@ -92,12 +92,19 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
 exports.showprivacy1 = (req, res) => {        //PRIVACY API TO SHOW THE PRIVACY 
     var inputs=req.body;
 
+    if(!inputs.id){
+        console.log("not found input");
+        return res.status(200).send({result:"success",message:"id is required "});
+    }
+    else
+    {
     Note.find({          //checks wether the user_id exist in privacy table
         "id": inputs.id 
     }).then(note=>{
         if(!note.length==0){
             res.status(200).send({result:"success",message:"user not found with this id in rgisters"});
-        }else{
+        }
+        else{
             privacy.find({          //checks wether the user_id exist in privacy table
                 "user_id": inputs.id
             }).then(result=>{
@@ -130,8 +137,10 @@ exports.showprivacy1 = (req, res) => {        //PRIVACY API TO SHOW THE PRIVACY
                     result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
                 });
             })
+         
         }
     })
+  }
 
    
 }
