@@ -27,6 +27,7 @@ module.exports = (app) => {
 
     //privacy  api
     app.post('/privacy_setting',privacy.createprivacy);
-   
+   //privacy show
+   app.post('/privacy_show',privacy.showprivacy1);
    
 }
