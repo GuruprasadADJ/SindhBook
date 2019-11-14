@@ -33,9 +33,9 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
                      {
                         const privacy2 = new privacy({
                         user_id: inputs.id,
-                        post: inputs.post  ||0,
-                        about:inputs.about||0,
-                        profile:inputs.profile||0
+                        post: inputs.post  ||1,
+                        about:inputs.about||1,
+                        profile:inputs.profile||1
                         },function(err,note) {
                         if (err) return res.status(500).send({
                             result:"failed",message:"There Was A problem Inserting Data",errorMessage:err.message
@@ -102,7 +102,26 @@ exports.showprivacy1 = (req, res) => {        //PRIVACY API TO SHOW THE PRIVACY
                 "user_id": inputs.id
             }).then(result=>{
                 if(result.length==0){
-                    res.status(200).send({result:"failed",message:"user not found with this user_id in privacy table"});
+                        const privacy4 = new privacy({
+                        user_id: inputs.id,
+                        post: 1,
+                        about:1,
+                        profile:1
+                        },function(err,privacy4) {
+                        if (err) return res.status(500).send({
+                            result:"failed",message:"There Was A problem Inserting Data",errorMessage:err.message
+                        });
+                    })
+                    privacy4.save() // this creates the database as privacy
+                    .then(data4=> { 
+                        res.status(500).send({result:"success",message:"data found",data:data4});
+                      }).catch(err => {
+                        res.status(500).send({
+                            result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
+                        });
+                    }); 
+
+                    //res.status(200).send({result:"failed",message:"user not found with this user_id in privacy table"});
                 }else{
                     res.status(200).send({result:"success",message:"data found",data:result[0]});
                 }
