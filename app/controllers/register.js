@@ -329,7 +329,7 @@ exports.update = (req, res) => {
                          console.log("res=",note1);
      
                      Note.find({"_id": data.id}).then(note => {
-                         res.status(200).send({result:"success",message:"Profile Updated1",data:note[0]});
+                         res.status(200).send({result:"success",message:"Profile Updated",data:note[0]});
                      });
                      
                          //res.status(200).send({result:"success",message:"Profile Updated"});
