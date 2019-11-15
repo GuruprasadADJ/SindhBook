@@ -66,9 +66,16 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
                         about:inputs.about||about,
                         profile:inputs.profile||profile},
                          function(err,privacy3) {
+                           
                           if (err){return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});}
                           else{
-                            res.status(200).send({result:"success",message:"privacy updated successfully",data:privacy3});
+                            var responsedata='';
+                              privacy.find({"user_id": inputs.id
+                              }).then(privacY => {
+                                responsedata=privacY[0];
+                                res.status(200).send({result:"success",message:"privacy updated successfully",data:responsedata});
+                              });
+                           
                           }
                         }).catch(err => {
                             res.status(500).send({
@@ -136,11 +143,8 @@ exports.showprivacy1 = (req, res) => {        //PRIVACY API TO SHOW THE PRIVACY
                 res.status(500).send({
                     result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
                 });
-            })
-         
+            })         
         }
     })
-  }
-
-   
+  }   
 }
