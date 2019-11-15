@@ -124,10 +124,15 @@ exports.createabout = (req, res) => {         // Aboutus API TO EDIT THE Aboutus
 }
 
 //-----------------------------      API TO SHOW aboutus DETAILS       -----------------------------
-
 exports.showaboutus = (req, res) => {        //PRIVACY API TO SHOW THE PRIVACY 
     var inputs=req.body;
-
+    
+    if(!inputs.id){
+        console.log("not found input");
+        return res.status(200).send({message: "id is required "});
+    }
+    else
+    {
     Note.find({          //checks wether the user_id exist in privacy table
         "id": inputs.id 
     }).then(note=>{
@@ -138,7 +143,29 @@ exports.showaboutus = (req, res) => {        //PRIVACY API TO SHOW THE PRIVACY
                 "user_id": inputs.id
             }).then(about1=>{
                 if(about1.length==0){
-                    res.status(200).send({result:"failed",message:"About details not found with this id in about table"});
+                    var work=[];
+                    var education=[];
+                    var places_lived=[];
+                    var contact_info=0;
+                        const aboutc = new Aboutus({
+                        user_id: inputs.id,
+                        work:work,
+                        education:education,
+                        places_lived:places_lived,
+                        contact_info : contact_info
+                       },function(err,aboutc) {
+                       if (err) return res.status(500).send({
+                           result:"failed",message:"There Was A problem Inserting Data",errorMessage:err.message
+                       });
+                   })
+                   aboutc.save() // this creates the database as about
+                   .then(data21 => { 
+                       res.status(200).send({result:"success",message:"about table ceated successfully",data:data21});
+                   }).catch(err => {
+                       res.status(500).send({
+                           result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
+                       });
+                   });
                 }else{
                     var work=[];
                     var education=[];
@@ -149,21 +176,39 @@ exports.showaboutus = (req, res) => {        //PRIVACY API TO SHOW THE PRIVACY
                     education=about1[0].education;
                     places_lived=about1[0].places_lived;
                     contact_info=about1[0].contact_info;
+                   // user_id=about1[0].user_id;
+                  //  json["user_id"]=user_id;
                     if(!work.length==0)
                     {
                         json["work"]=work;
+                    }
+                    else
+                    {
+                        json["work"]=[];
                     }
                     if(!education.length==0)
                     {
                         json["education"]=education;
                     }
+                    else
+                    {
+                        json["education"]=[];
+                    }
                     if(!places_lived.length==0)
                     {
                         json["places_lived"]=places_lived;
                     }
+                    else
+                    {
+                        json["places_lived"]=[];
+                    }
                     if(!contact_info==0)
                     {
                         json["contact_info"]=contact_info;
+                    }
+                    else
+                    {
+                        json["contact_info"]='';
                     }
                     res.status(200).send({result:"success",message:"data found",data:json});
                 }
@@ -174,4 +219,5 @@ exports.showaboutus = (req, res) => {        //PRIVACY API TO SHOW THE PRIVACY
             })
         }
     })
+  }
 }
