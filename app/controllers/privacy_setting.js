@@ -128,7 +128,7 @@ exports.showprivacy1 = (req, res) => {        //PRIVACY API TO SHOW THE PRIVACY
                     })
                     privacy4.save() // this creates the database as privacy
                     .then(data4=> { 
-                        res.status(500).send({result:"success",message:"data found",data:data4});
+                        res.status(200).send({result:"success",message:"data found",data:data4});
                       }).catch(err => {
                         res.status(500).send({
                             result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
