@@ -33,5 +33,7 @@ module.exports = (app) => {
 
     //post contents
     app.post('/post_content',post_content.content_create);
+    //post content update
+    app.post('/post_content_update',post_content.post_content_update);
    
 }
