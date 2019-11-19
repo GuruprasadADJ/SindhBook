@@ -5,6 +5,7 @@ module.exports = (app) => {
     const verifymobileotp = require('../controllers/verify_mobile_otp.api.js');
     const about = require('../controllers/about.js');
     const privacy = require('../controllers/privacy_setting.js');
+    const post_content=require('../controllers/post_content.js');
     // register user
     app.post('/register', notes.create);
 
@@ -29,5 +30,8 @@ module.exports = (app) => {
     app.post('/privacy_setting',privacy.createprivacy);
     //privacy show
     app.post('/privacy_show',privacy.showprivacy1);
+
+    //post contents
+    app.post('/post_content',post_content.content_create);
    
 }
