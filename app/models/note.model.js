@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const NoteSchema = mongoose.Schema({
     //user_id
-    mobile_no: Number,
+    mobile_no: String,
     otp: String,
     otp_status: Number,
     device_token: String,

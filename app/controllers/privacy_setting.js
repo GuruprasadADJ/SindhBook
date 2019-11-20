@@ -96,46 +96,27 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
 
 //-----------------------------      API TO SHOW PRIVACY DETAILS       -----------------------------
 
-exports.showprivacy1 = (req, res) => {        //PRIVACY API TO SHOW THE PRIVACY 
-    var inputs=req.body;
-
-    if(!inputs.id){
-        console.log("not found input");
-        return res.status(200).send({result:"success",message:"id is required "});
-    }
-    else
-    {
-    Note.find({          //checks wether the user_id exist in privacy table
-        "id": inputs.id 
-    }).then(note=>{
-        if(!note.length==0){
-            res.status(200).send({result:"success",message:"user not found with this id in rgisters"});
+exports.showPrivacyDetails = (req, res) => { 
+    console.log(req.params.privacyId);
+    Note.findById(req.params.privacyId)
+    .then(note=>{
+        if(!note){
+            return res.status(200).send({result:'failed',
+            message: "Data not found in register table" + req.params.privacyId
+         });
         }
         else{
+            var inputs=req.params.privacyId;
             privacy.find({          //checks wether the user_id exist in privacy table
-                "user_id": inputs.id
+                "user_id": inputs
             }).then(result=>{
                 if(result.length==0){
-                        const privacy4 = new privacy({
-                        user_id: inputs.id,
-                        post: 1,
-                        about:1,
-                        profile:1
-                        },function(err,privacy4) {
-                        if (err) return res.status(500).send({
-                            result:"failed",message:"There Was A problem Inserting Data",errorMessage:err.message
-                        });
-                    })
-                    privacy4.save() // this creates the database as privacy
-                    .then(data4=> { 
-                        res.status(200).send({result:"success",message:"data found",data:data4});
-                      }).catch(err => {
-                        res.status(500).send({
-                            result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
-                        });
-                    }); 
-
-                    //res.status(200).send({result:"failed",message:"user not found with this user_id in privacy table"});
+                    var json={};
+                    json["post"]=1;
+                    json["about"]=1;
+                    json["profile"]=1;
+               
+                    res.status(200).send({result:"success",message:"data not found",data:json});
                 }else{
                     res.status(200).send({result:"success",message:"data found",data:result[0]});
                 }
@@ -146,5 +127,4 @@ exports.showprivacy1 = (req, res) => {        //PRIVACY API TO SHOW THE PRIVACY
             })         
         }
     })
-  }   
 }

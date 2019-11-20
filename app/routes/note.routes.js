@@ -5,11 +5,14 @@ module.exports = (app) => {
     const verifymobileotp = require('../controllers/verify_mobile_otp.api.js');
     const about = require('../controllers/about.js');
     const privacy = require('../controllers/privacy_setting.js');
-    const post_content=require('../controllers/post_content.js');
-    // register user
-    app.post('/register', notes.create);
 
-    //update profile api
+    const post=require('../controllers/post_content.js');  //""
+    let upload = require('../config/multer.config.js');    //""
+
+    const Friends=require('../controllers/friends.js');
+
+    // register user update profile api
+    app.post('/register', notes.create);
     app.put('/update',notes.update);
 
     //login user
@@ -21,19 +24,20 @@ module.exports = (app) => {
     //verifiying mobile otp 
     app.post('/verifymobileotp',verifymobileotp.verifyotp);
 
-    //about api creating
-    app.post('/about/create',about.createabout);
-    //about api show
-    app.post('/about/show',about.showaboutus);
+     //about api creating
+     app.post('/createAboutDetails',about.createabout);
+     app.get('/showAboutDetails/:about1Id',about.showaboutdetails);
+ 
+     //privacy  api
+     app.post('/createPrivacyDetails',privacy.createprivacy);
+     app.get('/showPrivacyDetails/:privacyId',privacy.showPrivacyDetails);
 
-    //privacy  api
-    app.post('/privacy_setting',privacy.createprivacy);
-    //privacy show
-    app.post('/privacy_show',privacy.showprivacy1);
+    //CREATE POST AND UPDATE POST
+    app.post('/createOnePost', upload.array("file"), post.createPost);
+    app.post('/UpdateOnePost', upload.array("file"), post.updatePost);
 
-    //post contents
-    app.post('/post_content',post_content.content_create);
-    ////post content update
-    app.post('/post_content_update',post_content.post_content_update);
+    //SEND FRIEND REQUESTAND ACEPT
+    app.post('/sendFriendRequest',Friends.friendrequest);
+    app.post('/acceptFriendRequest',Friends.answerrequest);
    
 }
