@@ -7,9 +7,9 @@ var verify='';
 exports.create1= (req, res) =>{
     //validate input data
     data=req.body;
-   if(!data.mobile_no ||!data.id) {
+   if(!data.id) {
        return res.status(200).send({
-        result:"failed",message: "id and mobile content can not be empty"
+        result:"failed",message: "id can not be empty"
        });
    }
    else{   

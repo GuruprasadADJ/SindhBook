@@ -8,8 +8,12 @@ module.exports = (app) => {
 
     const post=require('../controllers/post_content.js');  //""
     let upload = require('../config/multer.config.js');    //""
+    const postlist=require('../controllers/PostList.js');
 
     const Friends=require('../controllers/friends.js');
+    const Friends1=require('../controllers/friend_list.js');
+
+    
 
     // register user update profile api
     app.post('/register', notes.create);
@@ -35,9 +39,10 @@ module.exports = (app) => {
     //CREATE POST AND UPDATE POST
     app.post('/createOnePost', upload.array("file"), post.createPost);
     app.post('/UpdateOnePost', upload.array("file"), post.updatePost);
+    app.get('/postList/:postId',postlist.postList);
 
     //SEND FRIEND REQUESTAND ACEPT
     app.post('/sendFriendRequest',Friends.friendrequest);
     app.post('/acceptFriendRequest',Friends.answerrequest);
-   
+    app.post('/friendsList',Friends1.friends_list);
 }
