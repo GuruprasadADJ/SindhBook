@@ -4,7 +4,7 @@ const Note = require('../models/note.model.js');
 var flag=0;
 exports.createabout = (req, res) => {         // Aboutus API TO EDIT THE Aboutus
    // var post=about=profile=0;
-   console.log("inputs coming", req.body.id);failed
+   console.log("inputs coming", req.body.id);
     var inputs=req.body;
 
     if(!inputs.id){
