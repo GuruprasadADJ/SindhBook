@@ -9,7 +9,7 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
 
     if(!inputs.id){
         console.log("not found input");
-        return res.status(200).send({result:"success",message: "id is required "});
+        return res.status(200).send({result:"Success",message: "Please enter id"});
     }
     else
     {
@@ -20,7 +20,7 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
         .then(note => {
             console.log("checked");
             if(!note) {
-                return res.status(200).send({result:"success",message: "database data not found with this id"});            
+                return res.status(200).send({result:"Success",message: "Data not in database with this id "+inputs.id});            
             }
             else{
             privacy.find({          //checks wether the user_id exist in privacy table
@@ -36,22 +36,20 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
                         about:inputs.about||1,
                         profile:inputs.profile||1
                         },function(err,note) {
-                        if (err) return res.status(500).send({
-                            result:"failed",message:"There Was A problem Inserting Data",errorMessage:err.message
-                        });
+                        if (err) return res.status(500).send({result:"Failed",message:"There was a problem adding the information to the database."});
                     })
                     privacy2.save() // this creates the database as privacy
                     .then(data => { 
                         console.log("created row in privacy",data);    
-                        res.status(200).send({result:"success",message:"privacy created successfully",data:data});
+                        res.status(200).send({result:"success",message:"Data inserted successfully",data:data});
                       }).catch(err => {
                         res.status(500).send({
-                            result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
+                            result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                         });
                     });  
                  } 
                  else{
-                     res.status(200).send({result:"failed",message:"something went wrong"});
+                     res.status(200).send({result:"Failed",message:"No data found with this id "+inputs.id});
                  }         
                 }
                 else if(!privacy1.length==0) {  //if record already exist in privacy table
@@ -67,28 +65,31 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
                         profile:inputs.profile||profile},
                          function(err,privacy3) {
                            
-                          if (err){return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});}
+                          if (err){return res.status(500).send({result:"Failed",message:"There was a problem adding the information to the database."});}
                           else{
                             var responsedata='';
                               privacy.find({"user_id": inputs.id
                               }).then(privacY => {
                                 responsedata=privacY[0];
-                                res.status(200).send({result:"success",message:"privacy updated successfully",data:responsedata});
+                                res.status(200).send({result:"Success",message:"Data updated successfully",data:responsedata});
                               });
-                           
                           }
                         }).catch(err => {
                             res.status(500).send({
-                            result:"failed",message:"there was an error",errorMessage: err.message || "Some error occurred while creating the Note."
+                                result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                             });
                         });
                     }
                 }
+            }).catch(err => {
+                res.status(500).send({
+                    result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
+                });
             });
         }
         }).catch(err => {
             res.status(500).send({
-                result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
+                result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
             });
         });  
     }       
@@ -101,8 +102,8 @@ exports.showPrivacyDetails = (req, res) => {
     Note.findById(req.params.privacyId)
     .then(note=>{
         if(!note){
-            return res.status(200).send({result:'failed',
-            message: "Data not found in register table" + req.params.privacyId
+            return res.status(200).send({result:'Failed',
+            message: "Data not found in database with this id" + req.params.privacyId
          });
         }
         else{
@@ -116,15 +117,19 @@ exports.showPrivacyDetails = (req, res) => {
                     json["about"]=1;
                     json["profile"]=1;
                
-                    res.status(200).send({result:"success",message:"data not found",data:json});
+                    res.status(200).send({result:"Success",message:"Showing privacy details",data:json});
                 }else{
-                    res.status(200).send({result:"success",message:"data found",data:result[0]});
+                    res.status(200).send({result:"Success",message:"Showing privacy details",data:result[0]});
                 }
             }).catch(err => {
                 res.status(500).send({
-                    result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
+                    result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                 });
-            })         
+            });      
         }
-    })
+    }).catch(err => {
+        res.status(500).send({
+            result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
+        });
+    });
 }

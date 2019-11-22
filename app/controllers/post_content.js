@@ -11,17 +11,12 @@ var formatted = dt.format('yyyy-MM-dd');
 exports.createPost = (req, res) => {
     var _id=req.body.id;
     var file=req.files;
-    console.log(req.body.id);
-    // if(!_id)
-    // {
-    //     console.log("not found input");
-    //     return res.status(200).send({message: "id is required "});
-    // }
-    // else
-    // {
-        //if(!file){
-       //     return res.status(200).send({result:"failed",message: "id is required "});
-       // }
+    if(!req.body.id){
+      res.status(500).json({result:"Failed",message:"please enter valid id"});
+    }
+    else
+    {
+        console.log(req.body.id);
         if(req.body.content)
         {
             Note.find({ //checks weather the user_id exist in register table
@@ -29,7 +24,7 @@ exports.createPost = (req, res) => {
             })
             .then(note => {
             if(!note) {
-            return res.status(200).send({result:"failed",message: "Data not found in registers table with this id"+ _id}); 
+            return res.status(200).send({result:"Failed",message: "Data not found in database with this id "+ _id}); 
             }
             else
             {
@@ -40,62 +35,76 @@ exports.createPost = (req, res) => {
                     created_at:new Date(),
                     post_status:1
                 },function(err,postcreate){
-                    if (err) return res.status(500).send({result:"failed",message:"There Was A problem Inserting Post",errorMessage:err.message});
+                    if (err) return res.status(500).send({result:"Failed",message:"There was a problem inserting data into database",errorMessage:err.message});
                 });
                     postcreate.save()
                     .then(data => {
-                            res.status(200).send({result:"success",message:"content Posted Successfully",data:data});
+                            res.status(200).send({result:"Success",message:"content Posted Successfully",data:data});
                     }).catch(err => {
-                            res.status(500).send({result:"failed",message:"Exception",errorMessage: err.message || "Some error occurred while creating the Post."});
+                            res.status(500).send({result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Post."});
                     });
             }
             }).catch(err => {
                 res.status(500).send({
-                result:"failed",message:"Exception",errorMessage: err.message || "Some error occurred while creating the Note."
+                result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
             });
             });
         }
         else if(req.files)
         {
-            const s3Client = s3.s3Client;
-            const params = s3.uploadParams;
-            var flag=0;
-            var file=req.files;
+              const s3Client = s3.s3Client;
+              const params = s3.uploadParams;
+              var file=req.files; 
+              var count=[];
+              count=file;
           
-            file.map((item) => {
+              var ResponseData=[];
+              console.log("function ok");
+              file.map((item) => {
               params.Key = item.originalname;
               params.Body = item.buffer;
-              s3Client.upload(params, (err, data) => {
+                
+                s3Client.upload(params, (err, data) => {
                 if (err) {
                   res.status(500).json({result:"failed",message:"Not Posted",error:"Error -> " + err});
                 }
                 else
                 {
-                  //ResponseData.push(data.Location);
-                  const postuse=new Post1({
-                    user_id:req.body.user_id,
-                    title:req.body.title,
-                    contents:data.Location,
-                    created_at:new Date(),
-                    post_status:1
-                  },function(err,postuse){
-                    if (err) return res.status(500).send({result:"failed",message:"There Was A problem Inserting Post",errorMessage:err.message});
-                  });
-                  postuse.save()
-                  .then(data => {
-                    res.status(200).send({result:"success",message:"Posted Successfully",data:data});
-                  }).catch(err => {
-                    res.status(500).send({result:"failed",message:"Exception",errorMessage: err.message || "Some error occurred while creating the Post."});
-                  });
+                  ResponseData.push(data.Location);
                 }
+                if(ResponseData.length==count.length)
+                {
+                  amazon();
+                }
+              
               });
+            });
+            function amazon()
+            {      
+                console.log("function executing");
+                const postuse = new Post1({
+                title:req.body.title,
+                contents:ResponseData,
+                user_id:req.body.id,
+                created_at:new Date(),
+                post_status:1
+              },function(err,postuse){
+                if (err) return res.status(500).send({result:"failed",message:"There Was A problem Inserting Post",errorMessage:err.message});
               });
+              postuse.save()
+              .then(data => {
+                res.status(200).send({result:"success",message:"Posted Successfully",data:postuse});
+              }).catch(err => {
+                res.status(500).send({result:"failed",message:"Not Inserted Post",errorMessage: err.message || "Some error occurred while creating the post."});
+              });
+              ResponseData=[];
+          }
         }
         else
         {
-            res.status(200).send({result:"failed",message:"insert file or content"});
+            res.status(200).send({result:"Failed",message:"Please insert File or Content"});
         }
-   // }
+    }
     }
  
 
@@ -106,12 +115,12 @@ exports.updatePost = (req, res) => {
     var user_id=req.body.user_id;
     if(!_id ){
         console.log("not found input");
-        return res.status(200).send({result:"failed",message: "id is required "});
+        return res.status(200).send({result:"Failed",message: "Please enter id "});
     }
     else
     {
       if(!user_id){
-          return res.status(200).send({result:"failed",message: "user_id is required"});
+          return res.status(200).send({result:"Failed",message: "Please enter user_id"});
       }
 
       if(req.body.content)
@@ -133,22 +142,22 @@ exports.updatePost = (req, res) => {
                       contents:req.body.content||content1,
                       modified_at: new Date()
                   },function(err,postupdate) {
-                        if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
+                        if (err){ return res.status(500).json({result:"Failed",message:"There was a problem inserting data into database",errorMessage: err.message});
                   }else{
-                        res.status(200).send({result:"success",message:"content updated successfully",data:postupdate});
+                        res.status(200).send({result:"Success",message:"Data inserted successfully",data:postupdate});
                   } 
                   }).catch(err => {
                       res.status(500).send({
-                      result:"failed",message:"there was an error",errorMessage: err.message || "Some error occurred while creating the Note."
+                      result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                   });
                   });
               }
               else{
-                    res.status(200).send({result:'failed',message:'not found in post table with this id'});
+                    res.status(200).send({result:'Failed',message:'Data not found in database with this id '+user_id + "or" +_id});
               }
           }).catch(err => {
               res.status(500).send({
-              result:"failed",message:"there was an error",errorMessage: err.message || "Some error occurred while creating the Note."
+              result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
             });
           });
       }
@@ -162,52 +171,71 @@ exports.updatePost = (req, res) => {
             if(!cont.length==0)
             { 
               var title1=cont[0].title;
-              var content1=cont[0].contents;
+              var content1=[];
+              content1=cont[0].contents;
 
               const s3Client = s3.s3Client;
               const params = s3.uploadParams;
-              var flag=0;
-              var file=req.files;
-        
+              var file=req.files; 
+              var count=[];
+              count=file;
+          
+              var ResponseData=[];
+              console.log("function ok");
               file.map((item) => {
               params.Key = item.originalname;
               params.Body = item.buffer;
-              s3Client.upload(params, (err, data) => {
+                
+                s3Client.upload(params, (err, data) => {
                 if (err) {
                   res.status(500).json({result:"failed",message:"Not Posted",error:"Error -> " + err});
                 }
                 else
                 {
-                  //ResponseData.push(data.Location);
-                  const postupdate=Post1.updateMany( //updates records in created record
-                    {user_id:user_id,
-                    _id:_id}, 
-                    {
-                        title:req.body.title||title1,
-                        contents:data.Location||content1,
-                        modified_at: new Date()
-                    },function(err,postupdate) {
-                          if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
-                    }else{
-                          res.status(200).send({result:"success",message:"file updated successfully",data:postupdate});
-                    } 
-                    }).catch(err => {
-                    res.status(500).send({result:"failed",message:"Exception",errorMessage: err.message || "Some error occurred while creating the Post."});
-                  });
+                  ResponseData.push(data.Location);
                 }
+                if(ResponseData.length==count.length)
+                {
+                  amazon();
+                }
+              
               });
+            });
+            function amazon()
+            {     var content2=[];
+                  content2=content1;
+                  for(var i=0;i<ResponseData.length;i++){
+                    content2.push(ResponseData[i]);
+                  }
+                console.log("no of contents updating", content2);
+                const postupdate=Post1.updateMany( //updates records in created record
+                  {user_id:user_id,
+                  _id:_id}, 
+                  {
+                      title:req.body.title||title1,
+                      contents: content2||content1,
+                      modified_at: new Date()
+                  },function(err,postupdate) {
+                        if (err){ return res.status(500).json({result:"Failed",message:"There was a problem inserting data into database",errorMessage: err.message});
+                  }else{
+                        res.status(200).send({result:"Success",message:"Data updated successfully",data:postupdate});
+                  }
+                  }).catch(err => {
+                res.status(500).send({result:"Failed",message:"There is an exception",errorMessage: err.message || "Some error occurred while creating the post."});
               });
+              ResponseData=[];
+          }
           }
           else{
-                res.status(200).send({result:'failed',message:'not found in post table with this id'});
+                res.status(200).send({result:'Failed',message:'data not found database with this id '+user_id +"or"+ _id});
           }
         }).catch(err => {
-          res.status(500).send({result:"failed",message:"Exception",errorMessage: err.message || "Some error occurred while creating the Post."});
+          res.status(500).send({result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Post."});
         });
       }
       else 
       {
-          res.status(200).send({result:"failed",message:"insert file or content"});
+          res.status(200).send({result:"Failed",message:"Please insert File or Content"});
       }
   }
 }

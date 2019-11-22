@@ -44,5 +44,5 @@ module.exports = (app) => {
     //SEND FRIEND REQUESTAND ACEPT
     app.post('/sendFriendRequest',Friends.friendrequest);
     app.post('/acceptFriendRequest',Friends.answerrequest);
-    app.post('/friendsList',Friends1.friends_list);
+    app.get('/friendsList/:noteId',Friends1.friends_list);
 }

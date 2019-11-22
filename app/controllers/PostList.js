@@ -7,8 +7,8 @@ exports.postList = (req, res) => {
     Note.findById(req.params.postId)
     .then(note=>{
         if(!note){
-            return res.status(200).send({result:'failed',
-                message: "Data not found in register table" + req.params.postId
+            return res.status(200).send({result:'Failed',
+                message: "Data not found in database with this id " + req.params.postId
             });
         }
         else
@@ -31,23 +31,24 @@ exports.postList = (req, res) => {
                 }
                 else
                 {
-                    return res.status(200).send({result:'failed',message: "no post yet" });
+                    return res.status(200).send({result:'Failed',message: "No posts found"});
                 }
             }).catch(err => {
                 res.status(500).send({
-                    result:"failed",message:"Exception",errorMessage: err.message || "Some error occurred while creating the Note."
+                    result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                 });
             })
         }
     }).catch(err => {
-        return res.status(200).send({result:'failed',
-                message: "Data not found in register table  " + req.params.postId});
+        return res.status(200).send({result:'Failed',
+                message: "Data not found in database with this id " + req.params.postId});
     })
 
 function one(ids,user_ids)
 { 
     console.log("ids length="+ids.length);
     var first_name=[],last_name=[];
+    
     for(var j=0;j<user_ids.length;j++)
     {
         Note.find({
@@ -55,6 +56,7 @@ function one(ids,user_ids)
         }).then(result1=>{
             first_name.push(result1[0].first_name);
             last_name.push(result1[0].last_name);
+           // name.push(result1[0].first_name+""+result1[0].last_name);
     })   
     }
         var json={};
@@ -64,17 +66,19 @@ function one(ids,user_ids)
             .then(result=>{
                 console.log("result.length ::",result.length);
                 for(var i=0;i<result.length;i++)
-                {   
+                {        
+                        var name=first_name[i]+" "+last_name[i];
                         json["title"]=result[i].title;
                         json["contents"]=result[i].contents;
                         json["likes"]=result[i].like;
                         json["comments"]=result[i].comment;
                         json["created_at"]=result[i].created_at;
-                        json["first_name"]=first_name[i];
-                        json["last_name"]=last_name[i];
+                        // json["first_name"]=first_name[i];
+                        // json["last_name"]=last_name[i];
+                        json["name"]=name;
                         arraylist.push(json);
-                 }             
-            res.send({result:"success",message:"ok",data:arraylist});
+                 }
+            res.send({result:"Success",message:"Data found successfully",data:arraylist});
             });
         }
     } 

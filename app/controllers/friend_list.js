@@ -2,19 +2,18 @@ const Friends=require('../models/friends.model.js');
 const Note = require('../models/note.model.js');
 
 exports.friends_list = (req, res) => {
-    var inputs=req.body;
-    var _id=inputs.id;
+    var _id=req.params.noteId;
     var list=[];
     var arraylist=[];
     if(!_id){
-        res.status(200).send({reslut:'failed',message:'id is required'});
+        res.status(200).send({reslut:'Failed',message:'Please enter id'});
     }
     else
     {
-        Note.find({          //checks weather the user_id exist in register table or not
-            "_id": _id
-        }).then(note=>{
-            if(!note.length==0)
+        Note.findById(req.params.noteId)
+        .then(note=>{
+            console.log(note);
+            if(note)
             {
                     Friends.find({
                         "from_id": _id,
@@ -41,15 +40,13 @@ exports.friends_list = (req, res) => {
                                         }
                                     }
                                     showdata(list);
-                                    //res.status(200).send({result:"success",message:"Friend List Data",Data: list});
                                 }                    
                                 else{
                                     showdata(list);
-                                    //res.status(200).send({result:"success",message:"Friend List Data",Data: list});
                                 }
                                 }).catch(err => {
                                     res.status(500).send({
-                                        result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
+                                        result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                                     });
                                 });
                         }else{
@@ -66,29 +63,28 @@ exports.friends_list = (req, res) => {
                                         }
                                     }
                                     showdata(list);
-                                    //res.status(200).send({result:"success",message:"Friend List Data",Data: list});
                                 }else{
-                                    res.status(200).send({result:"failed",message:"No Friend List Found"});
+                                    res.status(200).send({result:"Failed",message:"No friend list found"});
                                 }                    
                                 }).catch(err => {
                                     res.status(500).send({
-                                        result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
+                                        result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                                     });
                                 });
                         }                
                     }).catch(err => {
                         res.status(500).send({
-                            result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
+                            result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                         });
                     });
                     
             }
             else{
-                res.status(200).send({result:"failed",message:"user not found with this id in registers"});
+                res.status(200).send({result:"Failed",message:"User not found in database with this id "+ _id});
             }
         }).catch(err => {
             res.status(500).send({
-                result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
+                result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
             });
         });        
     }
@@ -107,10 +103,10 @@ exports.friends_list = (req, res) => {
                     json["last_name"]=result[i].last_name;     
                     arraylist.push(json);
                 }
-                res.send({result:"success",message:"ok",data:arraylist});
+                res.send({result:"Success",message:"Friend list found successfully",data:arraylist});
             }
             else{
-                //return res.status(200).send({result:'failed',message: "result is equal to zero" });
+                res.send({result:"Failed",message:"Data not found in database"});
             }
         })
     }

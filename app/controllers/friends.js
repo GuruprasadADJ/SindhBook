@@ -3,7 +3,7 @@ const Friend=require('../models/friends.model');
 const frnd_trs=require('../models/friends_transaction.js');
 const moment = require('moment'); //to parse the default date of mongodb
 
-exports.friendrequest = (req, res) => {   // to send friend request 
+exports.friendrequest = (req, res) => {    
     var title='';
     var body='';
 var inputs=req.body;
@@ -29,20 +29,20 @@ if(fromid && toid)
                 if(!friend1.length==0){
                     var status=friend1[0].status;
                     if(status==1){
-                        res.status(200).send({result:"success",message:'friend request already sent',data:{status:status,to_id:friend1[0].to_id}});
+                        res.status(200).send({result:"Success",message:'Friend request was already sent',data:{status:status,to_id:friend1[0].to_id}});
                     }
                     else if(status==2){
-                        res.status(200).send({result:"success",message:'already friends',data:{status:status,to_id:friend1[0].to_id}});
+                        res.status(200).send({result:"Success",message:'Already friends',data:{status:status,to_id:friend1[0].to_id}});
                     }
                     else if(status==4){
-                        res.status(200).send({result:"success",message:'blocked by the TO user',data:{status:status,blocked_by:friend1[0].to_id}});
+                        res.status(200).send({result:"Success",message:'Blocked by the other user',data:{status:status,blocked_by:friend1[0].to_id}});
                     }
                     else{
                         const frndcreate=Friend.updateOne( //updates records in created record
                             {_id: friend1[0]._id}, 
                             {status : 1
                             },function(err,frndcreate) {
-                               if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
+                               if (err){ return res.status(500).send({result:"Failed",message:"There was a problem adding the information to the database."});
                                }
                                else{
                                 const trans=new frnd_trs({
@@ -52,11 +52,11 @@ if(fromid && toid)
                                     date :new Date()
                                 })
                                 trans.save();
-                                   res.status(200).send({result:"success",message:"friend request sent again successfully",data:frndcreate});
+                                   res.status(200).send({result:"Success",message:"Friend request sent again successfully",data:frndcreate});
                                }                             
                              }).catch(err => {
                                    res.status(500).send({
-                                     result:"failed",message:"there was an error",errorMessage: err.message || "Some error occurred while creating the Note."
+                                     result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                             });
                           });
                     }
@@ -69,20 +69,20 @@ if(fromid && toid)
                         if(!friend2.length==0){
                             var status=friend2[0].status;
                             if(status==1){
-                                res.status(200).send({result:"success",message:'friend request already sent',data:{status:status,to_id:friend2[0].from_id}});
+                                res.status(200).send({result:"Success",message:'Friend request already sent',data:{status:status,to_id:friend2[0].from_id}});
                             }
                             else if(status==2){
-                                res.status(200).send({result:"success",message:'already friends',data:{status:status,to_id:friend2[0].from_id}});
+                                res.status(200).send({result:"Success",message:'Already friends',data:{status:status,to_id:friend2[0].from_id}});
                             }
                             else if(status==4){
-                                res.status(200).send({result:"success",message:'blocked by the TO user',data:{status:status,blocked_by:friend2[0].from_id}});
+                                res.status(200).send({result:"Success",message:'Blocked by the other user',data:{status:status,blocked_by:friend2[0].from_id}});
                             }
                             else{
                                 const frndcreate=Friend.updateOne( //updates records in created record
                                     {_id: friend1[0]._id},           
                                     {status : 1
                                     },function(err,frndcreate) {
-                                       if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
+                                       if (err){ return res.status(500).send({result:"Failed",message:"There was a problem adding the information to the database."});
                                        }
                                        else{
                                         const trans=new frnd_trs({
@@ -95,11 +95,11 @@ if(fromid && toid)
                                             title='sindhbook';
                                             body='friend request send by'+firstname+''+lastname;
                                            notify(device_token,title,body);
-                                           res.status(200).send({result:"success",message:"friend request sent again successfully",data:frndcreate});
+                                           res.status(200).send({result:"Success",message:"Friend request sent again successfully",data:frndcreate});
                                        }                             
                                      }).catch(err => {
                                            res.status(500).send({
-                                             result:"failed",message:"there was an error",errorMessage: err.message || "Some error occurred while creating the Note."
+                                             result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                                     });
                                   });
                             }
@@ -112,7 +112,7 @@ if(fromid && toid)
                                 date :new Date()
                             },function(err,friends) {
                             if (err) return res.status(500).send({
-                                result:"failed",message:"There Was A problem Inserting Data",errorMessage:err.message
+                                result:"Failed",message:"There was a problem inserting data into database",errorMessage:err.message
                             });
                             })
                             friend.save() // this creates the database as privacy
@@ -127,10 +127,10 @@ if(fromid && toid)
                                      title='sindhbook';
                                      body='friend request send by'+firstname+''+lastname;
                                     notify(device_token,title,body);
-                                    res.status(200).send({result:'success',message:'friend requrest sent',data:data})
+                                    res.status(200).send({result:'Success',message:'Friend requrest sent successfully',data:data})
                             }).catch(err => {
                                 res.status(500).send({
-                                result:"failed",message:"Not Registered",errorMessage: err.message || "Some error occurred while creating the Note."
+                                result:"Failed",message:"There was an exceptionNot Registered",errorMessage: err.message || "Some error occurred while creating the Note."
                             });
                             })
                         }
