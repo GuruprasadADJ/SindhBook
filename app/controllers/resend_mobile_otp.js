@@ -9,7 +9,7 @@ exports.create1= (req, res) =>{
     data=req.body;
    if(!data.id) {
        return res.status(200).send({
-        result:"Failed",message: "Please enter id"
+        result:"failed",message: "Please enter id"
        });
    }
    else{   
@@ -18,7 +18,7 @@ exports.create1= (req, res) =>{
        {_id:data.id},
        {otp:sotp},
        function(err,note) {
-        if (err) return res.status(500).send({result:"Failed",message:"The Mobile Number entered is not found"});
+        if (err) return res.status(500).send({result:"failed",message:"The Mobile Number entered is not found"});
         console.log("res=",note);
 
         //  //send otp sms
@@ -49,7 +49,7 @@ exports.create1= (req, res) =>{
         //    req.write(qs.stringify({}));
         //    req.end();
         // //</send otp sms>
-            res.status(200).send({result:"Success",message:"Otp sent successfully",otp:sotp});
+            res.status(200).send({result:"success",message:"Otp sent successfully",otp:sotp});
        });
       }
 };

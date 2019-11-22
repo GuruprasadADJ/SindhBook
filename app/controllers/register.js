@@ -23,7 +23,7 @@ if(inputs.registered_by==0)
 {
  if(!inputs.mobile_no)
  {
-    return res.status(200).send({result:"Failed",message: "Please enter Mobile Number"});
+    return res.status(200).send({result:"failed",message: "Please enter Mobile Number"});
  }
  else
  {
@@ -67,29 +67,29 @@ if(inputs.registered_by==0)
             user_block_status:inputs.user_block_status || 0,
             profile_type:inputs.profile_type||''
         },function(err,note) {
-            if (err) return res.status(500).send({result:"Failed",message:"There was a problem adding the information to the database.",errorMessage:err.message});
+            if (err) return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database.",errorMessage:err.message});
         });
         note.save()
         .then(data => {
             last_insertid=data.id;
             console.log('inserted data',last_insertid);
             res.status(200).send({
-                result:"Success",message:"Data inserted Successfully",data:{"_id":data.id,"mobile_no":data.mobile_no,"otp":data.otp}
+                result:"success",message:"Data inserted Successfully",data:{"_id":data.id,"mobile_no":data.mobile_no,"otp":data.otp}
             });
         }).catch(err => {
             res.status(500).send({
-                result:"Failed",message:"Data not inserted successfully",errorMessage: err.message || "Some error occurred while creating the Note."
+                result:"failed",message:"Data not inserted successfully",errorMessage: err.message || "Some error occurred while creating the Note."
             });
         });
         }
         else
         {   
-            res.status(200).send({result:"Success",message:"User already exist",data:note[0]});
+            res.status(200).send({result:"success",message:"User already exist",data:note[0]});
         }
 }).catch(err => {
     console.log("Exception")
     res.status(500).send({
-        result:"Failed",message:"There was an exception",errorMessage:err.message
+        result:"failed",message:"There was an exception",errorMessage:err.message
     });
 })
 }
@@ -134,7 +134,7 @@ else if(inputs.registered_by==1||inputs.registered_by==2){
                 user_block_status:inputs.user_block_status || 0,
                 profile_type:inputs.profile_type||''
             },function(err,note1) {
-                if (err) return res.status(500).send({result:"Failed",message:"There was a problem adding the information into the database",errorMessage:err.message});
+                if (err) return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database",errorMessage:err.message});
             });
             
             // Save Note in the database
@@ -143,27 +143,27 @@ else if(inputs.registered_by==1||inputs.registered_by==2){
                 last_insertid=data.id;
                 console.log('inserted data',last_insertid);
                 res.status(200).send({
-                    result:"Success",message:"Data inserted successfully",data:data
+                    result:"success",message:"Data inserted successfully",data:data
                 });
             }).catch(err => {
                 res.status(500).send({
-                    result:"Failed",message:"Data not inserted successfully",errorMessage:err.message
+                    result:"failed",message:"Data not inserted successfully",errorMessage:err.message
                 });
             });
         }
         else{
-            res.status(200).send({result:"Success",message:"User already exist",data:note1[0]});
+            res.status(200).send({result:"success",message:"User already exist",data:note1[0]});
         }
     }).catch(err => {
         res.status(500).send({
-            result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
+            result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
         });
    }); 
    
 }
 else{
     res.status(200).send({
-        result:"Failed",message:"Check the json format or registered_by field can not be empty"
+        result:"failed",message:"Check the json format or registered_by field can not be empty"
     });
 }
 };
@@ -238,14 +238,14 @@ exports.update = (req, res) => {
          profile_type:data.profile_type||''
         },
         function(err,note1) {
-           if (err) return res.status(200).send({result:"Failed",message:"Profile not updated successfully",errorMessage:'Some error occured or id is not exist in database'});
+           if (err) return res.status(200).send({result:"failed",message:"Profile not updated successfully",errorMessage:'Some error occured or id is not exist in database'});
             console.log("res=",note1);
  
         Note.find({"_id": data.id}).then(note => {
-           res.status(200).send({result:"Success",message:"Profile updated successfully",data:note[0]});
+           res.status(200).send({result:"success",message:"Profile updated successfully",data:note[0]});
         });
         }).catch(err => {
-            res.status(500).send({result:"Failed",message:"Profile not updated successfully",errorMessage:err.message || 'Some error occured'});
+            res.status(500).send({result:"failed",message:"Profile not updated successfully",errorMessage:err.message || 'Some error occured'});
         }); 
     }else{
        Note.find({
@@ -256,7 +256,7 @@ exports.update = (req, res) => {
              //console.log("finding mobile no");
            if(note.length==0)
            {
-              res.status(200).send({result:"Failed",message:"Data not found in database with this id "+ data.id});
+              res.status(200).send({result:"failed",message:"Data not found in database with this id "+ data.id});
            }
            else
            {
@@ -284,19 +284,19 @@ exports.update = (req, res) => {
                      profile_type:data.profile_type||''
                  },
                  function(err,note1) {
-                     if (err) return res.status(200).send({result:"Failed",message:"Profile Not Updated successfully",errorMessage:err.message});
+                     if (err) return res.status(200).send({result:"failed",message:"Profile Not Updated successfully",errorMessage:err.message});
                      console.log("res=",note1);
  
                     Note.find({
                         "_id": data.id
                     })
                     .then(note => {
-                        res.status(200).send({result:"Success",message:"Profile updated successfully",data:note[0]});
+                        res.status(200).send({result:"success",message:"Profile updated successfully",data:note[0]});
                     }).catch(err => {
-                        res.status(500).send({result:"Failed",message:"Profile not updated successfully",errorMessage:err.message || 'Some error occured'});
+                        res.status(500).send({result:"failed",message:"Profile not updated successfully",errorMessage:err.message || 'Some error occured'});
                     }); 
                  }).catch(err => {
-                     res.status(500).send({result:"Failed",message:"Profile not updated successfully",errorMessage:err.message || 'Some error occured'});
+                     res.status(500).send({result:"failed",message:"Profile not updated successfully",errorMessage:err.message || 'Some error occured'});
                  }); 
                   }
                   else
@@ -322,27 +322,27 @@ exports.update = (req, res) => {
                          profile_type:data.profile_type||''
                      },
                      function(err,note1) {
-                         if (err) return res.status(200).send({result:"Failed",message:"Profile not updated successfully",errorMessage:'Some error occured or id is not exist in database'});
+                         if (err) return res.status(200).send({result:"failed",message:"Profile not updated successfully",errorMessage:'Some error occured or id is not exist in database'});
                          console.log("res=",note1);
      
                      Note.find({"_id": data.id}).then(note => {
-                         res.status(200).send({result:"Success",message:"Profile updated successfully",data:note[0]});
+                         res.status(200).send({result:"success",message:"Profile updated successfully",data:note[0]});
                      });
                      
                          //res.status(200).send({result:"success",message:"Profile Updated"});
                      }).catch(err => {
-                         res.status(500).send({result:"Failed",message:"There was an exception",errorMessage:err.message || 'Some error occured'});
+                         res.status(500).send({result:"failed",message:"There was an exception",errorMessage:err.message || 'Some error occured'});
                      });                
                      }
                      else
                      {
-                         res.status(200).send({result:"Failed",message:"Mobile number is already exist"});
+                         res.status(200).send({result:"failed",message:"Mobile number is already exist"});
                      }
                  }
              })
            }
       }).catch(err => {
-        res.status(500).send({result:"Failed",message:"There was an exception",errorMessage:err.message || 'Some error occured'});
+        res.status(500).send({result:"failed",message:"There was an exception",errorMessage:err.message || 'Some error occured'});
     });
      }
  }

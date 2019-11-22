@@ -7,7 +7,7 @@ exports.postList = (req, res) => {
     Note.findById(req.params.postId)
     .then(note=>{
         if(!note){
-            return res.status(200).send({result:'Failed',
+            return res.status(200).send({result:'failed',
                 message: "Data not found in database with this id " + req.params.postId
             });
         }
@@ -31,16 +31,16 @@ exports.postList = (req, res) => {
                 }
                 else
                 {
-                    return res.status(200).send({result:'Failed',message: "No posts found"});
+                    return res.status(200).send({result:'failed',message: "No posts found"});
                 }
             }).catch(err => {
                 res.status(500).send({
-                    result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
+                    result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                 });
             })
         }
     }).catch(err => {
-        return res.status(200).send({result:'Failed',
+        return res.status(200).send({result:'failed',
                 message: "Data not found in database with this id " + req.params.postId});
     })
 
@@ -78,7 +78,7 @@ function one(ids,user_ids)
                         json["name"]=name;
                         arraylist.push(json);
                  }
-            res.send({result:"Success",message:"Data found successfully",data:arraylist});
+            res.send({result:"success",message:"Data found successfully",data:arraylist});
             });
         }
     } 

@@ -6,14 +6,14 @@ exports.verifyotp = (req, res) =>{
      var input=req.body.otp;
     if(!input) {
         return res.status(200).send({
-            result:"Failed",message: "Please enter valid otp"
+            result:"failed",message: "Please enter valid otp"
         });
     }
      Note.find({
         "otp": input,
       }).then(note => {
         if(note.length == 0){
-            res.status(200).send({result:"Failed",message: 'Otp not found. Please verify it again'});
+            res.status(200).send({result:"failed",message: 'Otp not found. Please verify it again'});
         }
         else{
            //update otp status
@@ -23,10 +23,10 @@ exports.verifyotp = (req, res) =>{
             function(err,note1) {
              if (err)
              {
-                return res.status(500).send({result:"Failed",message:"There was a problem adding the information to the database."});
+                return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
              } 
              else{
-                res.status(200).send({result:"Success",message:"Otp verified successfully",data:note[0]});
+                res.status(200).send({result:"success",message:"Otp verified successfully",data:note[0]});
              }
             
             });
@@ -34,7 +34,7 @@ exports.verifyotp = (req, res) =>{
        
     }).catch(err => {
         console.log("Exception")
-        res.status(500).send({result:"Failed",message:"Some error occurred while verifying otp.",errorMessage:err.message});
+        res.status(500).send({result:"failed",message:"Some error occurred while verifying otp.",errorMessage:err.message});
     })
     
 };

@@ -4,12 +4,12 @@ const Note = require('../models/note.model.js');
 var flag=0;
 exports.createabout = (req, res) => {         // Aboutus API TO EDIT THE Aboutus
    // var post=about=profile=0;
-   console.log("inputs coming", req.body.id);
+   console.log("inputs coming", req.body.id);failed
     var inputs=req.body;
 
     if(!inputs.id){
         console.log("not found input");
-        return res.status(200).send({result:"Success",message: "Please enter id"});
+        return res.status(200).send({result:"success",message: "Please enter id"});
     }
     else
     {
@@ -20,7 +20,7 @@ exports.createabout = (req, res) => {         // Aboutus API TO EDIT THE Aboutus
         .then(note => {
             console.log("checked");
             if(!note) {
-                return res.status(200).send({result:"Failed",message: "Data not found in register table with this id "+inputs.id});            
+                return res.status(200).send({result:"failed",message: "Data not found in register table with this id "+inputs.id});            
             }else{
             console.log("data found");
             Aboutus.find({          //checks wether the user_id exist in privacy table
@@ -53,20 +53,20 @@ exports.createabout = (req, res) => {         // Aboutus API TO EDIT THE Aboutus
                          contact_info : note[0].mobile_no||''
                         },function(err,about2) {
                         if (err) return res.status(500).send({
-                            result:"Failed",message:"There was a problem inserting data into database",errorMessage: err.message
+                            result:"failed",message:"There was a problem inserting data into database",errorMessage: err.message
                         });
                     })
                     about2.save() // this creates the database as privacy
                     .then(data => { 
-                        res.status(200).send({result:"Success",message:"Inserted about details successfully",data:data});
+                        res.status(200).send({result:"success",message:"Inserted about details successfully",data:data});
                     }).catch(err => {
                         res.status(500).send({
-                            result:"Failed",message:"There was an exception while inserting data",errorMessage: err.message || "Some error occurred while creating the Note."
+                            result:"failed",message:"There was an exception while inserting data",errorMessage: err.message || "Some error occurred while creating the Note."
                         });
                     });
 
                  }else{
-                    res.status(200).send({result:"Failed",message:"Something is wrong, Please enter any about details"});
+                    res.status(200).send({result:"failed",message:"Something is wrong, Please enter any about details"});
                  }
                 }
                 else if(!about1.length==0)
@@ -99,24 +99,24 @@ exports.createabout = (req, res) => {         // Aboutus API TO EDIT THE Aboutus
                          places_lived:places_lived1,
                          contact_info : note[0].mobile_no||''
                         },function(err,about3) {
-                            if (err){ return res.status(500).send({result:"Failed",message:"There was a problem adding the information into the database."});
+                            if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                             }else{
-                                res.status(200).send({result:"Success",message:"About details updated successfully",data:about1[0]});
+                                res.status(200).send({result:"success",message:"About details updated successfully",data:about1[0]});
                             }                             
                           }).catch(err => {
                                 res.status(500).send({
-                                  result:"Failed",message:"There was an exception while inserting data",errorMessage: err.message || "Some error occurred while creating the Note."
+                                  result:"failed",message:"There was an exception while inserting data",errorMessage: err.message || "Some error occurred while creating the Note."
                          });
                        });
                     }else{
-                        res.status(200).send({result:"Success",message:"No changes done"});
+                        res.status(200).send({result:"success",message:"No changes done"});
                     }
                  }
             });
           }
         }).catch(err => {
             res.status(500).send({
-                result:"Failed",message:"There was an exception while fetching data in registers table",errorMessage: err.message || "Some error occurred while creating the Note."
+                result:"failed",message:"There was an exception while fetching data in registers table",errorMessage: err.message || "Some error occurred while creating the Note."
             });
         });  
     }       
@@ -127,7 +127,7 @@ exports.showaboutdetails = (req, res) => {
     Note.findById(req.params.about1Id)
     .then(note=>{
             if(!note){
-                return res.status(200).send({result:'Failed',
+                return res.status(200).send({result:'failed',
                    message: "Data not found in register table" + req.params.about1Id
                });
 
@@ -144,7 +144,7 @@ exports.showaboutdetails = (req, res) => {
                             json["places_lived"]=[];
                             json["contact_info"]='';
                        
-                        res.status(200).send({result:"Success",message:"No data found",data:json});
+                        res.status(200).send({result:"success",message:"No data found",data:json});
                     }else{
                         var work=[];
                         var education=[];
@@ -187,11 +187,11 @@ exports.showaboutdetails = (req, res) => {
                         {
                             json["contact_info"]='';
                         }
-                        res.status(200).send({result:"Success",message:"Data found",data:json});
+                        res.status(200).send({result:"success",message:"Data found",data:json});
                     }
                 }).catch(err => {
                     res.status(500).send({
-                        result:"Failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
+                        result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                     });
                 })
             }
