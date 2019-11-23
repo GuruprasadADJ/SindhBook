@@ -10,8 +10,7 @@ exports.registersfindAll = (req, res) => {
             for(var i=0;i<result.length;i++){
                 var json={};
                 json["id"]=result[i].id;
-                json["first_name"]=result[i].first_name;
-                json["last_name"]=result[i].last_name;  
+                json["name"]=result[i].first_name+" "+result[i].last_name; 
                 json["profile_picture"]=result[i].profile_picture;   
                 arraylist.push(json);
             }
