@@ -6,7 +6,8 @@ var verify='';
 //------------------resend otp--------------------------
 exports.create1= (req, res) =>{
     //validate input data
-    data=req.body;
+  var  data=req.body;
+  var  data1=req.body.id;
    if(!data.id) {
        return res.status(200).send({
         result:"failed",message: "Please enter id"
@@ -27,7 +28,7 @@ exports.create1= (req, res) =>{
             "method": "GET",
             "hostname": "2factor.in",
             "port": null,
-            "path": "/API/V1/76263c6b-fc6d-11e9-9fa5-0200cd936042/SMS/"+data+"/"+random(6)+"",
+            "path": "/API/V1/76263c6b-fc6d-11e9-9fa5-0200cd936042/SMS/"+data1+"/"+random(6)+" ",
             "headers": {
               "content-type": "application/x-www-form-urlencoded"
              }
