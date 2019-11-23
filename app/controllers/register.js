@@ -74,7 +74,7 @@ if(inputs.registered_by==0)
             last_insertid=data.id;
             console.log('inserted data',last_insertid);
            
-                sendotp(inputs.mobile_no,otp);
+                //sendotp(inputs.mobile_no,otp);
                 res.status(200).send({
                     result:"success",message:"Data inserted Successfully",data:{"_id":data.id,"mobile_no":data.mobile_no,"otp":data.otp}
                 });
