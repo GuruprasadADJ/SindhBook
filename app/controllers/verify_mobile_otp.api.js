@@ -19,14 +19,20 @@ exports.verifyotp = (req, res) =>{
            //update otp status
            const note1=Note.updateOne(
             {otp:input},
-            {otp_status:1},
+            {otp_status: 1},
             function(err,note1) {
              if (err)
              {
                 return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
              } 
              else{
-                res.status(200).send({result:"success",message:"Otp verified successfully",data:note[0]});
+                Note.find({
+                    "otp": input,
+                  }).then(note => {
+
+                    res.status(200).send({result:"success",message:"Otp verified successfully",data:note[0]});
+                  })
+               
              }
             
             });
