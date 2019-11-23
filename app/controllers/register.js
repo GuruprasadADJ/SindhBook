@@ -73,9 +73,13 @@ if(inputs.registered_by==0)
         .then(data => {
             last_insertid=data.id;
             console.log('inserted data',last_insertid);
-            res.status(200).send({
-                result:"success",message:"Data inserted Successfully",data:{"_id":data.id,"mobile_no":data.mobile_no,"otp":data.otp}
-            });
+           
+                sendotp(inputs.mobile_no,otp);
+                res.status(200).send({
+                    result:"success",message:"Data inserted Successfully",data:{"_id":data.id,"mobile_no":data.mobile_no,"otp":data.otp}
+                });
+           
+            
         }).catch(err => {
             res.status(500).send({
                 result:"failed",message:"Data not inserted successfully",errorMessage: err.message || "Some error occurred while creating the Note."

@@ -1,5 +1,6 @@
 module.exports = (app) => {
     const notes = require('../controllers/register.js');
+    const allusers=require('../controllers/all_users_list.js')
     const login = require('../controllers/login_api.js');
     const resend = require('../controllers/resend_mobile_otp.js');
     const verifymobileotp = require('../controllers/verify_mobile_otp.api.js');
@@ -18,6 +19,7 @@ module.exports = (app) => {
     // register user update profile api
     app.post('/register', notes.create);
     app.put('/update',notes.update);
+    app.get('/allUsersList', allusers.registersfindAll);
 
     //login user
     app.post('/login', login.Authenticate);

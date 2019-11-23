@@ -7,8 +7,8 @@ exports.friendrequest = (req, res) => {
     var title='';
     var body='';
 var inputs=req.body;
-    fromid=inputs.fromid;
-    toid=inputs.toid;
+var    fromid=inputs.from_id;
+var   toid=inputs.to_id;
 if(fromid && toid)
 {
     Note.find({
@@ -157,8 +157,8 @@ exports.answerrequest = (req, res) => {
     var title='';
     var body='';
     var inputs=req.body;
-    fromid=inputs.fromid;
-    toid=inputs.toid;
+    fromid=inputs.from_id;
+    toid=inputs.to_id;
     var status=inputs.status;
     if(status==3 || status==2){
     }else{
