@@ -5,11 +5,7 @@ exports.friends_list = (req, res) => {
     var _id=req.params.noteId;
     var list=[];
     var arraylist=[];
-    if(!_id){
-        res.status(200).send({reslut:'failed',message:'Please enter id'});
-    }
-    else
-    {
+   
         Note.findById(req.params.noteId)
         .then(note=>{
             console.log(note);
@@ -64,7 +60,7 @@ exports.friends_list = (req, res) => {
                                     }
                                     showdata(list);
                                 }else{
-                                    res.status(200).send({result:"failed",message:"No friend list found"});
+                                    res.status(200).send({result:"success",message:"No friend list found",data:frndlist1});
                                 }                    
                                 }).catch(err => {
                                     res.status(500).send({
@@ -80,14 +76,14 @@ exports.friends_list = (req, res) => {
                     
             }
             else{
-                res.status(200).send({result:"failed",message:"User not found in database with this id "+ _id});
+                res.status(200).send({result:"success",message:"User not found in database with this id "+ _id});
             }
         }).catch(err => {
             res.status(500).send({
                 result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
             });
         });        
-    }
+   //==============================
     function showdata(ids)
     {
         Note.find({
@@ -99,14 +95,14 @@ exports.friends_list = (req, res) => {
                 for(var i=0;i<result.length;i++){
                     var json={};
                     json["id"]=result[i].id;
-                    json["first_name"]=result[i].first_name;
-                    json["last_name"]=result[i].last_name;     
+                    json["name"]=result[i].first_name+" "+result[i].last_name;   
+                    json["profile_picture"]=result[i].profile_picture;     
                     arraylist.push(json);
                 }
                 res.send({result:"success",message:"Friend list found successfully",data:arraylist});
             }
             else{
-                res.send({result:"failed",message:"Data not found in database"});
+                res.send({result:"success",message:"No friend list found",data:arraylist});
             }
         })
     }

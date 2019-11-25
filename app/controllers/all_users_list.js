@@ -17,7 +17,7 @@ exports.registersfindAll = (req, res) => {
             res.send({result:"success",message:"Users list found successfully",data:arraylist});
         }
         else{
-            res.send({result:"failed",message:"Data not found in database"});
+            res.send({result:"success",message:"Data not found in database",data:arraylist});
         }
     }).catch(err => {
         res.status(500).send({
