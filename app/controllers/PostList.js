@@ -7,7 +7,7 @@ exports.postList = (req, res) => {
     Note.findById(req.params.postId)
     .then(note=>{
         if(!note){
-            return res.status(200).send({result:'failed',
+            return res.status(200).send({result:'success',
                 message: "Data not found in database with this id " + req.params.postId
             });
         }
@@ -46,7 +46,7 @@ exports.postList = (req, res) => {
                                 if(arraylist.length==ids.length)
                                 {
                                     console.log("arraylist:",arraylist);
-                                    res.send({result:"success",message:"Post found successfully",data:arraylist});
+                                    res.send({result:"success",message:"Posts found successfully",data:arraylist});
                                 }
                         }).catch(err => {
                             res.status(500).send({
@@ -57,7 +57,7 @@ exports.postList = (req, res) => {
                 }
                 else
                 {
-                    return res.status(200).send({result:'failed',message: "No posts found",data:post});
+                    return res.status(200).send({result:'success',message: "No posts found",data:post});
                 }
             }).catch(err => {
                 res.status(500).send({
