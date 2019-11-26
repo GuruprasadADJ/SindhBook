@@ -15,8 +15,10 @@ module.exports = (app) => {
 
     //resend otp
     const resend = require('../controllers/resend_mobile_otp.js');
-    app.post('/resendotp',resend.create1);
-
+    const getotp = require('../controllers/getOtp.js');
+    app.post('/resendOtp',resend.create1);
+    app.post('/getOtp',getotp.getOtp);
+    
     //verifiying mobile otp 
     const verifymobileotp = require('../controllers/verify_mobile_otp.api.js');
     app.post('/verifymobileotp',verifymobileotp.verifyotp);
