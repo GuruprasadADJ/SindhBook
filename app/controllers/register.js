@@ -33,7 +33,8 @@ if(inputs.registered_by==0)
        flag=1;
     }
     if(flag==1){        
-            otp=random(6);
+            //otp=random(6);
+            otp='123456'
             var formatted_dob='';
             if(!inputs.dob)
             {

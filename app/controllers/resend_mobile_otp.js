@@ -14,7 +14,8 @@ exports.create1= (req, res) =>{
        });
    }
    else{   
-    var sotp=random(6);
+    //var sotp=random(6);
+    var sotp='123456';
    const note=Note.updateOne(
        {_id:data.id},
        {otp:sotp},

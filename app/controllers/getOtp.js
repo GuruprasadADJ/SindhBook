@@ -21,7 +21,8 @@ exports.getOtp= (req, res) =>{
         console.log("result",result);
          if(result.length==0)
          {
-            var sotp=random(6);
+            //var sotp=random(6);
+            var sotp='123456';
             const note=Note.update(
                 {_id:_id},
                 { otp:sotp, 

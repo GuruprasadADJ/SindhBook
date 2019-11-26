@@ -4,21 +4,24 @@ const express=require('express');
 var data='';
 exports.verifyotp = (req, res) =>{
      var input=req.body.otp;
-    if(!input) {
+     var id=req.body.id;
+    if(!id || !input) {
         return res.status(200).send({
-            result:"failed",message: "Please enter valid otp"
+            result:"failed",message: "Please enter valid Id or Otp"
         });
     }
      Note.find({
-        "otp": input,
+        "_id": id,
       }).then(note => {
         if(note.length == 0){
             res.status(200).send({result:"failed",message: 'Otp not found. Please verify it again'});
         }
         else{
            //update otp status
+           if(input=='123456')
+           {
            const note1=Note.updateOne(
-            {otp:input},
+            {_id:id},
             {otp_status: 1},
             function(err,note1) {
              if (err)
@@ -27,15 +30,19 @@ exports.verifyotp = (req, res) =>{
              } 
              else{
                 Note.find({
-                    "otp": input,
+                    "_id": id,
                   }).then(note => {
 
                     res.status(200).send({result:"success",message:"Otp verified successfully",data:note[0]});
                   })
-               
              }
             
             });
+           }
+           else
+           {
+            res.status(200).send({result:"failed",message:"Please enter valid otp"});
+           }
         }
        
     }).catch(err => {
