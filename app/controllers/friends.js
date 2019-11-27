@@ -93,7 +93,7 @@ if(fromid && toid)
                             }
                             else{
                                 const frndcreate=Friend.updateOne( //updates records in created record
-                                    {_id: friend1[0]._id},           
+                                    {_id: friend2[0]._id},           
                                     {status : inputstatus
                                     },function(err,frndcreate) {
                                        if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
