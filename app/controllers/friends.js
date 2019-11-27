@@ -265,8 +265,11 @@ if(fromid && toid)
                             }
                             else{
                                 const frndcreate=Friend.updateOne( //updates records in created record
-                                    {_id: friend1[0]._id},           
-                                    {status : inputstatus
+                                    {_id: friend2[0]._id},           
+                                    {
+                                    status : inputstatus,
+                                    from_id: toid,
+                                    to_id: fromid
                                     },function(err,frndcreate) {
                                        if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                                        }
@@ -346,7 +349,6 @@ if(fromid && toid)
     res.status(200).send({result:'success',message:'from id and to id are mandatory'});
 }   
 }
-
 
 
 
