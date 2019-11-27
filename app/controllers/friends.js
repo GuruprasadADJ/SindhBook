@@ -7,8 +7,9 @@ exports.friendrequest = (req, res) => {
     var title='';
     var body='';
 var inputs=req.body;
-var    fromid=inputs.from_id;
-var   toid=inputs.to_id;
+var fromid=inputs.from_id;
+var toid=inputs.to_id;
+var inputstatus=req.body.status;
 if(fromid && toid)
 {
     Note.find({
@@ -40,7 +41,7 @@ if(fromid && toid)
                     else{
                         const frndcreate=Friend.updateOne( //updates records in created record
                             {_id: friend1[0]._id}, 
-                            {status : 1
+                            {status : inputstatus
                             },function(err,frndcreate) {
                                if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                                }
@@ -52,7 +53,12 @@ if(fromid && toid)
                                     date :new Date()
                                 })
                                 trans.save();
-                                   res.status(200).send({result:"success",message:"Friend request sent again successfully",data:frndcreate});
+                                if(inputstatus==1){
+                                    res.status(200).send({result:"success",message:"Friend request sent again successfully",data:frndcreate});
+                                }else if(inputstatus==5){
+                                    res.status(200).send({result:"success",message:"User removed successfully",data:frndcreate});
+                                }
+                                   
                                }                             
                              }).catch(err => {
                                    res.status(500).send({
@@ -80,7 +86,7 @@ if(fromid && toid)
                             else{
                                 const frndcreate=Friend.updateOne( //updates records in created record
                                     {_id: friend1[0]._id},           
-                                    {status : 1
+                                    {status : inputstatus
                                     },function(err,frndcreate) {
                                        if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                                        }
@@ -95,7 +101,12 @@ if(fromid && toid)
                                             title='sindhbook';
                                             body='friend request send by'+firstname+''+lastname;
                                            notify(device_token,title,body);
-                                           res.status(200).send({result:"success",message:"Friend request sent again successfully",data:frndcreate});
+                                           if(inputstatus==1){
+                                            res.status(200).send({result:"success",message:"Friend request sent again successfully",data:frndcreate});
+                                           }else if(inputstatus==5){
+                                            res.status(200).send({result:"success",message:"User removed successfully",data:frndcreate});
+                                           }
+                                           
                                        }                             
                                      }).catch(err => {
                                            res.status(500).send({
@@ -108,7 +119,7 @@ if(fromid && toid)
                            const friend=new Friend({
                                 from_id : fromid,
                                 to_id : toid,
-                                status :1,  //1: pending, 2: accepted, 3: rejected, 4: blocked
+                                status : inputstatus,  //1: pending, 2: accepted, 3: rejected, 4: blocked
                                 date :new Date()
                             },function(err,friends) {
                             if (err) return res.status(500).send({
@@ -127,7 +138,12 @@ if(fromid && toid)
                                      title='sindhbook';
                                      body='friend request send by'+firstname+''+lastname;
                                     notify(device_token,title,body);
-                                    res.status(200).send({result:'success',message:'Friend requrest sent successfully',data:data})
+                                    if(inputstatus==1){
+                                        res.status(200).send({result:'success',message:'Friend request sent successfully',data:data})
+                                    }else{
+                                        res.status(200).send({result:'success',message:'User removed successfully',data:data})
+                                    }
+                                    
                             }).catch(err => {
                                 res.status(500).send({
                                 result:"failed",message:"There was an exceptionNot Registered",errorMessage: err.message || "Some error occurred while creating the Note."
@@ -172,18 +188,20 @@ exports.answerrequest = (req, res) => {
         }
     }).then(note=>{
         if(!note.length==0)
-        {   console.log(note[1].device_token)
+        {  
+             console.log(note[1].device_token)
             var device_token=note[1 ].device_token;
             var firstname1=note[0].first_name;
             var lastname1=note[0].last_name;
             console.log(device_token);
             Friend.find({
-                "from_id": fromid,
-                "to_id": toid
+                "from_id": toid,
+                "to_id": fromid
             }).then(friend3=>{
                 if(!friend3.length==0)
                 {
-                    if(status==2){
+                    if(status==2)
+                    {
                         const acceptrequest=Friend.updateOne( //updates records in created record
                             {_id: friend3[0]._id}, 
                             {status : status
@@ -236,7 +254,7 @@ exports.answerrequest = (req, res) => {
                         });
                     }
                     else{
-                        res.staus(200).send({result:"failed",message:"something went wrong"});
+                        res.staus(200).send({result:"failed",message:"something went wrong,please check the status"});
                     }
                     
                 }else{
