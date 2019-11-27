@@ -163,7 +163,7 @@ if(fromid && toid)
                         }
                     })
                 } 
-            })    
+            }) 
 
         }else{
             res.status(200).send({result:'failed',message:'data not found in register table'})
@@ -418,10 +418,10 @@ exports.acceptFriendRequest = (req, res) => {
                         });
                     }
                     else if(status==3){
-                        const acceptrequest=Friend.updateOne( //updates records in created record
-                            {_id: friend3[0]._id}, 
-                            {status : status
-                            },function(err,acceptrequest) {
+                        Friend.remove({
+                            "_id": friend3[0]._id
+                        },
+                        function(err,acceptrequest) {
                             if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                             }
                             else{
@@ -532,10 +532,10 @@ exports.rejectFriendRequest = (req, res) => {
                         });
                     }
                     else if(status==3){
-                        const acceptrequest=Friend.updateOne( //updates records in created record
-                            {_id: friend3[0]._id}, 
-                            {status : status
-                            },function(err,acceptrequest) {
+                        Friend.remove({
+                            "_id": friend3[0]._id
+                        },
+                        function(err,acceptrequest) {
                             if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                             }
                             else{
