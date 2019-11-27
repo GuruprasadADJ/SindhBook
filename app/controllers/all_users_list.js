@@ -1,18 +1,21 @@
 const Note = require('../models/note.model.js');
 
 exports.registersfindAll = (req, res) => {
+    var id=req.params.Id;
     var arraylist=[];
-    Note.find()
+    Note.find({"profile_update_status":1})
     .then(result=>{
         if(!result.length==0){
             console.log(result.length-1)
            
             for(var i=0;i<result.length;i++){
-                var json={};
-                json["id"]=result[i].id;
-                json["name"]=result[i].first_name+" "+result[i].last_name; 
-                json["profile_picture"]=result[i].profile_picture;   
-                arraylist.push(json);
+                if(result[i].id!=id){
+                    var json={};
+                    json["id"]=result[i].id;
+                    json["name"]=result[i].first_name+" "+result[i].last_name; 
+                    json["profile_picture"]=result[i].profile_picture;   
+                    arraylist.push(json);
+                }
             }
             res.send({result:"success",message:"Users list found successfully",data:arraylist});
         }

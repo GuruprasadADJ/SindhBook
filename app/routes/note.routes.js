@@ -7,7 +7,7 @@ module.exports = (app) => {
 
     //all users list
     const allusers=require('../controllers/all_users_list.js')
-    app.get('/allUsersList', allusers.registersfindAll);
+    app.get('/allUsersList/:Id', allusers.registersfindAll);
 
     //login user
     const login = require('../controllers/login_api.js');

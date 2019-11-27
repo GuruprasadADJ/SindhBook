@@ -181,7 +181,8 @@ exports.answerrequest = (req, res) => {
                 "from_id": toid,
                 "to_id": fromid
             }).then(friend3=>{
-                if(!friend3.length==0){
+                if(!friend3.length==0)
+                {
                     if(status==2){
                         const acceptrequest=Friend.updateOne( //updates records in created record
                             {_id: friend3[0]._id}, 
