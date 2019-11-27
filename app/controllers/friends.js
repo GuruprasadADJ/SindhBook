@@ -178,8 +178,8 @@ exports.answerrequest = (req, res) => {
             var lastname1=note[0].last_name;
             console.log(device_token);
             Friend.find({
-                "from_id": toid,
-                "to_id": fromid
+                "from_id": fromid,
+                "to_id": toid
             }).then(friend3=>{
                 if(!friend3.length==0)
                 {
