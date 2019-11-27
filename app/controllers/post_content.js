@@ -16,9 +16,10 @@ exports.createPost = (req, res) => {
     }
     else
     {
-        console.log(req.body.id);
+        console.log("Test");
         if(req.body.content)
         {
+          console.log("Test1");
             Note.find({ //checks weather the user_id exist in register table
             "_id": _id
             })
@@ -31,7 +32,8 @@ exports.createPost = (req, res) => {
                 const postcreate=new Post1({
                     user_id:_id,
                     title:req.body.title||'',
-                    contents:req.body.content, 
+                    content:req.body.content,
+                    images:[], 
                     created_at:new Date(),
                     post_status:1
                 },function(err,postcreate){
@@ -52,6 +54,7 @@ exports.createPost = (req, res) => {
         }
         else if(req.files)
         {
+              console.log("Test2");
               const s3Client = s3.s3Client;
               const params = s3.uploadParams;
               var file=req.files; 
@@ -84,7 +87,8 @@ exports.createPost = (req, res) => {
                 console.log("function executing");
                 const postuse = new Post1({
                 title:req.body.title,
-                contents:ResponseData,
+                content:req.body.content||'',
+                images:ResponseData,
                 user_id:req.body.id,
                 created_at:new Date(),
                 post_status:1
@@ -102,6 +106,7 @@ exports.createPost = (req, res) => {
         }
         else
         {
+          console.log("Test3");
             res.status(200).send({result:"failed",message:"Please insert File or Content"});
         }
     }

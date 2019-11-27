@@ -4,7 +4,7 @@ const Note=require('../models/note.model.js');
 exports.postList = (req, res) => {
     var arraylist=[];
     var input=req.params.postId;
-    Note.findById(req.params.postId)
+    Note.find({"_id":input})
     .then(note=>{
         if(!note){
             return res.status(200).send({result:'success',
@@ -37,7 +37,8 @@ exports.postList = (req, res) => {
                                console.log("result.length ::",result.length);
                                console.log(result[0]);
                                 json["title"]=result[0].title;
-                                json["contents"]=result[0].contents;
+                                json["content"]=result[0].content;
+                                json["images"]=result[0].images;
                                 json["likes"]=result[0].like;
                                 json["comments"]=result[0].comment;
                                 json["created_at"]=result[0].created_at;

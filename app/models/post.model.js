@@ -4,7 +4,8 @@ const NoteSchema = mongoose.Schema({
         //user_id
         user_id: String,
         title: String,
-        contents: Array,
+        content: String,
+        images:Array,
         post_status:Number,
         like:[
         {
