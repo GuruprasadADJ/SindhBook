@@ -45,8 +45,8 @@ module.exports = (app) => {
     const Friends=require('../controllers/friends.js');
     const Friends1=require('../controllers/friend_list.js');
     const Friends2=require('../controllers/Friends/friend_requests_tome.js');
-    app.post('/sendFriendRequest',Friends.friendrequest); //send request
-    app.post('/acceptFriendRequest',Friends.answerrequest);  //accept request
-    app.get('/friendsList/:noteId',Friends1.friends_list);  //get my friends list
-    app.get('/getMyFriendRequestsList/:noteId',Friends2.myrequests);  //get friend request to me
+    app.post('/sendFriendRequest',Friends.sendFriendRequest); //send request [AddFriend]
+    app.post('/removeFriendFromList',Friends.removeFriendFromList); //remove from list [remove]
+    app.post('/acceptFriendRequest',Friends.acceptFriendRequest); //accept friend request [accept]
+    app.post('/rejectFriendRequest',Friends.rejectFriendRequest); //reject friend request [reject]
 }
