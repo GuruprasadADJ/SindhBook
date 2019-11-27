@@ -12,8 +12,9 @@ exports.postList = (req, res) => {
             });
         }
         else
-        {
-            var name=note.first_name+" "+note.last_name;
+        {   
+            var name=note[0].first_name+" "+note[0].last_name;
+            console.log("my name is : ",name);
             Post.find({         
                 "user_id": input
             }).then(post=>{
