@@ -99,14 +99,15 @@ exports.getProfileDetails = (req, res) => {
     }
     function show_result(p_status,f_status,name,profile_picture)
     {
+        var data={};
         console.log(p_status+" "+f_status);
         if(p_status==1)
         {
-            show_data=0;
+             show_data=0;
         }
         else if(p_status==3)
         {
-            show_data=1;
+             show_data=1;
         }
         else if(p_status==2)
         {
@@ -121,35 +122,41 @@ exports.getProfileDetails = (req, res) => {
         }
         else
         {
-                show_data=1;
+              show_data=1;
         }
         if(show_data==0)
         {
+            data["user_name"]=name;
+            data["profile_picture"]=profile_picture;
+            data["Post_Details"]=arraylist;
             return res.status(200).send({result:'success',
-                        message: "User Profile Details",user_name:name,profile_picture:profile_picture,Post_Details:"No Data Found"});
+            message: "User Profile Details",data});
         }
         else
         {
-            Post.find({         
-                "user_id":{"$in" :  friend_id }
+            Post.find({ 
+                "user_id":{"$in" : friend_id }
             }).then(post=>{
                 for(var i=0;i<post.length;i++){
-                    var json={};
-                    json["title"]=post[i].title;
-                    json["content"]=post[i].content;
-                    json["images"]=post[i].images;
-                    json["likes"]=post[i].like;
-                    json["comments"]=post[i].comment;
-                    json["created_at"]=post[i].created_at;
-                    json["name"]=name;
-                    arraylist.push(json); 
-                };
+                var json={};
+                json["title"]=post[i].title;
+                json["content"]=post[i].content;
+                json["images"]=post[i].images;
+                json["likes"]=post[i].like;
+                json["comments"]=post[i].comment;
+                json["created_at"]=post[i].created_at;
+                json["name"]=name;
+                arraylist.push(json); 
+            };
+                data["user_name"]=name;
+                data["profile_picture"]=profile_picture;
+                data["Post_Details"]=arraylist;
                 return res.status(200).send({result:'success',
-                        message: "User Profile Details",user_name:name,profile_picture:profile_picture,Post_Details:arraylist});
+                message: "User Profile Details",data});
             }).catch(err => {
-                return res.status(200).send({result:'failed',
-                        message: "There is an exception ",errorMessage:err.message});
+                 return res.status(200).send({result:'failed',
+                 message: "There is an exception ",errorMessage:err.message});
             })
-        }     
+        } 
     }    
 }
