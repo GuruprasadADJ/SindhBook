@@ -92,7 +92,7 @@ if(fromid && toid)
                                 res.status(200).send({result:"success",message:'Blocked by the other user',data:{status:status,blocked_by:friend2[0].from_id}});
                             }
                             else{
-                                const frndcreate=Friend.updateOne( //updates records in created record
+                                const frndcreate=Friend.update( //updates records in created record
                                     {_id: friend2[0]._id},           
                                     {
                                     status : inputstatus,
@@ -264,7 +264,7 @@ if(fromid && toid)
                                 res.status(200).send({result:"success",message:'Blocked by the other user',data:{status:status,blocked_by:friend2[0].from_id}});
                             }
                             else{
-                                const frndcreate=Friend.updateOne( //updates records in created record
+                                const frndcreate=Friend.update( //updates records in created record
                                     {_id: friend2[0]._id},           
                                     {
                                     status : inputstatus,

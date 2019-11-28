@@ -18,6 +18,7 @@ exports.postList = (req, res) => {
             Post.find({         
                 "user_id": input
             }).then(post=>{
+                console.log("post  : ",post)
                 if(!post.length==0)
                 {
                     var ids=[];
@@ -30,19 +31,18 @@ exports.postList = (req, res) => {
                     
                     for(var i=0;i<ids.length;i++)
                     {
-                        Post.find({
-                            "_id": ids[i]
-                        })
+                        Post.findById(ids[i])
                         .then(result=>{
+                            console.log("result   :",result)
                             var json={};
-                               console.log("result.length ::",result.length);
-                               console.log(result[0]);
-                                json["title"]=result[0].title;
-                                json["content"]=result[0].content;
-                                json["images"]=result[0].images;
-                                json["likes"]=result[0].like;
-                                json["comments"]=result[0].comment;
-                                json["created_at"]=result[0].created_at;
+                            //    console.log("result.length ::",result.length);
+                            //    console.log(result[0]);
+                                json["title"]=result.title; 
+                                json["content"]=result.content;
+                                json["images"]=result.images;
+                                json["likes"]=result.like;
+                                json["comments"]=result.comment;
+                                json["created_at"]=result.created_at;
                                 json["name"]=name;
                                 arraylist.push(json);
                                 if(arraylist.length==ids.length)
