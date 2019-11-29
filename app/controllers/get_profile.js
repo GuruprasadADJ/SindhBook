@@ -22,7 +22,7 @@ exports.getProfileDetails = (req, res) => {
             "$in": [user_id, friend_id]
         }
     }).then(note=>{
-        if(note.length!=2){
+        if(note.length==0){
             return res.status(200).send({result:'success',
                 message: "Data not found in database with this user id or friend id "
             });
