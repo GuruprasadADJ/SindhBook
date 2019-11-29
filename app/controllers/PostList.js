@@ -38,16 +38,25 @@ exports.postList = (req, res) => {
                 }
                 for(var i=0;i<ids.length;i++)
                 {
+                    var ids1=ids[i];
                     Privacy.find({
                         "user_id": ids[i]
                     }).then(result=>{
-                        if(!result.length==0){
+                        if(result.length!=0)
+                        {
                             status1=result[0].post;
                             console.log("data="+status1);
-                            if(status1==2 || status1==3)
+                            if(status1==1)
                             {
+                                
+                            }
+                            else{
                                 final_ids.push(result[0].user_id);
                             }
+                        }
+                        else{
+                            console.log(ids1);
+                            final_ids.push(ids1);
                         }
                         }).catch(err => {
                             res.status(500).send({
@@ -66,21 +75,31 @@ exports.postList = (req, res) => {
                         }
                         for(var i=0;i<ids.length;i++)
                         {
+                            var ids1=ids[i];
                             Privacy.find({
                                 "user_id": ids[i]
                             }).then(result=>{
-                                if(!result.length==0){
+                                if(result.length!=0)
+                                {
                                     status1=result[0].post;
-                                    if(status1==2 || status1==3)
+                                    console.log("data="+status1);
+                                    if(status1==1)
                                     {
+                                        
+                                    }
+                                    else{
                                         final_ids.push(result[0].user_id);
                                     }
                                 }
-                                }).catch(err => {
-                                    res.status(500).send({
-                                    result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                });
-                                }); 
+                                else{
+                                    console.log(ids1);
+                                    final_ids.push(ids1);
+                                }
+                            }).catch(err => {
+                                res.status(500).send({
+                                result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
+                            });
+                            }); 
                         }
                         post_data(final_ids,name);
                     }
