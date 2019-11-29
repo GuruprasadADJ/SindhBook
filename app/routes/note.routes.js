@@ -54,5 +54,5 @@ module.exports = (app) => {
 
     // GET PROFILE DETAILS
     const profile=require('../controllers/get_profile.js');
-    app.post('/getProfileDetails',profile.getProfileDetails); //onclick profile gets profile details
+    app.get('/getProfileDetails/:user_id/:friend_id',profile.getProfileDetails); //onclick profile gets profile details
 }
