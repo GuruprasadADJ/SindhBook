@@ -5,8 +5,6 @@ var stream = require('stream');
 const s3 = require('../config/s3.config.js');
 var datetime = require('node-datetime');
 var dt = datetime.create();
-var formatted = dt.format('yyyy-MM-dd');
-
 
 exports.createPost = (req, res) => {
     var _id=req.body.id;
@@ -31,6 +29,7 @@ exports.createPost = (req, res) => {
             {
                 const postcreate=new Post1({
                     user_id:_id,
+                    user_name:note[0].first_name+" "+note[0].last_name,
                     title:req.body.title||'',
                     content:req.body.content,
                     images:[], 
@@ -54,6 +53,15 @@ exports.createPost = (req, res) => {
         }
         else if(req.files)
         {
+          Note.find({ //checks weather the user_id exist in register table
+            "_id": _id
+            })
+            .then(note => {
+            if(!note) {
+            return res.status(200).send({result:"failed",message: "Data not found in database with this id "+ _id}); 
+            }
+            else
+            {              
               console.log("Test2");
               const s3Client = s3.s3Client;
               const params = s3.uploadParams;
@@ -83,13 +91,14 @@ exports.createPost = (req, res) => {
               });
             });
             function amazon()
-            {      
+            {
                 console.log("function executing");
                 const postuse = new Post1({
+                user_id:req.body.id,
+                user_name:note[0].first_name+" "+note[0].last_name,
                 title:req.body.title,
                 content:req.body.content||'',
                 images:ResponseData,
-                user_id:req.body.id,
                 created_at:new Date(),
                 post_status:1
               },function(err,postuse){
@@ -103,6 +112,12 @@ exports.createPost = (req, res) => {
               });
               ResponseData=[];
           }
+            }
+          }).catch(err => {
+              res.status(500).send({
+              result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
+          });
+          });
         }
         else
         {
@@ -138,13 +153,13 @@ exports.updatePost = (req, res) => {
               if(!cont.length==0)
               { 
                   var title1=cont[0].title;
-                  var content1=cont[0].contents;
+                  var content1=cont[0].contents;                  var images=cont[0].images;
                   const postupdate=Post1.updateMany( //updates records in created record
                   {user_id:user_id,
                   _id:_id}, 
                   {
                       title:req.body.title||title1,
-                      contents:req.body.content||content1,
+                      content:req.body.content||content1,
                       modified_at: new Date()
                   },function(err,postupdate) {
                         if (err){ return res.status(500).json({result:"failed",message:"There was a problem inserting data into database",errorMessage: err.message});
@@ -177,8 +192,7 @@ exports.updatePost = (req, res) => {
             { 
               var title1=cont[0].title;
               var content1=[];
-              content1=cont[0].contents;
-
+              content1=cont[0].images;
               const s3Client = s3.s3Client;
               const params = s3.uploadParams;
               var file=req.files; 
@@ -218,7 +232,7 @@ exports.updatePost = (req, res) => {
                   _id:_id}, 
                   {
                       title:req.body.title||title1,
-                      contents: content2||content1,
+                      images: content2||content1,
                       modified_at: new Date()
                   },function(err,postupdate) {
                         if (err){ return res.status(500).json({result:"failed",message:"There was a problem inserting data into database",errorMessage: err.message});

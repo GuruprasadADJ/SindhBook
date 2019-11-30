@@ -2,9 +2,9 @@ const Post=require('../models/post.model.js');
 const Note=require('../models/note.model.js');
 const Friend=require('../models/friends.model.js');
 const Privacy=require('../models/privacy.model.js');
-
+var arraylist=[];
 exports.postList = (req, res) => {
-    var arraylist=[];
+    arraylist=[];
     var input=req.params.postId;
     Note.find({"_id":input})
     .then(note=>{
@@ -15,18 +15,18 @@ exports.postList = (req, res) => {
         }
         else
         {
-            var name=note[0].first_name+" "+note[0].last_name;
-            find_friend_post_id(input,name);
+            find_friend_post_id(input);
         }
     }).catch(err => {
         return res.status(200).send({result:'failed',message: "There is an exception ",errorMessage:err.message});
     })
-    function find_friend_post_id(user_id,name)
+    function find_friend_post_id(user_id)
     {
         var ids=[];
         var final_ids=[];
         final_ids.push(user_id);
         var status1;
+        console.log("before adding final ids : ",final_ids);
         Friend.find({
             "from_id": user_id
         }).then(friend1=>{
@@ -38,7 +38,8 @@ exports.postList = (req, res) => {
                 }
                 for(var i=0;i<ids.length;i++)
                 {
-                    var ids1=ids[i];
+                    var ids1;
+                    ids1=ids[i];
                     Privacy.find({
                         "user_id": ids[i]
                     }).then(result=>{
@@ -51,12 +52,16 @@ exports.postList = (req, res) => {
                                 
                             }
                             else{
-                                final_ids.push(result[0].user_id);
+                                if(!final_ids.includes(result[0].user_id)){
+                                    final_ids.push(result[0].user_id);
+                                }
                             }
                         }
                         else{
-                            console.log(ids1);
-                            final_ids.push(ids1);
+                            if(!final_ids.includes(ids1)){
+                                console.log("non privacy",ids1);
+                                final_ids.push(ids1);
+                            }
                         }
                         }).catch(err => {
                             res.status(500).send({
@@ -88,12 +93,16 @@ exports.postList = (req, res) => {
                                         
                                     }
                                     else{
-                                        final_ids.push(result[0].user_id);
+                                        if(!final_ids.includes(result[0].user_id)){
+                                            final_ids.push(result[0].user_id);
+                                        }
                                     }
                                 }
                                 else{
-                                    console.log(ids1);
-                                    final_ids.push(ids1);
+                                    if(!final_ids.includes(ids1)){
+                                        console.log("non privacy",ids1);
+                                        final_ids.push(ids1);
+                                    }
                                 }
                             }).catch(err => {
                                 res.status(500).send({
@@ -101,10 +110,12 @@ exports.postList = (req, res) => {
                             });
                             }); 
                         }
-                        post_data(final_ids,name);
+                        console.log("after adding final ids : ",final_ids)
+                        post_data(final_ids);
                     }
                     else{
-                        post_data(final_ids,name);
+                        console.log("after adding final ids1 : ",final_ids)
+                        post_data(final_ids);
                     }
                 }).catch(err => {
                     res.status(500).send({
@@ -120,9 +131,10 @@ exports.postList = (req, res) => {
     }
 
     
-    function post_data(final_ids,name)
+    function post_data(final_ids)
     {
-        var len=final_ids.length
+        var len;
+        len=final_ids.length;
         if(len.length!=0)
         {
             Post.find({
@@ -133,7 +145,6 @@ exports.postList = (req, res) => {
             .then(result=>{
                 if(result.length!=0)
                 {
-                    var rlength=result.length;
                     for(var j=0;j<result.length;j++)
                     {
                         var json={};
@@ -143,11 +154,12 @@ exports.postList = (req, res) => {
                         json["likes"]=result[j].like;
                         json["comments"]=result[j].comment;
                         json["created_at"]=result[j].created_at;
-                        json["name"]=name;
+                        json["name"]=result[j].user_name;
                         arraylist.push(json); 
                         if(arraylist.length==result.length)
                         {
                             res.send({result:"success",message:"Posts found successfully",data:arraylist});
+                            arraylist=[];
                         }
                     }   
                 }

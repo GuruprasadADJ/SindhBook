@@ -32,9 +32,9 @@ exports.createprivacy = (req, res) => {         // PRIVACY API TO EDIT THE PRIVA
                      {
                         const privacy2 = new privacy({
                         user_id: inputs.id,
-                        post: inputs.post  ||1,
-                        about:inputs.about||1,
-                        profile:inputs.profile||1
+                        post: inputs.post  ||3,
+                        about:inputs.about||3,
+                        profile:inputs.profile||3
                         },function(err,note) {
                         if (err) return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                     })
@@ -113,9 +113,9 @@ exports.showPrivacyDetails = (req, res) => {
             }).then(result=>{
                 if(result.length==0){
                     var json={};
-                    json["post"]=1;
-                    json["about"]=1;
-                    json["profile"]=1;
+                    json["post"]=3;
+                    json["about"]=3;
+                    json["profile"]=3;
                
                     res.status(200).send({result:"success",message:"Showing privacy details",data:json});
                 }else{
