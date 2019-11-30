@@ -55,4 +55,12 @@ module.exports = (app) => {
     // GET PROFILE DETAILS
     const profile=require('../controllers/get_profile.js');
     app.get('/getProfileDetails/:user_id/:friend_id',profile.getProfileDetails); //onclick profile gets profile details
+
+     //API'S FOR RELATIVES
+    // const Relatives1=require('../controllers/Relatives/sendRelativeRequest.js');
+    // const Relatives2=require('../controllers/Relatives/acceptRelativeRequest.js');
+     const Relatives3=require('../controllers/Relatives/getAllRelationsList.js');
+    //app.post('/sendRelativeRequest',Relatives1.sendRelativeRequest); //send relative request [ADD RELATIVE]
+    // app.post('/acceptRelativeRequest',Relatives2.acceptRelativeRequest); //accept relative request [ACCEPT]
+     app.get('/getAllRelationsList',Relatives3.getAllRelationsList); // shows all relations list 
 }
