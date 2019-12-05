@@ -48,10 +48,9 @@ exports.postList = (req, res) => {
                 }else{
                     two_fromids();
                 }
-            })
-            // .catch(err => {
-            //     res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
-            // });            
+            }).catch(err => {
+                res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
+            });            
         }  
         function two_fromids(){
             console.log("two_fromids()")
@@ -70,10 +69,9 @@ exports.postList = (req, res) => {
                 }else{
                     post_data(final_ids);
                 }
-            })
-            // .catch(err => {
-            //     res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message });
-            // });            
+            }).catch(err => {
+                res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message });
+            });            
         }      
     }
 
@@ -114,10 +112,10 @@ exports.postList = (req, res) => {
                     res.status(200).send({result:'success',message: "No posts found",data:[]});
                 }
             })
-            // .catch(err => {
-            //     res.status(500).send({
-            //         result:"failed",message:"There is an exception",errorMessage: err.message});
-            // })
+            .catch(err => {
+                res.status(500).send({
+                    result:"failed",message:"There is an exception",errorMessage: err.message});
+            })
         }
         else{
             res.status(200).send({result:'success',message: "No posts found",data:[]});
