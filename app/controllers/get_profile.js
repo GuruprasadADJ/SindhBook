@@ -1,6 +1,6 @@
 const Post=require('../models/post.model.js');
 const Note=require('../models/note.model.js');
-const Friend=require('../models/friends.model.js');
+const Friend1=require('../models/friends.model.js');
 const Privacy=require('../models/privacy.model.js');
 const About=require('../models/aboutus.model.js');
 
@@ -54,37 +54,35 @@ exports.getProfileDetails = (req, res) => {
     })
 //this function find status whether the user friend or not
     function find_friend_status(user_id,friend_id,callback)
-    {
+    { //add status in f_status whther accepted or blocked
         console.log("Test2");
         var status=0;
-        Friend.find({
-            "from_id": user_id,
-            "to_id": friend_id
+        Friend1.find({
+            "user_id": user_id,
         }).then(friend1=>{
-            if(!friend1.length==0){
-                status=friend1[0].status;
-                f_status=friend1[0].status;
-                return callback(status);
+            if(!friend1.length==0)
+            {
+               var acceptedlist=[];
+               var blockedlist=[];
+               acceptedlist=friend1[0].accepted_list;
+               blockedlist=friend1[0].blocked_list;
+               for(var i=0;i<acceptedlist.length;i++){
+                   if(acceptedlist[i].id.includes(friend_id))
+                   {
+                     f_status=2;
+                   }
+               }
+               for(var i=0;i<blockedlist.length;i++){
+                    if(blockedlist[i].id.includes(friend_id))
+                    {
+                     f_status=1;
+                    }
+               }
+               return callback(f_status);
             }
             else{
-                Friend.find({
-                    "from_id": friend_id,
-                    "to_id": user_id
-                }).then(friend2=>{
-                    if(!friend2.length==0){
-                        status=friend2[0].status;
-                        f_status=friend1[0].status;
-                        return callback(status);
-                    }
-                    else
-                    {
-                        return callback(status);
-                    }
-                }).catch(err => {
-                    res.status(500).send({
-                      result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                    });
-                });
+                f_status=3;
+                return callback(f_status);
             }
         }).catch(err => {
             res.status(500).send({
@@ -92,7 +90,7 @@ exports.getProfileDetails = (req, res) => {
         });
         });
     }
-//find privacy of post     
+//find privacy of post
     function find_privacy_status(friend_id,callback)
     {
         console.log("Test3.p");
@@ -140,7 +138,7 @@ exports.getProfileDetails = (req, res) => {
 
 //show result function for post details
     function show_result(p_status,f_status,name,profile_picture)
-    {
+     {
         var data={};
         console.log(p_status+" "+f_status);
         if(p_status==1)
@@ -153,7 +151,7 @@ exports.getProfileDetails = (req, res) => {
         }
         else if(p_status==2)
         {
-            if(f_status==2)
+             if(f_status==3)
             {
                 show_data=1;
             }
@@ -217,7 +215,7 @@ exports.getProfileDetails = (req, res) => {
         }
         else if(p_about_status==2)
         {
-            if(f_status==2)
+            if(f_status==3)
             {
                 show_data_about=1;
             }

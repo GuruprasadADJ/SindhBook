@@ -35,15 +35,15 @@ exports.createabout = (req, res) => {         // Aboutus API TO EDIT THE Aboutus
                         var places_lived1=[]
                             if(inputs.work)
                              {
-                                 work1.push(inputs.work);
+                                 work1.push({"name":inputs.work});
                              }
                              if(inputs.education)
                              {
-                                 education1.push(inputs.education);
+                                 education1.push({"name":inputs.education});
                              }
                              if(inputs.places_lived)
                              {
-                                 places_lived1.push(inputs.places_lived);
+                                 places_lived1.push({"name":inputs.places_lived});
                              }
                         const about2 = new Aboutus({
                          user_id: inputs.id,
@@ -82,15 +82,15 @@ exports.createabout = (req, res) => {         // Aboutus API TO EDIT THE Aboutus
                     {
                              if(inputs.work)
                              {
-                                 work1.push(inputs.work);
+                                 work1.push({"name":inputs.work});
                              }
                              if(inputs.education)
                              {
-                                 education1.push(inputs.education);
+                                 education1.push({"name":inputs.education});
                              }
                              if(inputs.places_lived)
                              {
-                                 places_lived1.push(inputs.places_lived);
+                                 places_lived1.push({"name":inputs.places_lived});
                              }
                       const about3=Aboutus.updateMany( //updates records in created record
                          {user_id:inputs.id}, 
