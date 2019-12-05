@@ -5,10 +5,6 @@ module.exports = (app) => {
     app.post('/register', notes.create);
     app.put('/update',notes.update);
 
-    //all users list
-    const allusers=require('../controllers/all_users_list.js')
-    app.get('/allUsersList/:Id', allusers.registersfindAll);
-
     //login user
     const login = require('../controllers/login_api.js');
     app.post('/login', login.Authenticate);
@@ -52,17 +48,48 @@ module.exports = (app) => {
     app.get('/friendsList/:noteId',Friends1.friends_list); //get my friends list
     app.get('/getMyFriendRequestsList/:noteId',Friends2.myrequests); //get friend request to me
 
+    //all users list
+    const allusers=require('../controllers/all_users_list.js')
+    app.get('/allUsersList/:Id', allusers.registersfindAll);
 
-    
     // GET PROFILE DETAILS
     const profile=require('../controllers/get_profile.js');
     app.get('/getProfileDetails/:user_id/:friend_id',profile.getProfileDetails); //onclick profile gets profile details
 
-     //API'S FOR RELATIVES
-    // const Relatives1=require('../controllers/Relatives/sendRelativeRequest.js');
-    // const Relatives2=require('../controllers/Relatives/acceptRelativeRequest.js');
-     const Relatives3=require('../controllers/Relatives/getAllRelationsList.js');
-    //app.post('/sendRelativeRequest',Relatives1.sendRelativeRequest); //send relative request [ADD RELATIVE]
-    // app.post('/acceptRelativeRequest',Relatives2.acceptRelativeRequest); //accept relative request [ACCEPT]
-     app.get('/getAllRelationsList',Relatives3.getAllRelationsList); // shows all relations list 
+    //new frnds api 
+    const new_friends=require('../controllers/Friends/SendFriendRequest.js');//******* */
+    const new_rejectfrnds=require('../controllers/Friends/RejectFriendRequest.js');//**** */
+    const accept_friends=require('../controllers/Friends/AcceptFriendRequest.js');//****** */
+    const GetFriendList=require('../controllers/Friends/GetFriendsList.js');//***** */
+    const UnFriend=require('../controllers/Friends/UnFriend.js');//***** */
+    const request_list=require('../controllers/Friends/RequestedFriendList.js');
+    const all_users=require('../controllers/Friends/AllUsersList.js');
+    const block_user=require('../controllers/Friends/BlockFriend.js');
+    app.post('/SendFriendRequest1',new_friends.SendFriendRequest1); //**** */
+    app.post('/RejectFriendRequest1',new_rejectfrnds.RejectFriendReuest1)//********** */
+    app.post('/AcceptFriendRequest1',accept_friends.AcceptFriendRequest1); //**** */
+    app.get('/GetFriendsList1/:noteId',GetFriendList.GetFriendsList1);//****** */
+    app.post('/UnFriend1',UnFriend.UnFriend1);//**** */
+    app.get('/RequestedList1/:userId',request_list.RequestedFriendList); //**** */
+    app.get('/AllUsersList1/:userId',all_users.GetAllUsersList); //***** */
+    app.post('/BlockFriend1',block_user.BlockFriend1);
+
+    //API'S FOR RELATIVES UnRelative
+    const Relativesrelations=require('../controllers/Relatives/getAllRelationsList.js');/**** */
+    const SendRelativeRequest=require('../controllers/Relatives/SendRelativeRequest.js');/***** */
+    const AcceptRelativeRequest=require('../controllers/Relatives/AcceptRelativeRequest.js');/*** */
+    const RejectRelativeRequest=require('../controllers/Relatives/RejectRelativeRequest.js');/***** */
+    const RequestedRelativeList=require('../controllers/Relatives/RequestedRelativeList.js');/***** */
+    const GetAllRelativesList=require('../controllers/Relatives/AllRelativesList.js');/*** */
+    const UnRelative=require('../controllers/Relatives/UnRelative.js');/***** */
+    const GetRelativesList=require('../controllers/Relatives/GetRelativesList.js');/***** */
+    app.get('/getAllRelationsList',Relativesrelations.getAllRelationsList); /****RELATIONS LIST*** */
+    app.post('/SendRelativeRequest',SendRelativeRequest.SendRelativeRequest);/*****REQUEST****** */
+    app.post('/AcceptRelativeRequest',AcceptRelativeRequest.AcceptRelativeRequest);/****ACCEPT ***** */
+    app.post('/RejectRelativeRequest',RejectRelativeRequest.RejectRelativeRequest);/****REJECT*** */
+    app.get('/RequestedRelativeList/:userId',RequestedRelativeList.RequestedRelativeList);/*****REQUESTED LIST**** */
+    app.get('/GetAllRelativesList/:userId',GetAllRelativesList.GetAllRelativesList);/***REQUESTED LIST****** */
+    app.post('/UnRelative',UnRelative.UnRelative); /**** UNRELATIVE *** */
+    app.get('/GetRelativesList/:noteId',GetRelativesList.GetRelativesList);/****MY RELATIVES LIST****** */
+
 }

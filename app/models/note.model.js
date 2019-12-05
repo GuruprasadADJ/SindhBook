@@ -5,7 +5,7 @@ const NoteSchema = mongoose.Schema({
     mobile_no: String,
     otp: String,
     otp_status: Number,
-    device_token: String,
+    device_token: Array,
     profile_update_status: Number,
     paid_user_status: Number,
     user_type: Number,
@@ -25,6 +25,7 @@ const NoteSchema = mongoose.Schema({
     profile_picture: String,
     fb_gmail_id:String,
     user_block_status:Number,
-    profile_type: String
+    profile_type: String,
+    deviceId:Array
 });
 module.exports = mongoose.model('register', NoteSchema);

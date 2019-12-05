@@ -2,6 +2,7 @@ const Friends=require('../../models/friends.model.js');
 const Note = require('../../models/note.model.js');
 
 exports.myrequests = (req, res) => {
+console.log("start.....myrequests")
     var _id=req.params.noteId;
     var list=[];
     var arraylist=[];
@@ -18,9 +19,7 @@ exports.myrequests = (req, res) => {
             showdata(request_ids);
             //res.status(200).send({reslut:'sucess',message:'data found successfully',data:request_ids});
         }).catch(err => {
-            res.status(500).send({
-                result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-            });
+            res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
         });
    
     function showdata(request_ids)
@@ -44,9 +43,7 @@ exports.myrequests = (req, res) => {
                 res.send({result:"success",message:"No friend requests found",data:arraylist});
             }
         }).catch(err => {
-            res.status(500).send({
-                result:"failed",message:"There is an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-            });
+            res.status(500).send({result:"failed",message:"There is an exception",errorMessage: err.message });
         });
     }
 }
