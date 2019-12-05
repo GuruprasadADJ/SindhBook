@@ -65,14 +65,14 @@ module.exports = (app) => {
     const request_list=require('../controllers/Friends/RequestedFriendList.js');
     const all_users=require('../controllers/Friends/AllUsersList.js');
     const block_user=require('../controllers/Friends/BlockFriend.js');
-    app.post('/SendFriendRequest1',new_friends.SendFriendRequest1); //**** */
-    app.post('/RejectFriendRequest1',new_rejectfrnds.RejectFriendReuest1)//********** */
-    app.post('/AcceptFriendRequest1',accept_friends.AcceptFriendRequest1); //**** */
-    app.get('/GetFriendsList1/:noteId',GetFriendList.GetFriendsList1);//****** */
-    app.post('/UnFriend1',UnFriend.UnFriend1);//**** */
-    app.get('/RequestedList1/:userId',request_list.RequestedFriendList); //**** */
-    app.get('/AllUsersList1/:userId',all_users.GetAllUsersList); //***** */
-    app.post('/BlockFriend1',block_user.BlockFriend1);
+    app.post('/sendFriendRequest1',new_friends.SendFriendRequest1); //**** */
+    app.post('/rejectFriendRequest1',new_rejectfrnds.RejectFriendReuest1)//********** */
+    app.post('/acceptFriendRequest1',accept_friends.AcceptFriendRequest1); //**** */
+    app.get('/getFriendsList1/:noteId',GetFriendList.GetFriendsList1);//****** */
+    app.post('/unFriend1',UnFriend.UnFriend1);//**** */
+    app.get('/requestedList1/:userId',request_list.RequestedFriendList); //**** */
+    app.get('/allUsersList1/:userId',all_users.GetAllUsersList); //***** */
+    app.post('/blockFriend1',block_user.BlockFriend1);
 
     //API'S FOR RELATIVES UnRelative
     const Relativesrelations=require('../controllers/Relatives/getAllRelationsList.js');/**** */
@@ -84,12 +84,11 @@ module.exports = (app) => {
     const UnRelative=require('../controllers/Relatives/UnRelative.js');/***** */
     const GetRelativesList=require('../controllers/Relatives/GetRelativesList.js');/***** */
     app.get('/getAllRelationsList',Relativesrelations.getAllRelationsList); /****RELATIONS LIST*** */
-    app.post('/SendRelativeRequest',SendRelativeRequest.SendRelativeRequest);/*****REQUEST****** */
-    app.post('/AcceptRelativeRequest',AcceptRelativeRequest.AcceptRelativeRequest);/****ACCEPT ***** */
-    app.post('/RejectRelativeRequest',RejectRelativeRequest.RejectRelativeRequest);/****REJECT*** */
-    app.get('/RequestedRelativeList/:userId',RequestedRelativeList.RequestedRelativeList);/*****REQUESTED LIST**** */
-    app.get('/GetAllRelativesList/:userId',GetAllRelativesList.GetAllRelativesList);/***REQUESTED LIST****** */
-    app.post('/UnRelative',UnRelative.UnRelative); /**** UNRELATIVE *** */
-    app.get('/GetRelativesList/:noteId',GetRelativesList.GetRelativesList);/****MY RELATIVES LIST****** */
-
+    app.post('/sendRelativeRequest',SendRelativeRequest.SendRelativeRequest);/*****REQUEST****** */
+    app.post('/acceptRelativeRequest',AcceptRelativeRequest.AcceptRelativeRequest);/****ACCEPT ***** */
+    app.post('/rejectRelativeRequest',RejectRelativeRequest.RejectRelativeRequest);/****REJECT*** */
+    app.get('/requestedRelativeList/:userId',RequestedRelativeList.RequestedRelativeList);/*****REQUESTED LIST**** */
+    app.get('/getAllRelativesList/:userId',GetAllRelativesList.GetAllRelativesList);/***REQUESTED LIST****** */
+    app.post('/unRelative',UnRelative.UnRelative); /**** UNRELATIVE *** */
+    app.get('/getRelativesList/:noteId',GetRelativesList.GetRelativesList);/****MY RELATIVES LIST****** */
 }
