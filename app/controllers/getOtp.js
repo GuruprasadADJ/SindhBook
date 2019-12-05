@@ -14,9 +14,10 @@ exports.getOtp= (req, res) =>{
        });
    }
    else
-   {   
+   {  
       Note.find({
         "mobile_no": mobile_no,
+        "otp_status":1
       }).then(result => {
         console.log("result",result);
          if(result.length==0)
