@@ -1,5 +1,5 @@
-const Aboutus = require('../models/aboutus.model.js');
-const Note = require('../models/note.model.js');
+const Aboutus = require('../../models/aboutus.model.js');
+const Note = require('../../models/note.model.js');
 
 var flag=0;
 exports.createabout = (req, res) => {    
@@ -22,7 +22,7 @@ else
             return res.status(200).send({result:"failed",message: "Data not found in register table with this id "+inputs.id});            
         }else{
         console.log("data found");
-        Aboutus.find({          //checks wether the user_id exist in privacy table
+        Aboutus.find({          
             "user_id": inputs.id
         }).then(about1 => {
             if(about1.length==0) 
@@ -121,7 +121,8 @@ else
 }       
 }
 
-//-----------------------------      API TO SHOW aboutus DETAILS       -----------------------------
+//************************************ */      API TO SHOW aboutus DETAILS       /************************** */
+//********************************************************************************************************** */
 exports.showaboutdetails = (req, res) => {   
     Note.findById(req.params.about1Id)
     .then(note=>{

@@ -127,9 +127,16 @@ exports.GetAllRelativesList = (req, res) => {
                 for(var i=0;i<note1.length;i++)
                 {                     
                     var json={};
+                    var gender='';
+                    if(note[i].gender==1){
+                        gender="male";
+                    }else if(note[i].gender==2){
+                        gender="female";
+                    }
                     json["id"]=note1[i].id;
                     json["user_name"]=note1[i].first_name+" "+note1[i].last_name;
                     json["profile_picture"]=note1[i].profile_picture;
+                    json["gender"]=gender;
                     data.push(json);
                 }
                 if(note1.length==data.length)

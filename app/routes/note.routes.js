@@ -20,9 +20,13 @@ module.exports = (app) => {
     app.post('/verifymobileotp',verifymobileotp.verifyotp);
 
      //about api creating
-     const about = require('../controllers/about.js');
+     const about = require('../controllers/About/about.js');
+     const deleteAbout=require('../controllers/About/deleteAbout.js');
+     const updateabout=require('../controllers/About/UpdateAbout.js');
      app.post('/createAboutDetails',about.createabout);
      app.get('/showAboutDetails/:about1Id',about.showaboutdetails);
+     app.post('/deleteAboutDetails',deleteAbout.deleteAboutDetails);
+     app.post('/updateAboutDetails',updateabout.updateAboutDetails)
  
      //privacy  api
      const privacy = require('../controllers/privacy_setting.js');
