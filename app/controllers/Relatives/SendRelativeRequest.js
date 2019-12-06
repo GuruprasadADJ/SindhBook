@@ -31,7 +31,8 @@ if(fromid && toid)
                 json["profile_picture"]=note[0].profile_picture;
                 json["date"]=new Date();
                 json["deviceId"]=deviceId;
-                json["relation"]=from_relation;
+                json["from_relation"]=to_relation;
+                json["to_relation"]=from_relation;
 
                 json1={};
                 json1["id"]=note[1].id;
@@ -39,7 +40,8 @@ if(fromid && toid)
                 json1["profile_picture"]=note[1].profile_picture;
                 json1["date"]=new Date();
                 json1["deviceId"]=deviceId;
-                json1["relation"]=to_relation;
+                json1["from_relation"]=to_relation;
+                json1["to_relation"]=from_relation;
             }
             else
             {
@@ -50,7 +52,8 @@ if(fromid && toid)
                 json["profile_picture"]=note[1].profile_picture;
                 json["date"]=new Date();
                 json["deviceId"]=deviceId;
-                json["relation"]=from_relation;
+                json["from_relation"]=to_relation;
+                json["to_relation"]=from_relation;
 
                 json1={};
                 json1["id"]=note[0].id;
@@ -58,7 +61,8 @@ if(fromid && toid)
                 json1["profile_picture"]=note[0].profile_picture;
                 json1["date"]=new Date();
                 json1["deviceId"]=deviceId;
-                json1["relation"]=to_relation;
+                json1["from_relation"]=from_relation;
+                json1["to_relation"]=to_relation;
             }
 
             if(note[0].id==fromid)
@@ -187,7 +191,7 @@ if(fromid && toid)
                                                    }
                                                    else
                                                    {
-                                                    return res.status(200).send({result:"success",message:"Sent friend request successfully"}); 
+                                                    return res.status(200).send({result:"success",message:"Sent relative request successfully"}); 
                                                    }                           
                                                 }).catch(err => {
                                                     res.status(500).send({result:"failed",message:"There was an exception3",errorMessage: err.message});
@@ -205,7 +209,7 @@ if(fromid && toid)
                                             })
                                             trans1.save()
                                             .then(data=>{
-                                                res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
+                                                res.status(200).send({result:"success",message:"Sent relative request successfully"}); 
                                             }).catch(err => {
                                                 res.status(500).send({
                                                   result:"failed",message:"There was an exception4",errorMessage: err.message || "Some error occurred while creating the Note."
@@ -238,7 +242,7 @@ if(fromid && toid)
                         {
                             if(accepted_list[i].id==fromid){
                                 flag=1;
-                                return res.status(200).send({result:"success",message:"Already friends"});
+                                return res.status(200).send({result:"success",message:"Already Relative"});
                             }
                         }
                         for(var i=0; i<blocked_list.length;i++)
@@ -282,7 +286,7 @@ if(fromid && toid)
                                                    }
                                                    else
                                                    {
-                                                    return res.status(200).send({result:"success",message:"Sent friend request successfully"}); 
+                                                    return res.status(200).send({result:"success",message:"Sent relative request successfully"}); 
                                                    }                           
                                                 }).catch(err => {
                                                     res.status(500).send({
@@ -302,7 +306,7 @@ if(fromid && toid)
                                             })
                                             trans1.save()
                                             .then(data=>{
-                                                res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
+                                                res.status(200).send({result:"success",message:"Sent relative request successfully"}); 
                                             }).catch(err => {
                                                 res.status(500).send({
                                                   result:"failed",message:"There was an exception7",errorMessage: err.message});
@@ -348,7 +352,7 @@ if(fromid && toid)
                                        }
                                        else
                                        {
-                                        return res.status(200).send({result:"success",message:"Sent friend request successfully"}); 
+                                        return res.status(200).send({result:"success",message:"Sent relative request successfully"}); 
                                        }                           
                                     }).catch(err => {
                                         res.status(500).send({
@@ -366,7 +370,7 @@ if(fromid && toid)
                                 })
                                 trans1.save()
                                 .then(data=>{
-                                    res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
+                                    res.status(200).send({result:"success",message:"Sent relative request successfully"}); 
                                 }).catch(err => {
                                     res.status(500).send({
                                       result:"failed",message:"There was an exception11",errorMessage: err.message});

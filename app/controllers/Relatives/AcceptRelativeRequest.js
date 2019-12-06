@@ -84,7 +84,8 @@ if(fromid && toid)
                                 json["id"]=request_list_array[i].id;
                                 json["user_name"]=request_list_array[i].user_name;
                                 json["profile_pic"]=request_list_array[i].profile_pic;
-                                json["relation"]=request_list_array[i].relation;
+                                json["from_relation"]=request_list_array[i].from_relation;
+                                json["to_relation"]=request_list_array[i].to_relation;
                                 json["date"]=new Date();
                                 json["deviceId"]=deviceId;
                                 accepted_list.push(json);
@@ -99,7 +100,8 @@ if(fromid && toid)
                                     },function(err,updatedevice) {
                                     if (err){ return res.status(500).send({result:"failed2",message:"There was a problem adding the information to the database."});
                                     }                         
-                                    }).catch(err => {
+                                    })
+                                    .catch(err => {
                                         res.status(500).send({
                                         result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                                     });
@@ -116,11 +118,13 @@ if(fromid && toid)
                             console.log("Test44");
                             if(requested_by_me[i].id==fromid)
                             {
+                                console.log("array------",requested_by_me[i])
                                 json1={};
                                 json1["id"]=requested_by_me[i].id;
                                 json1["user_name"]=requested_by_me[i].user_name;
                                 json1["profile_pic"]=requested_by_me[i].profile_pic;
-                                json["relation"]=requested_by_me[i].relation;
+                                json1["from_relation"]=requested_by_me[i].from_relation;
+                                json1["to_relation"]=requested_by_me[i].to_relation;
                                 json1["date"]=new Date();
                                 json1["deviceId"]=deviceId;
                                 accepted_list1.push(json1);
@@ -139,7 +143,8 @@ if(fromid && toid)
                                     {
                                         return res.status(200).send({result:"success",message:"Accepted relative request successfully"}); 
                                     }                         
-                                    }).catch(err => {
+                                    })
+                                    .catch(err => {
                                         res.status(500).send({
                                         result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                                     });
@@ -163,7 +168,8 @@ if(fromid && toid)
                                 json["id"]=request_list_array[i].id;
                                 json["user_name"]=request_list_array[i].user_name;
                                 json["profile_pic"]=request_list_array[i].profile_pic;
-                                json["relation"]=request_list_array[i].relation;
+                                json["from_relation"]=request_list_array[i].from_relation;
+                                json["to_relation"]=request_list_array[i].to_relation;
                                 json["date"]=new Date();
                                 json["deviceId"]=deviceId;
                                 accepted_list.push(json);
@@ -175,9 +181,10 @@ if(fromid && toid)
                                         r_accepted_list:accepted_list,
                                         r_requested_list:request_list_array
                                     },function(err,updatedevice) {
-                                    if (err){ return res.status(500).send({result:"failed2",message:"There was a problem adding the information to the database."});
+                                    if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                                     }                         
-                                    }).catch(err => {
+                                    })
+                                    .catch(err => {
                                         res.status(500).send({
                                         result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
                                     });
@@ -198,7 +205,8 @@ if(fromid && toid)
                                 json1["id"]=requested_by_me[i].id;
                                 json1["user_name"]=requested_by_me[i].user_name;
                                 json1["profile_pic"]=requested_by_me[i].profile_pic;
-                                json["relation"]=requested_by_me[i].relation;
+                                json1["from_relation"]=requested_by_me[i].from_relation;
+                                json1["to_relation"]=requested_by_me[i].to_relation;
                                 json1["date"]=new Date();
                                 json1["deviceId"]=deviceId;
                                 accepted_list1.push(json1);
@@ -228,7 +236,8 @@ if(fromid && toid)
                 else{
                     res.status(200).send({result:"success",message:"from_id or to_id does not exist in friend table"})
                 }
-            }).catch(err => {
+            })
+            .catch(err => {
                 res.status(500).send({
                   result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
             });
