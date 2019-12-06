@@ -68,7 +68,7 @@ if(fromid && toid)
                 console.log("Test2");                
                 if(request.length==2)
                 {
-                    if(request[0].user_id==fromid && request[1].user_id==toid )
+                    if(request[0].user_id==fromid)
                     {
                         // code to insert requested list to accepted list
                         var request_list_array=[];
@@ -147,7 +147,7 @@ if(fromid && toid)
                             }
                         }
                     }
-                    else if(request[0].user_id==toid && request[1].user_id==fromid )
+                    else if(request[1].user_id==fromid )
                     {
                         // code to insert requested list to accepted list
                         var request_list_array=[];
@@ -167,11 +167,13 @@ if(fromid && toid)
                                 json["date"]=new Date();
                                 json["deviceId"]=deviceId;
                                 accepted_list.push(json);
-
+                                
+                                request_list_array.splice(i, 1);
                                 const updatedevice=Relative.updateOne( 
                                     {user_id: fromid}, 
                                     {
-                                    r_accepted_list:accepted_list
+                                        r_accepted_list:accepted_list,
+                                        r_requested_list:request_list_array
                                     },function(err,updatedevice) {
                                     if (err){ return res.status(500).send({result:"failed2",message:"There was a problem adding the information to the database."});
                                     }                         
@@ -201,10 +203,12 @@ if(fromid && toid)
                                 json1["deviceId"]=deviceId;
                                 accepted_list1.push(json1);
 
+                                requested_by_me.splice(i, 1);
                                 const updatedevice=Relative.updateOne( 
-                                    {user_id: toid}, 
+                                    {user_id: toid},
                                     {
-                                    r_accepted_list:accepted_list1
+                                        r_accepted_list:accepted_list1,
+                                        r_requested_by_me:requested_by_me
                                     },function(err,updatedevice) {
                                     if (err){ return res.status(500).send({result:"failed2",message:"There was a problem adding the information to the database."});
                                     }

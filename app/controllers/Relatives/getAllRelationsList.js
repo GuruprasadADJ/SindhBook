@@ -10,7 +10,37 @@ exports.getAllRelationsList=(req,res)=>{
          }
          else
          {
+            //  var  data1=[];
+            //  var father        =["son","daughter"];
+            //  var mother        =["son","daughter"];
+            //  var daughter      =["mother","father"];
+            //  var son           =["mother","father"];
+            //  var sister        =["brother","sister"];
+            //  var brother       =["brother","sister"];
+            //  var auntie        =["nephew","neice"];
+            //  var uncle         =["nephew","neice"];
+            //  var cousin_male   =["cousin_male","cousin_female"];
+            //  var cousin_female =["cousin_male","cousin_female"];
+            //  var grandmother   =["grandson","granddaughter"];
+            //  var grandfather   =["grandson","granddaughter"];
+            //  var grandson      =["grandmother","grandfather"];
+            //  var granddaughter =["grandmother","grandfather"];
+            //  var husband       =["wife"];
+            //  var wife          =['husband'];
+            //  var nephew        =["auntie","uncle"];
+            //  var neice         =["auntie","uncle"];
+            //  var data1=[];
+
+             
+            //  data1=[{"father":father,"mother":mother,"daughter":daughter,"son":son,"sister":sister,"brother":brother,
+            //  "auntie":auntie,"uncle":uncle,"cousin_male":cousin_male,"cousin_female":cousin_female,
+            //  "grandmother":grandmother,"grandfather":grandfather,"grandson":grandson,"granddaughter":granddaughter,
+            //  "husband":husband,"wife":wife,"nephew":nephew,"neice":neice}];
+
+             //data1[father]=father;
+          
             const relationslist = new Relations_list({
+                 //   data:data1
                 father        :["son","daughter"],
                 mother        :["son","daughter"],
                 daughter      :["mother","father"],

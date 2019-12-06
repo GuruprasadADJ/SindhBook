@@ -6,5 +6,6 @@ const NoteSchema = mongoose.Schema({
     to_id: String,
     status:Number,
     date:{type:Date, default:Date.Now}
+    
   });
 module.exports = mongoose.model('friend', NoteSchema);

@@ -14,6 +14,7 @@ const NoteSchema = mongoose.Schema({
         share:Array,
         created_at: {type:Date, default:Date.Now},
         modified_at:{type:Date, default:Date.Now},
-        deleted_at:{type:Date, default:Date.Now}
+        deleted_at:{type:Date, default:Date.Now},
+        deviceId:String
 });
 module.exports = mongoose.model('post', NoteSchema);
