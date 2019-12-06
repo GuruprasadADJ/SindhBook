@@ -33,12 +33,11 @@ if(fromid && toid)
                     {deviceId: device_array}
                     ,function(err,updatedevice) {
                         console.log("Test");
-                       if (err){ return res.status(500).send({result:"failed1",message:"There was a problem adding the information to the database."});
+                       if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                        }                           
                     }).catch(err => {
                         res.status(500).send({
-                          result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                    });
+                          result:"failed",message:"There was an exception",errorMessage: err.message });
                     });
                     console.log("Test1");  
             }else{
@@ -49,12 +48,11 @@ if(fromid && toid)
                     {$set: { deviceId: device_array}}
                     ,function(err,updatedevice) {
                         console.log("Test");
-                       if (err){ return res.status(500).send({result:"failed1",message:"There was a problem adding the information to the database."});
+                       if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                        }                           
                     }).catch(err => {
                         res.status(500).send({
-                          result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                    });
+                          result:"failed",message:"There was an exception",errorMessage: err.message});
                     });
                     console.log("Test1");  
             }
@@ -98,13 +96,12 @@ if(fromid && toid)
                                     r_accepted_list:accepted_list,
                                     r_requested_list:request_list_array
                                     },function(err,updatedevice) {
-                                    if (err){ return res.status(500).send({result:"failed2",message:"There was a problem adding the information to the database."});
+                                    if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                                     }                         
                                     })
                                     .catch(err => {
                                         res.status(500).send({
-                                        result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                    });
+                                        result:"failed",message:"There was an exception",errorMessage: err.message});
                                     });
                             }
                         }
@@ -137,7 +134,7 @@ if(fromid && toid)
                                     r_accepted_list:accepted_list1,
                                     r_requested_by_me:requested_by_me
                                     },function(err,updatedevice) {
-                                    if (err){ return res.status(500).send({result:"failed2",message:"There was a problem adding the information to the database."});
+                                    if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                                     }
                                     else
                                     {
@@ -146,8 +143,7 @@ if(fromid && toid)
                                     })
                                     .catch(err => {
                                         res.status(500).send({
-                                        result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                    });
+                                        result:"failed",message:"There was an exception",errorMessage: err.message});
                                     });
                             }
                         }
@@ -186,8 +182,7 @@ if(fromid && toid)
                                     })
                                     .catch(err => {
                                         res.status(500).send({
-                                        result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                    });
+                                        result:"failed",message:"There was an exception",errorMessage: err.message});
                                     });
                             }
                         }
@@ -218,7 +213,7 @@ if(fromid && toid)
                                         r_accepted_list:accepted_list1,
                                         r_requested_by_me:requested_by_me
                                     },function(err,updatedevice) {
-                                    if (err){ return res.status(500).send({result:"failed2",message:"There was a problem adding the information to the database."});
+                                    if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                                     }
                                     else
                                     {
@@ -226,8 +221,7 @@ if(fromid && toid)
                                     }                          
                                     }).catch(err => {
                                         res.status(500).send({
-                                        result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                    });
+                                        result:"failed",message:"There was an exception",errorMessage: err.message });
                                     });
                             }
                         }
@@ -239,8 +233,7 @@ if(fromid && toid)
             })
             .catch(err => {
                 res.status(500).send({
-                  result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-            });
+                  result:"failed",message:"There was an exception",errorMessage: err.message});
             });
         }
         else{
@@ -248,8 +241,7 @@ if(fromid && toid)
         }
         }).catch(err => {
             res.status(500).send({
-              result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-        });
+              result:"failed",message:"There was an exception",errorMessage: err.message});
         });
     }
 }

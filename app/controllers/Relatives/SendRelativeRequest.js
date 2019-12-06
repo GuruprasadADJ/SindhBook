@@ -100,8 +100,7 @@ if(fromid && toid)
                         }                           
                         }).catch(err => {
                             res.status(500).send({
-                            result:"failed",message:"There was an exception1",errorMessage: err.message || "Some error occurred while creating the Note."
-                        });
+                            result:"failed",message:"There was an exception1",errorMessage: err.message});
                         });
                         console.log("Test1");  
                 }

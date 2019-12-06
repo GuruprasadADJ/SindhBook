@@ -37,7 +37,7 @@ console.log("got input");
                             },function(err,about3) {
                                 if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                                 }else{
-                                    res.status(200).send({result:"success",message:"About details updated successfully",data:about1[0]});
+                                    res.status(200).send({result:"success",message:"About details deleted successfully",data:about1[0]});
                                 }                             
                             })
                             
@@ -52,10 +52,9 @@ console.log("got input");
                             },function(err,about3) {
                                 if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                                 }else{
-                                    res.status(200).send({result:"success",message:"About details updated successfully",data:about1[0]});
+                                    res.status(200).send({result:"success",message:"About details deleted successfully",data:about1[0]});
                                 }                             
                             })
-                            
                     }
                     if(places_livedindex)
                     {
@@ -67,7 +66,7 @@ console.log("got input");
                             },function(err,about3) {
                                 if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                                 }else{
-                                    res.status(200).send({result:"success",message:"About details updated successfully",data:about1[0]});
+                                    res.status(200).send({result:"success",message:"About details deleted successfully",data:about1[0]});
                                 }                             
                             }).catch(err => {
                                 res.status(500).send({result:"failed",message:"There is an exception",errorMessage: err.message });

@@ -29,7 +29,7 @@ exports.RequestedRelativeList = (req, res) => {
        }
        else
        {
-        res.status(200).send({result:"success",message:"No record found for this user id in database"});
+        res.status(200).send({result:"success",message:"This id is not found in register table"});
        }
     }).catch(err => {
         res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});

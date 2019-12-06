@@ -31,7 +31,9 @@ console.log("got input");
                     if(workindex && work1)
                     {       
                             for(var i=0;i<work.length;i++){
-                                if(work[i]==workindex)
+                                
+                                console.log("work1",i,work[i].name)
+                                if(i==workindex)
                                 {
                                     console.log("befor_work[i] - ",work[i]);
                                     work[i].name=work1;
@@ -55,7 +57,7 @@ console.log("got input");
                     if(educationindex && education1)
                     {
                         for(var i=0;i<education.length;i++){
-                            if(education[i]==educationindex)
+                            if(i==educationindex)
                             {
                                 console.log("befor_education[i] - ",education[i]);
                                 education[i].name=education1;
@@ -74,12 +76,11 @@ console.log("got input");
                         }).catch(err => {
                             res.status(500).send({result:"failed",message:"There is an exception",errorMessage: err.message });
                         });
-                            
                     }
                     if(places_livedindex && places_lived1)
                     {
                         for(var i=0;i<places_lived.length;i++){
-                            if(places_lived[i]==places_livedindex)
+                            if(i==places_livedindex)
                             {
                                 console.log("befor_education[i] - ",places_lived[i]);
                                 places_lived[i].name=places_lived1;
@@ -96,7 +97,6 @@ console.log("got input");
                                 res.status(200).send({result:"success",message:"About details updated successfully",data:about1[0]});
                             }                             
                         })
-                            
                     }
                 }
             }).catch(err => {
