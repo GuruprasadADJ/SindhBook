@@ -40,8 +40,8 @@ if(fromid && toid)
                 json1["profile_picture"]=note[1].profile_picture;
                 json1["date"]=new Date();
                 json1["deviceId"]=deviceId;
-                json1["from_relation"]=to_relation;
-                json1["to_relation"]=from_relation;
+                json1["from_relation"]=from_relation;
+                json1["to_relation"]=to_relation;
             }
             else
             {
