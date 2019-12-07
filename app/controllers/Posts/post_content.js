@@ -1,8 +1,8 @@
-const Post1=require('../models/post.model.js');
-const Note=require('../models/note.model.js');
+const Post1=require('../../models/post.model.js');
+const Note=require('../../models/note.model.js');
 
 var stream = require('stream');
-const s3 = require('../config/s3.config.js');
+const s3 = require('../../config/s3.config.js');
 var datetime = require('node-datetime');
 var dt = datetime.create();
 
@@ -153,7 +153,8 @@ exports.updatePost = (req, res) => {
               if(!cont.length==0)
               { 
                   var title1=cont[0].title;
-                  var content1=cont[0].contents;                  var images=cont[0].images;
+                  var content1=cont[0].contents;            
+                  var images=cont[0].images;
                   const postupdate=Post1.updateMany( //updates records in created record
                   {user_id:user_id,
                   _id:_id}, 

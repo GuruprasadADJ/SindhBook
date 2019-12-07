@@ -34,11 +34,11 @@ module.exports = (app) => {
      app.get('/showPrivacyDetails/:privacyId',privacy.showPrivacyDetails);
 
     //CREATE POST AND UPDATE POST
-    const post=require('../controllers/post_content.js');  //""
+    const post=require('../controllers/Posts/post_content.js');  //""
     let upload = require('../config/multer.config.js');    //""
-    const postlist=require('../controllers/PostList.js');
+    const postlist=require('../controllers/Posts/PostList.js');
     app.post('/createOnePost', upload.array("file"), post.createPost);
-    app.post('/UpdateOnePost', upload.array("file"), post.updatePost);
+    app.post('/updateOnePost', upload.array("file"), post.updatePost);
     app.get('/postList/:postId',postlist.postList);
 
     //SEND FRIEND REQUESTAND ACEPT

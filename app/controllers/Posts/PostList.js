@@ -1,8 +1,8 @@
-const Post=require('../models/post.model.js');
-const Note=require('../models/note.model.js');
-const Friend=require('../models/Friends/friends.model1.js');
-const Relative=require('../models/Relative_models/relatives.model.js');
-const Privacy=require('../models/privacy.model.js');
+const Post=require('../../models/post.model');
+const Note=require('../../models/note.model.js');
+const Friend=require('../../models/Friends/friends.model1.js');
+const Relative=require('../../models/Relative_models/relatives.model.js');
+const Privacy=require('../../models/privacy.model.js');
 var arraylist=[];
 exports.postList = (req, res) => {
     console.log("start.....");
@@ -93,6 +93,7 @@ exports.postList = (req, res) => {
                     for(var j=0;j<result.length;j++)
                     {
                         var json={};
+                        json["id"]=result[j].id;
                         json["title"]=result[j].title;
                         json["content"]=result[j].content;
                         json["images"]=result[j].images;
