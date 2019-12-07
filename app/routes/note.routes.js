@@ -40,7 +40,7 @@ module.exports = (app) => {
     const deletePost=require('../controllers/Posts/DeletePost.js');/*****07/12/2019 ***/
     app.post('/createOnePost', upload.array("file"), post.createPost);
     app.post('/updatePostDetails', upload.array("file"), post.updatePost);
-    app.post('/deletePost',deletePost.deletePost);
+    app.post('/deletePostDetails',deletePost.deletePost);
     app.get('/postList/:postId',postlist.postList);
 
     //SEND FRIEND REQUESTAND ACEPT
