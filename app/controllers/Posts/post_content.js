@@ -32,9 +32,10 @@ exports.createPost = (req, res) => {
                     user_name:note[0].first_name+" "+note[0].last_name,
                     title:req.body.title||'',
                     content:req.body.content,
-                    images:[], 
+                    images:[],
                     created_at:new Date(),
-                    post_status:1
+                    post_status:1,
+                    deviceId:req.body.deviceId || ''
                 },function(err,postcreate){
                     if (err) return res.status(500).send({result:"failed",message:"There was a problem inserting data into database",errorMessage:err.message});
                 });
@@ -99,7 +100,8 @@ exports.createPost = (req, res) => {
                 content:req.body.content||'',
                 images:ResponseData,
                 created_at:new Date(),
-                post_status:1
+                post_status:1,
+                deviceId:req.body.deviceId || ''
               },function(err,postuse){
                 if (err) return res.status(500).send({result:"failed",message:"There Was A problem Inserting Post",errorMessage:err.message});
               });
@@ -150,14 +152,16 @@ exports.updatePost = (req, res) => {
               if(!cont.length==0)
               { 
                   var title1=cont[0].title;
-                  var content1=cont[0].contents;            
+                  var content1=cont[0].contents;   
+                  var deviceId=cont[0].deviceId ||"";         
                   var images=cont[0].images;
                   const postupdate=Post1.updateMany( //updates records in created record
                   {_id:_id,user_id:user_id}, 
                   {
                       title:req.body.title||title1,
                       content:req.body.content||content1,
-                      modified_at: new Date()
+                      modified_at: new Date(),
+                      deviceId:req.body.deviceId ||deviceId
                   },function(err,postupdate) {
                         if (err){ return res.status(500).json({result:"failed",message:"There was a problem inserting data into database",errorMessage: err.message});
                   }else{
@@ -193,7 +197,7 @@ exports.updatePost = (req, res) => {
               var file=req.files; 
               var count=[];
               count=file;
-          
+              var deviceId=cont[0].deviceId||"";
               var ResponseData=[];
               console.log("function ok");
               file.map((item) => {
@@ -228,7 +232,8 @@ exports.updatePost = (req, res) => {
                   {
                       title:req.body.title||title1,
                       images: content2||content1,
-                      modified_at: new Date()
+                      modified_at: new Date(),
+                      deviceId:req.body.deviceId||deviceId
                   },function(err,postupdate) {
                         if (err){ return res.status(500).json({result:"failed",message:"There was a problem inserting data into database",errorMessage: err.message});
                   }else{
