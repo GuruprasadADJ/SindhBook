@@ -42,13 +42,12 @@ exports.createPost = (req, res) => {
                     .then(data => {
                             res.status(200).send({result:"success",message:"content Posted Successfully",data:data});
                     }).catch(err => {
-                            res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Post."});
+                            res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                     });
             }
             }).catch(err => {
                 res.status(500).send({
-                result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-            });
+                result:"failed",message:"There was an exception",errorMessage: err.message});
             });
         }
         else if(req.files)
@@ -108,15 +107,14 @@ exports.createPost = (req, res) => {
               .then(data => {
                 res.status(200).send({result:"success",message:"Posted Successfully",data:postuse});
               }).catch(err => {
-                res.status(500).send({result:"failed",message:"Not Inserted Post",errorMessage: err.message || "Some error occurred while creating the post."});
+                res.status(500).send({result:"failed",message:"Not Inserted Post",errorMessage: err.message});
               });
               ResponseData=[];
           }
             }
           }).catch(err => {
               res.status(500).send({
-              result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-          });
+              result:"failed",message:"There was an exception",errorMessage: err.message});
           });
         }
         else
@@ -135,19 +133,18 @@ exports.updatePost = (req, res) => {
     var user_id=req.body.user_id;
     if(!_id ){
         console.log("not found input");
-        return res.status(200).send({result:"failed",message: "Please enter id "});
+        return res.status(200).send({result:"failed",message: "Please enter post_id "});
     }
     else
     {
       if(!user_id){
-          return res.status(200).send({result:"failed",message: "Please enter user_id"});
+        res.status(200).send({result:"failed",message: "Please enter user_id"});
       }
-
       if(req.body.content)
       {
           Post1.find({
-            "user_id":user_id,
-            "_id": _id
+            "_id": _id,
+            "user_id":user_id
           })
           .then(cont => {
               if(!cont.length==0)
@@ -156,8 +153,7 @@ exports.updatePost = (req, res) => {
                   var content1=cont[0].contents;            
                   var images=cont[0].images;
                   const postupdate=Post1.updateMany( //updates records in created record
-                  {user_id:user_id,
-                  _id:_id}, 
+                  {_id:_id,user_id:user_id}, 
                   {
                       title:req.body.title||title1,
                       content:req.body.content||content1,
@@ -165,12 +161,11 @@ exports.updatePost = (req, res) => {
                   },function(err,postupdate) {
                         if (err){ return res.status(500).json({result:"failed",message:"There was a problem inserting data into database",errorMessage: err.message});
                   }else{
-                        res.status(200).send({result:"success",message:"Data inserted successfully",data:postupdate});
+                        res.status(200).send({result:"success",message:"Post updated successfully"});
                   } 
                   }).catch(err => {
                       res.status(500).send({
-                      result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                  });
+                      result:"failed",message:"There was an exception",errorMessage: err.message});
                   });
               }
               else{
@@ -178,8 +173,7 @@ exports.updatePost = (req, res) => {
               }
           }).catch(err => {
               res.status(500).send({
-              result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-            });
+              result:"failed",message:"There was an exception",errorMessage: err.message});
           });
       }
       else if(req.files)

@@ -85,7 +85,8 @@ exports.postList = (req, res) => {
             Post.find({
                 "user_id": {
                     "$in": final_ids
-                }
+                },
+                "post_status":1
             })
             .then(result=>{
                 if(result.length!=0)
