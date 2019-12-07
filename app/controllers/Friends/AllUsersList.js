@@ -1,5 +1,6 @@
 const Note=require('../../models/note.model.js');
 const Friend=require('../../models/Friends/friends.model1.js');
+const Relative=require('../../models/Relative_models/relatives.model.js')
 const moment = require('moment'); //to parse the default date of mongodb
 
 exports.GetAllUsersList = (req, res) => {
@@ -45,6 +46,7 @@ exports.GetAllUsersList = (req, res) => {
             //chech in frnds function
             function checkinfrnds()
             {
+                /*******CHECKING IN FRIENDS TABLE */
                 console.log("second_function_call")
                 Friend.find({
                     "user_id":user_id
@@ -53,7 +55,7 @@ exports.GetAllUsersList = (req, res) => {
                     if(request.length==0)
                     {
                         console.log("no data in frnds")
-                        show_list();
+                        three();
                     }
                     else
                     {
@@ -96,12 +98,46 @@ exports.GetAllUsersList = (req, res) => {
                                 ids.splice(index, 1);
                             }
                         }
-                        show_list();
+                        three();
                     }
                 }).catch(err => {
                     res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                 });
+
+
+                //*******SPLICES THE ID from ids list IF IT EXIST IN RELATIVES LIST */
+                function three(){
+                    console.log("function three executing");
+                Relative.find({
+                    "user_id":user_id
+                }).then(result=>{       
+                    if(result.length!=0)
+                    {
+                        var i;
+                        var j;
+                        var accepted_list=result[0].r_accepted_list;
+                        for(i=0;i<accepted_list.length;i++){
+                            console.log(" 1 ");
+                            if(ids.includes(accepted_list[i].id)){
+                                console.log(" 2 ");
+                                for(j=0;j<ids.length;j++){
+                                    console.log("......",ids[j],".....",accepted_list[i].id);
+                                    //console.log(" 3 ",accepted_list[i].id);
+                                    if(ids[j]==accepted_list[i].id){
+                                        console.log(" 4 ",ids[j]);
+                                        ids.splice(j,1);
+                                    }
+                                }
+                            }
+                        }
+                        show_list();
+                    }
+                    else{
+                        show_list();
+                    }
+                })
             }
+        }
     }
     else
     {
@@ -113,7 +149,8 @@ exports.GetAllUsersList = (req, res) => {
     function show_list(){
         console.log("third_function_call")
         Note.find({
-            "_id":  {"$in": ids}
+            "_id":  {"$in": ids},
+            "profile_update_status":1
         }).then(note1=>{
             console.log("count of final list : ",note1.length)
             if(note1.length==0)

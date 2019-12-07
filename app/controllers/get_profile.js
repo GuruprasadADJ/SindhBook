@@ -168,7 +168,7 @@ exports.getProfileDetails = (req, res) => {
         {
             data["user_name"]=name;
             data["profile_picture"]=profile_picture;
-            data["Post_Details"]=arraylist;
+            data["post_details"]=arraylist;
             show_result_about(p_about_status,f_status,name,profile_picture);
          }
         else
@@ -233,8 +233,8 @@ exports.getProfileDetails = (req, res) => {
         {
             data["user_name"]=name;
             data["profile_picture"]=profile_picture;
-            data["Post_details"]=arraylist;
-            data["About_details"]=arraylist_about;
+            data["post_details"]=arraylist;
+            data["about_details"]=arraylist_about;
             console.log("third");
             return res.status(200).send({result:'success',message: "User Profile Details",data:data});
         }
@@ -260,8 +260,8 @@ exports.getProfileDetails = (req, res) => {
                 console.log("second");
                 data["user_name"]=name;
                 data["profile_picture"]=profile_picture;
-                data["Post_details"]=arraylist;
-                data["About_Details"]=arraylist_about;
+                data["post_details"]=arraylist;
+                data["about_details"]=arraylist_about;
                 return res.status(200).send({result:'success',message: "User Profile Details",data:data});
             }).catch(err => {
                 return res.status(200).send({result:'failed',

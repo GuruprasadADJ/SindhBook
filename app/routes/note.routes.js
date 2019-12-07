@@ -25,8 +25,8 @@ module.exports = (app) => {
      const updateabout=require('../controllers/About/UpdateAbout.js');
      app.post('/createAboutDetails',about.createabout);
      app.get('/showAboutDetails/:about1Id',about.showaboutdetails);
-     app.post('/deleteAboutDetails',deleteAbout.deleteAboutDetails);
-     app.post('/updateAboutDetails',updateabout.updateAboutDetails)
+     app.post('/deleteAboutDetails',deleteAbout.deleteAboutDetails);/***06/12/2019** */
+     app.post('/updateAboutDetails',updateabout.updateAboutDetails);/***06/12/2019** */
  
      //privacy  api
      const privacy = require('../controllers/privacy_setting.js');
