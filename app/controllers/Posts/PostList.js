@@ -95,6 +95,7 @@ exports.postList = (req, res) => {
                     {
                         var json={};
                         json["id"]=result[j].id;
+                        json["user_id"]=result[j].user_id;
                         json["title"]=result[j].title;
                         json["content"]=result[j].content;
                         json["images"]=result[j].images;
