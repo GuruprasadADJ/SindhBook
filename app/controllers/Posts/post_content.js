@@ -244,7 +244,7 @@ exports.updatePost = (req, res) => {
                 res.status(200).send({result:'failed',message:'data not found database with this id '+user_id +"or"+ _id});
           }
         }).catch(err => {
-          res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Post."});
+          res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
         });
       }
       else 

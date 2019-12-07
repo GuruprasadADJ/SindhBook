@@ -38,9 +38,11 @@ module.exports = (app) => {
     let upload = require('../config/multer.config.js');    //""
     const postlist=require('../controllers/Posts/PostList.js');
     const deletePost=require('../controllers/Posts/DeletePost.js');/*****07/12/2019 ***/
+    const getPostDetails=require('../controllers/Posts/SinglePostToUpdate');/****07/12/2019 ****/
     app.post('/createOnePost', upload.array("file"), post.createPost);
     app.post('/updatePostDetails', upload.array("file"), post.updatePost);
     app.post('/deletePostDetails',deletePost.deletePost);
+    app.get('/getPostDetails/:id',getPostDetails.getPostDetails);
     app.get('/postList/:postId',postlist.postList);
 
     //SEND FRIEND REQUESTAND ACEPT
