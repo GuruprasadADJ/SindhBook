@@ -48,6 +48,12 @@ module.exports = (app) => {
     app.post('/deletePostDetails',deletePost.deletePost);
     app.get('/getPostDetails/:id',getPostDetails.getPostDetails);
     app.get('/postList/:postId',postlist.postList);
+
+    // LIKE , SHARE , COMMENT POST
+    const like_post=require('../controllers/Posts/LikePost.js'); 
+    const comment_post=require('../controllers/Posts/CommentPost.js'); 
+    app.post('/likePost',like_post.LikePost); 
+    app.post('/commentPost',comment_post.CommentPost);
     
 
     //SEND FRIEND REQUESTAND ACEPT
