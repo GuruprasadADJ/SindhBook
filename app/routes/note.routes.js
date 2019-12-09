@@ -5,6 +5,10 @@ module.exports = (app) => {
     app.post('/register', notes.create);
     app.put('/update',notes.update);
 
+    // Edit profile details
+    const e_profile = require('../controllers/edit_profile_details.js');
+    app.get('/editProfileDetails/:userId',e_profile.editProfile);
+
     //login user
     const login = require('../controllers/login_api.js');
     app.post('/login', login.Authenticate);
