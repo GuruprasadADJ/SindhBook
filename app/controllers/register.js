@@ -277,6 +277,7 @@ exports.update = (req, res) => {
                      mobile_no:data.mobile_no||'',
                      first_name: data.first_name || '',
                      last_name: data.last_name || '',
+                     otp_status:0,
                      gender: data.gender || '',
                      dob: data.dob || '',
                      modified_at: formatted,
@@ -296,12 +297,12 @@ exports.update = (req, res) => {
                         "_id": data.id
                     })
                     .then(note => {
-                        res.status(200).send({result:"success",message:"Profile updated successfully",data:note[0]});
+                        res.status(200).send({result:"success",message:"Please verify mobile number"});
                     }).catch(err => {
-                        res.status(500).send({result:"failed",message:"Profile not updated successfully",errorMessage:err.message || 'Some error occured'});
+                        res.status(500).send({result:"failed1",message:"Profile not updated successfully",errorMessage:err.message || 'Some error occured'});
                     }); 
                  }).catch(err => {
-                     res.status(500).send({result:"failed",message:"Profile not updated successfully",errorMessage:err.message || 'Some error occured'});
+                     res.status(500).send({result:"failed2",message:"Profile not updated successfully",errorMessage:err.message || 'Some error occured'});
                  }); 
                   }
                   else
@@ -309,35 +310,42 @@ exports.update = (req, res) => {
                       console.log("gender",data.gender);
                      var server_id=note[0]._id;
                      if(server_id==data.id){
-                         const note1=Note.update(
-                             {_id:data.id},
+                         if(note[0].otp_status==0)
                          {
-                         mobile_no:data.mobile_no||'',
-                         first_name: data.first_name || '',
-                         last_name: data.last_name || '',
-                         gender: data.gender || '',
-                         dob: data.dob || '',
-                         modified_at: formatted,
-                         email: data.email || '',
-                         email_otp: 0,
-                         email_otp_status: 0,
-                         profile_picture: data.profile_picture || '',
-                         profile_type:data.profile_type||'',
-                         profile_update_status:1,
-                         profile_type:data.profile_type||''
-                     },
-                     function(err,note1) {
-                         if (err) return res.status(200).send({result:"failed",message:"Profile not updated successfully",errorMessage:'Some error occured or id is not exist in database'});
-                         console.log("res=",note1);
-     
-                     Note.find({"_id": data.id}).then(note => {
-                         res.status(200).send({result:"success",message:"Profile updated successfully",data:note[0]});
-                     });
-                     
-                         //res.status(200).send({result:"success",message:"Profile Updated"});
-                     }).catch(err => {
-                         res.status(500).send({result:"failed",message:"There was an exception",errorMessage:err.message || 'Some error occured'});
-                     });                
+                            res.status(200).send({result:"success",message:"Please verify mobile number"}); 
+                         }
+                         else
+                         {
+                            const note1=Note.update(
+                                {_id:data.id},
+                            {
+                            mobile_no:data.mobile_no||'',
+                            first_name: data.first_name || '',
+                            last_name: data.last_name || '',
+                            gender: data.gender || '',
+                            dob: data.dob || '',
+                            modified_at: formatted,
+                            email: data.email || '',
+                            email_otp: 0,
+                            email_otp_status: 0,
+                            profile_picture: data.profile_picture || '',
+                            profile_type:data.profile_type||'',
+                            profile_update_status:1,
+                            profile_type:data.profile_type||''
+                        },
+                        function(err,note1) {
+                            if (err) return res.status(200).send({result:"failed",message:"Profile not updated successfully",errorMessage:'Some error occured or id is not exist in database'});
+                            console.log("res=",note1);
+        
+                        Note.find({"_id": data.id}).then(note => {
+                            res.status(200).send({result:"success",message:"Profile updated successfully",data:note[0]});
+                        });
+                        
+                            //res.status(200).send({result:"success",message:"Profile Updated"});
+                        }).catch(err => {
+                            res.status(500).send({result:"failed",message:"There was an exception",errorMessage:err.message || 'Some error occured'});
+                        });
+                    }                                        
                      }
                      else
                      {

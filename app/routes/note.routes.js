@@ -44,6 +44,7 @@ module.exports = (app) => {
     app.post('/deletePostDetails',deletePost.deletePost);
     app.get('/getPostDetails/:id',getPostDetails.getPostDetails);
     app.get('/postList/:postId',postlist.postList);
+    
 
     //SEND FRIEND REQUESTAND ACEPT
     const Friends=require('../controllers/friends.js');
