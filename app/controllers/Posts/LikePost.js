@@ -9,7 +9,7 @@ if(post_id)
     if(!user_id){
         res.status(200).send({result:"success",message:"Please enter user_id"});
     }
-
+    else{
     Note.find({
         "_id":user_id
     }).then(data=>{
@@ -27,9 +27,10 @@ if(post_id)
             Post.find({
                 "_id":post_id
             }).then(data=>{
+                var likes=[];
                 if(data[0].like!=0){
                     var likes=data[0].like;
-                    Console.log("likes..",likes);
+                    console.log("likes..",likes);
                     var flag=0;
                     for(var i=0;i<likes.length;i++)
                     {
@@ -39,6 +40,7 @@ if(post_id)
                         }
                     }
                     if(flag==0){
+                        insert_deviceId();
                         likes.push(json);
                         const postupdate=Post.update( 
                             {_id:post_id}, 
@@ -55,6 +57,7 @@ if(post_id)
                             });
                     }
                     else if(flag==1){
+                        insert_deviceId();
                     const postupdate=Post.update( 
                         {_id:post_id}, 
                         {
@@ -72,6 +75,7 @@ if(post_id)
                 }
                 else
                 {
+                    insert_deviceId();
                     likes.push(json);
                     const postupdate=Post.update( 
                         {_id:post_id}, 
@@ -89,16 +93,52 @@ if(post_id)
                 }      
                     
             })
+            function insert_deviceId()
+            {
+                var device_array=[];
+                device_array=(data[0].deviceId);
+                console.log("device id="+device_array);            
+                if(device_array.includes(req.body.deviceId)){
+                    console.log("Token Found1="+data[0]._id);
+                }else if(device_array.length==0){
+                    device_array.push(req.body.deviceId);
+                    console.log("Token Not Found="+data[0]._id);
+                    const updatedevice=Note.updateOne( 
+                        {_id: data[0]._id}, 
+                        {deviceId: device_array}
+                        ,function(err,updatedevice) {
+                            console.log("Test");
+                        if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
+                        }                           
+                        }).catch(err => {
+                            res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message });
+                        }); 
+                }
+                else
+                {
+                    device_array.push(req.body.deviceId);
+                    console.log("Token Not Found");
+                    const updatedevice=Note.updateOne( 
+                        {_id: data[0]._id}, 
+                        {$set: { deviceId: device_array}}
+                        ,function(err,updatedevice) {
+                            console.log("Test");
+                        if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
+                        }                           
+                        }).catch(err => {
+                            res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message });
+                        });
+                        console.log("Test1");  
+                }
+            }
         }
         else{
             res.status(200).send({result:"success",message:"data not exit in register table"});
         }
     })
-
-
-    
+}    
 }
 else{
-    res.status(200).send({result:"success",message:"Please enter id"});
+    res.status(200).send({result:"success",message:"Please enter post_id"});
 }
 }
