@@ -51,9 +51,11 @@ module.exports = (app) => {
 
     // LIKE , SHARE , COMMENT POST
     const like_post=require('../controllers/Posts/LikePost.js'); 
-    const comment_post=require('../controllers/Posts/CommentPost.js'); 
+    const comment_post=require('../controllers/Posts/CommentPost.js');
+    const share_post=require('../controllers/Posts/SharePost.js'); 
     app.post('/likePost',like_post.LikePost); 
     app.post('/commentPost',comment_post.CommentPost);
+    app.post('/sharePost',share_post.SharePost);
     
 
     //SEND FRIEND REQUESTAND ACEPT

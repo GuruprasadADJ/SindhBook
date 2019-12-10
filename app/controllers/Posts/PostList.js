@@ -3,6 +3,7 @@ const Note=require('../../models/note.model.js');
 const Friend=require('../../models/Friends/friends.model1.js');
 const Relative=require('../../models/Relative_models/relatives.model.js');
 const Privacy=require('../../models/privacy.model.js');
+const moment = require('moment');
 var arraylist=[];
 exports.postList = (req, res) => {
     console.log("start.....");
@@ -87,7 +88,7 @@ exports.postList = (req, res) => {
                     "$in": final_ids
                 },
                 "post_status":1
-            })
+            }).sort({created_at: -1})
             .then(result=>{
                 if(result.length!=0)
                 {
@@ -101,7 +102,8 @@ exports.postList = (req, res) => {
                         json["images"]=result[j].images;
                         json["likes"]=result[j].like;
                         json["comments"]=result[j].comment;
-                        json["created_at"]=result[j].created_at;
+                        let d4=moment(result[j].created_at);
+                        json["created_at"]=d4.format("DD-MM-YYYY h:mm:ss a");
                         json["name"]=result[j].user_name;
                         arraylist.push(json); 
                         if(arraylist.length==result.length)
