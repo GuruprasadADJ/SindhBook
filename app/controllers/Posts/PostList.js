@@ -45,7 +45,25 @@ exports.postList = (req, res) => {
                     {
                         final_ids.push(accepted_list[i].id);
                     }
-                    two_fromids();
+                    Privacy.find({
+                        "user_id": final_ids
+                    }).then(privacy_data=>{
+                        for(var j=0;j<privacy_data.length;j++)
+                        {
+                            if(privacy_data[j].post==3 || privacy_data[j].post==2)
+                            {
+
+                            }
+                            else
+                            {
+                                var index = final_ids.indexOf(privacy_data[j].id);
+                                final_ids.splice(index, 1);
+                            }
+                        }
+                        two_fromids();
+                    }).catch(err => {
+                        res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
+                    }); 
                 }else{
                     two_fromids();
                 }
@@ -66,7 +84,25 @@ exports.postList = (req, res) => {
                     {
                         final_ids.push(accepted_list[i].id);
                     }
-                    post_data(final_ids);
+                    Privacy.find({
+                        "user_id": final_ids
+                    }).then(privacy_data=>{
+                        for(var j=0;j<privacy_data.length;j++)
+                        {
+                            if(privacy_data[j].post==3 || privacy_data[j].post==2)
+                            {
+
+                            }
+                            else
+                            {
+                                var index = final_ids.indexOf(privacy_data[j].id);
+                                final_ids.splice(index, 1);
+                            }
+                        }
+                        post_data(final_ids);
+                    }).catch(err => {
+                        res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
+                    }); 
                 }else{
                     post_data(final_ids);
                 }
@@ -102,6 +138,7 @@ exports.postList = (req, res) => {
                         json["images"]=result[j].images;
                         json["likes"]=result[j].like;
                         json["comments"]=result[j].comment;
+                        json["share"]=result[j].share;
                         let d4=moment(result[j].created_at);
                         json["created_at"]=d4.format("DD-MM-YYYY h:mm:ss a");
                         json["name"]=result[j].user_name;
