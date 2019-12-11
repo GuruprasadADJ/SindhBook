@@ -4,6 +4,7 @@ const Friend=require('../../models/Friends/friends.model1.js');
 const Relative=require('../../models/Relative_models/relatives.model.js');
 const Privacy=require('../../models/privacy.model.js');
 const moment = require('moment');
+const load_data=require('lodash');
 var arraylist=[];
 exports.postList = (req, res) => {
     console.log("start.....");
@@ -142,6 +143,15 @@ exports.postList = (req, res) => {
                         let d4=moment(result[j].created_at);
                         json["created_at"]=d4.format("DD-MM-YYYY h:mm:ss a");
                         json["name"]=result[j].user_name;
+                        var result_index=load_data.findIndex(result[j].like, function(o) { return o.user_id == input })
+                        if(result_index>=0)
+                        {
+                            json["like_status"]=1;
+                        }
+                        else
+                        {
+                            json["like_status"]=2;
+                        }
                         arraylist.push(json); 
                         if(arraylist.length==result.length)
                         {

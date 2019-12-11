@@ -3,6 +3,8 @@ const Note=require('../models/note.model.js');
 const Friend1=require('../models/friends.model.js');
 const Privacy=require('../models/privacy.model.js');
 const About=require('../models/aboutus.model.js');
+const moment = require('moment');
+const load_data=require('lodash');
 
 /*NOTE*/
 //call backs and function responses did not used here
@@ -184,8 +186,19 @@ exports.getProfileDetails = (req, res) => {
                 json["images"]=post[i].images;
                 json["likes"]=post[i].like;
                 json["comments"]=post[i].comment;
-                json["created_at"]=post[i].created_at;
+                json["share"]=post[i].share;
+                let d4=moment(post[i].created_at);
+                json["created_at"]=d4.format("DD-MM-YYYY h:mm:ss a");
                 json["name"]=name;
+                var result_index=load_data.findIndex(post[i].like, function(o) { return o.user_id == user_id })
+                if(result_index>=0)
+                {
+                    json["like_status"]=1;
+                }
+                else
+                {
+                    json["like_status"]=2;
+                }
                 arraylist.push(json); 
             }
             show_result_about(p_about_status,f_status,name,profile_picture);
