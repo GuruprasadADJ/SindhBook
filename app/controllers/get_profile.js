@@ -185,6 +185,7 @@ exports.getProfileDetails = (req, res) => {
                 json["content"]=post[i].content;
                 json["images"]=post[i].images;
                 json["likes"]=post[i].like;
+                json["likes_length"]=post[i].like.length;
                 json["comments"]=post[i].comment;
                 json["share"]=post[i].share;
                 let d4=moment(post[i].created_at);

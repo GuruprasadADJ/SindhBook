@@ -138,6 +138,7 @@ exports.postList = (req, res) => {
                         json["content"]=result[j].content;
                         json["images"]=result[j].images;
                         json["likes"]=result[j].like;
+                        json["likes_length"]=result[j].like.length;
                         json["comments"]=result[j].comment;
                         json["share"]=result[j].share;
                         let d4=moment(result[j].created_at);
