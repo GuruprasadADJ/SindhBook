@@ -191,6 +191,8 @@ exports.getProfileDetails = (req, res) => {
                 let d4=moment(post[i].created_at);
                 json["created_at"]=d4.format("DD-MM-YYYY h:mm:ss a");
                 json["name"]=name;
+                json["user_id"]=post[i].user_id;
+                json["post_id"]=post[i].id;
                 var result_index=load_data.findIndex(post[i].like, function(o) { return o.user_id == user_id })
                 if(result_index>=0)
                 {
