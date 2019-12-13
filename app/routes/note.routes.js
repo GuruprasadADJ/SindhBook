@@ -53,8 +53,10 @@ module.exports = (app) => {
     const like_post=require('../controllers/Posts/LikePost.js'); 
     const comment_post=require('../controllers/Posts/CommentPost.js');
     const share_post=require('../controllers/Posts/SharePost.js'); 
+    const get_comments=require('../controllers/Posts/GetCommentList.js'); 
     app.post('/likePost',like_post.LikePost); 
     app.post('/commentPost',comment_post.CommentPost);
+    app.get('/commentList/:postId',get_comments.GetComments);
     app.post('/sharePost',share_post.SharePost);
     
 

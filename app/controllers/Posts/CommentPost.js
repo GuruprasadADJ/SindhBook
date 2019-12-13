@@ -13,9 +13,9 @@ if(post_id)
     }
     else
     {
-    Note.find({
-        "_id":user_id
-    }).then(data=>{
+        Note.find({
+            "_id":user_id
+        }).then(data=>{  
         if(data.length!=0)
         {
             var json={};
@@ -37,8 +37,8 @@ if(post_id)
                 }
                 else
                 {
-                var comments=[];
-                if(data[0].comment!=0){
+                    var comments=[];
+                    if(data[0].comment!=0){
                     var comments=data[0].comment;
                     var flag=0;
                     comments.push(json);
@@ -50,7 +50,7 @@ if(post_id)
                         },function(err,postupdate) {
                               if (err){ return res.status(500).json({result:"failed",message:"There was a problem inserting data into database",errorMessage: err.message});
                         }else{
-                              res.status(200).send({result:"success",message:"comment post successfully"});
+                              res.status(200).send({result:"success",message:"comment post successfully",data:comments});
                         } 
                         }).catch(err => {
                             res.status(500).send({
@@ -68,7 +68,7 @@ if(post_id)
                         },function(err,postupdate) {
                               if (err){ return res.status(500).json({result:"failed",message:"There was a problem inserting data into database",errorMessage: err.message});
                         }else{
-                              res.status(200).send({result:"success",message:"Comment post successfully"});
+                              res.status(200).send({result:"success",message:"Comment post successfully",data:comments});
                         } 
                         }).catch(err => {
                             res.status(500).send({
