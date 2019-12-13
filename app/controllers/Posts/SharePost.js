@@ -8,6 +8,7 @@ exports.SharePost = (req, res) => {
     var from_id=req.body.from_id;
     var to_id=req.body.to_id;
     var deviceId=req.body.deviceId;
+    var sharetitle=req.body.share_title;
     var json={};
     var json1={};
     var share_list=[];
@@ -52,7 +53,6 @@ exports.SharePost = (req, res) => {
                     }).catch(err => {
                         res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message });
                     });
-                    console.log("Test1");  
             }
             else
             {
@@ -62,7 +62,6 @@ exports.SharePost = (req, res) => {
                     {_id: from_id}, 
                     {$set: { deviceId: device_array}}
                     ,function(err,updatedevice) {
-                        console.log("Test");
                     if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                     }                           
                     }).catch(err => {
@@ -120,11 +119,20 @@ exports.SharePost = (req, res) => {
                     "user_id":to_id
                   })
                   .then(cont => {
-                      if(!cont.length==0)
+                      if(cont.length!=0)
                       { 
-                          title=cont[0].title;
+                          console.log("Coming="+cont[0].content);
+                          title=sharetitle;
                           content=cont[0].content;           
                           images=cont[0].images;
+                            if(note[0].id==from_id)
+                            {
+                                share_post_data(note[0],note[1]);
+                            }
+                            else
+                            {
+                                share_post_data(note[1],note[0]);
+                            }
                       }
                       else{
                             res.status(200).send({result:'failed',message:'Data not found in database with this id '+user_id + "or post_id" +_id});
@@ -134,14 +142,7 @@ exports.SharePost = (req, res) => {
                       result:"failed",message:"There was an exception",errorMessage: err.message});
                   });
                 
-                    if(note[0].id==from_id)
-                    {
-                        share_post_data(note[0],note[1]);
-                    }
-                    else
-                    {
-                        share_post_data(note[1],note[0]);
-                    }
+                    
                     function share_post_data(note1,note2)
                     {
                         json={};
@@ -154,7 +155,7 @@ exports.SharePost = (req, res) => {
                         json["share_id"]=note1.id;
                         json["deviceId"]=deviceId;
                         json["share_date"]=new Date();
-
+                        console.log("Test1");
                         json1={};
                         json1["from_id"]=note2.id;
                         json1["from_name"]=note2.first_name+" "+note2.last_name;
@@ -169,8 +170,7 @@ exports.SharePost = (req, res) => {
                         Post.find({
                            "_id": post_id,
                            "user_id":to_id
-                         })
-                         .then(cont => {
+                         }).then(cont => {
                              if(!cont.length==0)
                              { 
                                  share_list=[];
@@ -197,10 +197,11 @@ exports.SharePost = (req, res) => {
                             });    
                                 share_list1=[];
                                 share_list1.push(json);
+                                console.log("Coming1="+content+"\n Title="+title);
                                 const postuse = new Post({
                                     user_id:note1.id,
                                     user_name:note1.first_name+" "+note1.last_name,
-                                    title:title,
+                                    title:title || '',
                                     content:content ||'',
                                     images:images,
                                     created_at:new Date(),
