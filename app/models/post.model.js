@@ -15,6 +15,10 @@ const NoteSchema = mongoose.Schema({
         created_at: {type:Date, default:Date.Now},
         modified_at:{type:Date, default:Date.Now},
         deleted_at:{type:Date, default:Date.Now},
-        deviceId:String
+        deviceId:String,
+        isShared : Number,
+        to_id:String,
+        from_id:String
+
 });
 module.exports = mongoose.model('post', NoteSchema);

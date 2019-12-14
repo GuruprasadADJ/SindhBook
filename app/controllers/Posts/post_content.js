@@ -35,7 +35,8 @@ exports.createPost = (req, res) => {
                     images:[],
                     created_at:new Date(),
                     post_status:1,
-                    deviceId:req.body.deviceId || ''
+                    deviceId:req.body.deviceId || '',
+                    isShared:1
                 },function(err,postcreate){
                     if (err) return res.status(500).send({result:"failed",message:"There was a problem inserting data into database",errorMessage:err.message});
                 });
@@ -101,7 +102,8 @@ exports.createPost = (req, res) => {
                 images:ResponseData,
                 created_at:new Date(),
                 post_status:1,
-                deviceId:req.body.deviceId || ''
+                deviceId:req.body.deviceId || '',
+                isShared:1
               },function(err,postuse){
                 if (err) return res.status(500).send({result:"failed",message:"There Was A problem Inserting Post",errorMessage:err.message});
               });
