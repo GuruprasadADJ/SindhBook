@@ -144,6 +144,9 @@ exports.postList = (req, res) => {
                         let d4=moment(result[j].created_at);
                         json["created_at"]=d4.format("DD-MM-YYYY h:mm:ss a");
                         json["name"]=result[j].user_name;
+                        json["isShared"]=result[j].isShared||'';
+                        json["to_id"]=result[j].to_id ||"";
+                        json["from_id"]=result[j].from_id ||"";
                         var result_index=load_data.findIndex(result[j].like, function(o) { return o.user_id == input })
                         if(result_index>=0)
                         {

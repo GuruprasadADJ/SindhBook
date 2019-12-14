@@ -51,7 +51,7 @@ exports.SharePost = (req, res) => {
                     if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                     }                           
                     }).catch(err => {
-                        res.status(500).send({result:"failed",message:"There was an exception1",errorMessage: err.message });
+                        res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message });
                     });
             }
             else
@@ -65,7 +65,7 @@ exports.SharePost = (req, res) => {
                     if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                     }                           
                     }).catch(err => {
-                        res.status(500).send({result:"failed",message:"There was an exception2",errorMessage: err.message });
+                        res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message });
                     }); 
             }
             if(from_id==to_id)
@@ -101,7 +101,7 @@ exports.SharePost = (req, res) => {
                             } 
                             }).catch(err => {
                                 res.status(500).send({
-                                result:"failed",message:"There was an exception3",errorMessage: err.message});
+                                result:"failed",message:"There was an exception",errorMessage: err.message});
                             });
                         }
                         else{
@@ -109,7 +109,7 @@ exports.SharePost = (req, res) => {
                         }
                     }).catch(err => {
                         res.status(500).send({
-                        result:"failed",message:"There was an exception4",errorMessage: err.message});
+                        result:"failed",message:"There was an exception",errorMessage: err.message});
                     });                  
             }
             else if(note.length==2)
@@ -135,11 +135,11 @@ exports.SharePost = (req, res) => {
                             }
                       }
                       else{
-                            res.status(200).send({result:'failed',message:'Data not found in database with this id '});
+                            res.status(200).send({result:'failed',message:'Data not found in database with this id '+user_id + "or post_id" +_id});
                       }
                   }).catch(err => {
                       res.status(500).send({
-                      result:"failed",message:"There was an exception5",errorMessage: err.message});
+                      result:"failed",message:"There was an exception",errorMessage: err.message});
                   });
                 
                     
@@ -179,21 +179,18 @@ exports.SharePost = (req, res) => {
                                  const postupdate=Post.updateMany( //updates records in created record
                                  {_id:post_id,user_id:to_id}, 
                                  {
-                                    share:share_list,
-                                    isShared:2,
-                                    to_id:to_id,
-                                    from_id:from_id
+                                    share:share_list
                                  },function(err,postupdate) {
                                        if (err){ return res.status(500).json({result:"failed",message:"There was a problem inserting data into database",errorMessage: err.message});
                                  }
                                  }).catch(err => {
                                      res.status(500).send({
-                                     result:"failed",message:"There was an exception6",errorMessage: err.message});
+                                     result:"failed",message:"There was an exception",errorMessage: err.message});
                                  });
-                                }
-                                else{
-                                      res.status(200).send({result:'failed',message:'Data not found in database with this id '+from_id + "or" +_id});
-                                }
+                            }
+                            else{
+                                    res.status(200).send({result:'failed',message:'Data not found in database with this id '+from_id + "or" +_id});
+                            }
                             }).catch(err => {
                                 res.status(500).send({
                                 result:"failed",message:"There was an exception",errorMessage: err.message});
@@ -211,7 +208,9 @@ exports.SharePost = (req, res) => {
                                     post_status:1,
                                     deviceId:deviceId || '',
                                     share:share_list1,
-                                    isShared:1,
+                                    isShared:2,
+                                    to_id:to_id,
+                                    from_id:from_id
                                 },function(err,postuse){
                                     if (err) return res.status(500).send({result:"failed",message:"There Was A problem Inserting Post",errorMessage:err.message});
                                 });
@@ -227,8 +226,7 @@ exports.SharePost = (req, res) => {
                 res.status(200).send({result:"success",message:"from_id or to_id does not exist in register table"})
             }
         }).catch(err => {
-            res.status(500).send({result:"failed",message:"There was an exception7",errorMessage: err.message});
+            res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
         }); 
     } 
-}
-
+} 

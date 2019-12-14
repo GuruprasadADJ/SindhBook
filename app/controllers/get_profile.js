@@ -193,6 +193,9 @@ exports.getProfileDetails = (req, res) => {
                 json["name"]=name;
                 json["user_id"]=post[i].user_id;
                 json["post_id"]=post[i].id;
+                json["isShared"]=post[i].isShared||'';
+                json["to_id"]=post[i].to_id ||"";
+                json["from_id"]=post[i].from_id ||"";
                 var result_index=load_data.findIndex(post[i].like, function(o) { return o.user_id == user_id })
                 if(result_index>=0)
                 {

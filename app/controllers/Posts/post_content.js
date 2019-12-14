@@ -36,7 +36,9 @@ exports.createPost = (req, res) => {
                     created_at:new Date(),
                     post_status:1,
                     deviceId:req.body.deviceId || '',
-                    isShared:1
+                    isShared:1,
+                    to_id:'',
+                    from_id:''
                 },function(err,postcreate){
                     if (err) return res.status(500).send({result:"failed",message:"There was a problem inserting data into database",errorMessage:err.message});
                 });
@@ -103,7 +105,9 @@ exports.createPost = (req, res) => {
                 created_at:new Date(),
                 post_status:1,
                 deviceId:req.body.deviceId || '',
-                isShared:1
+                isShared:1,
+                to_id:'',
+                from_id:''
               },function(err,postuse){
                 if (err) return res.status(500).send({result:"failed",message:"There Was A problem Inserting Post",errorMessage:err.message});
               });

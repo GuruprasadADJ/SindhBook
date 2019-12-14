@@ -19,7 +19,39 @@ exports.GetAllUsersList = (req, res) => {
            //retrive all users to ids    
            function findids()
            {
-               console.log("first_function_run");
+            //    console.log("first_function_run");
+            //     var temp_ids=[];
+            //    Friend.find({
+            //     "user_id":user_id
+            //    }).then(result=>{
+            //         if(result.length!=0)
+            //         {
+            //             var len=[];
+            //             len=result[0].accepted_list;
+            //             if(len.length!=0)
+            //             {
+            //                 for(var i=0;i<len.length;i++){
+            //                     temp_ids.push(len[i].id);
+            //                 }
+            //             }
+            //         Friend.find({
+            //             "user_id": {"$in": temp_ids}
+            //             }).then(result1=>{
+            //                 if(result1.length!=0)
+            //                 {
+            //                     console.log("frnds of frnds",result1);
+            //                 }
+            //             })
+            //         }
+            //         else
+            //         {
+
+            //         }
+            //    })
+
+
+
+               /************************ */
                 Note.find()
                 .then(result=>{
                     lengtr=result.length;
@@ -41,6 +73,7 @@ exports.GetAllUsersList = (req, res) => {
                 }).catch(err => {
                     res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                 });
+                /************************* */
             }
         
             //chech in frnds function
