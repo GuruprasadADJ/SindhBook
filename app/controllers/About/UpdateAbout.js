@@ -3,14 +3,15 @@ const Note = require('../../models/note.model.js');
 
 exports.updateAboutDetails = (req, res) => {
 console.log("strt.........")
-console.log("start... about delete");
 var inputs=req.body;
 var workindex=inputs.workindex;
 var educationindex=inputs.educationindex;
 var places_livedindex=inputs.places_livedindex;
+var contact_infoindex=inputs.contact_infoindex;
 var work1=inputs.work;
 var education1=inputs.education;
 var places_lived1=inputs.places_lived;
+var contact_info1=inputs.contact_info;
 console.log("got input");
     Note.find({             //checks  weather the user_id exist in register table
         "_id": inputs.user_id
@@ -26,7 +27,8 @@ console.log("got input");
                 var work=about1[0].work;
                 var education=about1[0].education;
                 var places_lived=about1[0].places_lived;
-                if(workindex||educationindex||places_livedindex)
+                var contact_info=about1[0].contact_info;
+                if(workindex||educationindex||places_livedindex||contact_infoindex)
                 {
                     if(workindex && work1)
                     {       
@@ -91,6 +93,27 @@ console.log("got input");
                         const about3=Aboutus.updateOne( //updates records in created record
                             {user_id:inputs.user_id},
                             {places_lived:places_lived
+                        },function(err,about3) {
+                            if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
+                            }else{
+                                res.status(200).send({result:"success",message:"About details updated successfully",data:about1[0]});
+                            }                             
+                        })
+                    }
+                    if(contact_infoindex && contact_info1)
+                    {
+                        for(var i=0;i<contact_info.length;i++){
+                            if(i==contact_infoindex)
+                            {
+                                console.log("before_contact_info[i] - ",contact_info[i]);
+                                contact_info[i].name=contact_info1;
+                                console.log("after_contact_info[i] - ",contact_info[i]);
+                            }
+                        }
+                        console.log("a : ",contact_info);
+                        const about3=Aboutus.updateOne( //updates records in created record
+                            {user_id:inputs.user_id},
+                            {contact_info:contact_info
                         },function(err,about3) {
                             if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                             }else{

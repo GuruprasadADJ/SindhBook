@@ -62,7 +62,7 @@ else
                         })
                         about2.save() // this creates the database as privacy
                         .then(data => { 
-                            res.status(200).send({result:"success",message:"Inserted about details successfully",data:data});
+                            res.status(200).send({result:"success",message:"About details inserted successfully",data:data});
                         }).catch(err => {
                             res.status(500).send({
                                 result:"failed",message:"There was an exception while inserting data",errorMessage: err.message || "Some error occurred while creating the Note."
@@ -112,7 +112,7 @@ else
                     },function(err,about3) {
                         if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                         }else{
-                            res.status(200).send({result:"success",message:"About details updated successfully"});
+                            res.status(200).send({result:"success",message:"About details inserted successfully"});
                         }                             
                         }).catch(err => {
                             res.status(500).send({
@@ -199,7 +199,7 @@ exports.showaboutdetails = (req, res) => {
                         {
                             json["contact_info"]=[];
                         }
-                        res.status(200).send({result:"success",message:"Data found",data:json});
+                        res.status(200).send({result:"success",message:"Data found successfully",data:json});
                     }
                 }).catch(err => {
                     res.status(500).send({
