@@ -22,9 +22,15 @@ exports.searchfriend = (req, res) => {
                 }).then(request=>{
                     if(request.length!=0)
                     {
-                        blocked_list=request[0].blocked_list;
-                        for(var k=0; k<request[0].blocked_by_others.length;k++){
-                            blocked_list.push(request[0].blocked_by_others[i]);
+                        var blist=request[0].blocked_list;
+                        for(var i=0;i<blist.length;i++)
+                        {
+                            blocked_list.push(blist[i].id);
+                        }
+                        var blist1=request[0].blocked_by_others;
+                        for(var k=0; k<blist1.length;k++)
+                        {
+                            blocked_list.push(blist1[k].id);
                         }
                     }
                 })
@@ -35,12 +41,15 @@ exports.searchfriend = (req, res) => {
                 }).then(request1=>{
                     if(request1.length!=0)
                     {
-                        for(var j=0; j<request1[0].r_blocked_list.length;j++){
-                            blocked_list.push(request1[0].r_blocked_list[j]);
+                        var blist=request1[0].r_blocked_list;
+                        for(var i=0;i<blist.length;i++)
+                        {
+                            blocked_list.push(blist[i].id);
                         }
-                      
-                        for(var m=0; m<request1[0].r_blocked_by_others.length;m++){
-                            blocked_list.push(request1[0].r_blocked_by_others[m]);
+                        var blist1=request1[0].r_blocked_by_others;
+                        for(var j=0; j<blist1.length;j++)
+                        {
+                            blocked_list.push(blist1[j].id);
                         }
                     }
                 })
@@ -51,9 +60,9 @@ exports.searchfriend = (req, res) => {
 
             Note.find({
                 "$or": [{ "first_name":{$regex:( new RegExp("^"+input.toLowerCase(), "i"))}}, 
-                        { "last_name": {$regex:( new RegExp("^"+input.toLowerCase(), "i"))}},
-                        { "email":     {$regex:( new RegExp("^"+input.toLowerCase(), "i"))}},
-                        {"mobile_no":  {$regex:( new RegExp("^"+input.toLowerCase(), "i"))}}
+                        { "last_name" :{$regex:( new RegExp("^"+input.toLowerCase(), "i"))}},
+                        { "email"     :{$regex:( new RegExp("^"+input.toLowerCase(), "i"))}},
+                        {"mobile_no"  :{$regex:( new RegExp("^"+input.toLowerCase(), "i"))}}
                 ]
             }).then(note=>{
                 if(note.length!=0){
@@ -62,20 +71,24 @@ exports.searchfriend = (req, res) => {
                     {
                         var notedata=note[i];
                         console.log("notedata.id",notedata.id);
-                        if(blocked_list.includes(notedata.id))
+                        if(note[i].id!=id)
                         {
-
+                            var json={};
+                            json["id"]=note[i].id;
+                            json["user_name"]=note[i].first_name+" "+note[i].last_name;
+                            json["profile_picture"]=note[i].profile_picture;
+                            arraylist.push(json);
                         }
-                        else
+                    }
+                    
+                    console.log("blocked_list : ",blocked_list);
+                    for(var i=0;i<arraylist.length;i++)
+                    {
+                        console.log("i",i)
+                        if(blocked_list.includes(arraylist[i].id))
                         {
-                            if(note[i].id!=id)
-                            {
-                                var json={};
-                                json["id"]=note[i].id;
-                                json["user_name"]=note[i].first_name+" "+note[i].last_name;
-                                json["profile_picture"]=note[i].profile_picture;
-                                arraylist.push(json);
-                            }
+                            arraylist.splice(i, 1);
+                            console.log("deleted");
                         }
                     }
                     res.status(200).send({result:"success",message:"found",data:arraylist});
