@@ -114,4 +114,8 @@ module.exports = (app) => {
     app.get('/getAllRelativesList/:userId',GetAllRelativesList.GetAllRelativesList);/***REQUESTED LIST****** */
     app.post('/unRelative',UnRelative.UnRelative); /**** UNRELATIVE *** */
     app.get('/getRelativesList/:noteId',GetRelativesList.GetRelativesList);/****MY RELATIVES LIST****** */
+
+    //search friend
+    const searchfriend=require('../controllers/Friends/SearchFriend.js');
+    app.get('/searchFriend/:input',searchfriend.searchfriend);
 }

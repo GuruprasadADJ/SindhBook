@@ -28,7 +28,7 @@ exports.postList = (req, res) => {
     {
         var ids=[];
         var final_ids=[];
-        final_ids.push(user_id);
+        //final_ids.push(user_id);
         var status1;
         //console.log("before adding final ids : ",final_ids);
         //function to retrive ids from to ids
@@ -100,11 +100,13 @@ exports.postList = (req, res) => {
                                 final_ids.splice(index, 1);
                             }
                         }
+                        final_ids.push(user_id);
                         post_data(final_ids);
                     }).catch(err => {
                         res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                     }); 
                 }else{
+                    final_ids.push(user_id);
                     post_data(final_ids);
                 }
             }).catch(err => {
