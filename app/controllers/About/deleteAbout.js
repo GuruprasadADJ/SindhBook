@@ -8,6 +8,7 @@ var inputs=req.body;
 var workindex=inputs.workindex;
 var educationindex=inputs.educationindex;
 var places_livedindex=inputs.places_livedindex;
+var contact_infoindex=inputs.contact_infoindex;
 console.log("got input");
     Note.find({             //checks  weather the user_id exist in register table
         "_id": inputs.user_id
@@ -23,7 +24,8 @@ console.log("got input");
                 var work=about1[0].work;
                 var education=about1[0].education;
                 var places_lived=about1[0].places_lived;
-                if(workindex||educationindex||places_livedindex)
+                var contact_info=about1[0].contact_info;
+                if(workindex||educationindex||places_livedindex||contact_infoindex)
                 {
                     console.log("work",work);
                     console.log("adfdsf",workindex)
@@ -59,7 +61,7 @@ console.log("got input");
                     if(places_livedindex)
                     {
                             places_lived.splice(places_livedindex,1);
-                            console.log("a",education);
+                            console.log("places_lived :",places_lived);
                             const about3=Aboutus.updateOne( //updates records in created record
                                 {user_id:inputs.user_id}, 
                                 {places_lived:places_lived
@@ -73,9 +75,26 @@ console.log("got input");
                             });
                             
                     }
+                    if(contact_infoindex)
+                    {
+                            contact_info.splice(contact_infoindex,1);
+                            console.log("contact_info :",contact_info);
+                            const about3=Aboutus.updateOne( //updates records in created record
+                                {user_id:inputs.user_id}, 
+                                {contact_info:contact_info
+                            },function(err,about3) {
+                                if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
+                                }else{
+                                    res.status(200).send({result:"success",message:"About details deleted successfully",data:about1[0]});
+                                }                             
+                            }).catch(err => {
+                                res.status(500).send({result:"failed",message:"There is an exception",errorMessage: err.message });
+                            });
+                            
+                    }
                 }
                 else{
-                    res.status(200).send({result:"success",message:"Please specify workindex or educationindex or places_livedindex"});
+                    res.status(200).send({result:"success",message:"Please specify workindex or educationindex or places_livedindex or contact_infoindex"});
                 }
             }).catch(err => {
                 res.status(500).send({result:"failed",message:"There is an exception",errorMessage: err.message });
