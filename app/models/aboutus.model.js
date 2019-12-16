@@ -5,7 +5,7 @@ const NoteSchema = mongoose.Schema({
     work : Array,
     education : Array,
     places_lived : Array,
-    contact_info : Number,
+    contact_info : Array,
     deviceId:String
 });
 module.exports = mongoose.model("about", NoteSchema);

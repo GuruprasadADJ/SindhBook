@@ -27,11 +27,12 @@ else
         }).then(about1 => {
             if(about1.length==0) 
             {     
-                if(inputs.work||inputs.education||inputs.places_lived||note[0].mobile_no)
+                if(inputs.work||inputs.education||inputs.places_lived||inputs.contact_info)
                 {                                
                     var work1=[];
                     var education1=[];
                     var places_lived1=[];
+                    var mobile_no1=[];
                             if(inputs.work!="" && inputs.work!=null)
                             {
                                 work1.push({"name":inputs.work});
@@ -44,63 +45,74 @@ else
                             {
                                 places_lived1.push({"name":inputs.places_lived});
                             }
-                    const about2 = new Aboutus({
-                        user_id: inputs.id,
-                        work:work1,
-                        education:education1,
-                        places_lived:places_lived1,
-                        contact_info : note[0].mobile_no||''
-                    },function(err,about2) {
-                    if (err) return res.status(500).send({
-                        result:"failed",message:"There was a problem inserting data into database",errorMessage: err.message
-                    });
-                })
-                about2.save() // this creates the database as privacy
-                .then(data => { 
-                    res.status(200).send({result:"success",message:"Inserted about details successfully",data:data});
-                }).catch(err => {
-                    res.status(500).send({
-                        result:"failed",message:"There was an exception while inserting data",errorMessage: err.message || "Some error occurred while creating the Note."
-                    });
-                });
+                            if(inputs.contact_info!="" && inputs.contact_info!=null)
+                            {
+                                mobile_no1.push({"name":inputs.contact_info});
+                            }
+                        const about2 = new Aboutus({
+                            user_id: inputs.id,
+                            work:work1,
+                            education:education1,
+                            places_lived:places_lived1,
+                            contact_info : mobile_no1
+                        },function(err,about2) {
+                        if (err) return res.status(500).send({
+                            result:"failed",message:"There was a problem inserting data into database",errorMessage: err.message
+                        });
+                        })
+                        about2.save() // this creates the database as privacy
+                        .then(data => { 
+                            res.status(200).send({result:"success",message:"Inserted about details successfully",data:data});
+                        }).catch(err => {
+                            res.status(500).send({
+                                result:"failed",message:"There was an exception while inserting data",errorMessage: err.message || "Some error occurred while creating the Note."
+                            });
+                        });
 
                 }else{
-                res.status(200).send({result:"failed",message:"Something is wrong, Please enter any about details"});
+                  res.status(200).send({result:"failed",message:"Something is wrong, Please enter any about details"});
                 }
             }
-            else if(!about1.length==0)
+            else if(about1.length!=0)
             {                 
+                console.log("dfsdgds");
                 var work1=[];
                 var education1=[];
                 var places_lived1=[];
+                var mobile_no1=[];
                 work1=about1[0].work;
                 education1=about1[0].education;
                 places_lived1=about1[0].places_lived;
-                ph_no=note[0].mobile_no;
-                if(inputs.work||inputs.education||inputs.places_lived||note[0].mobile_no)
-                {
-                            if(inputs.work!="" && inputs.work!=null)
-                            {
-                                work1.push({"name":inputs.work});
-                            }
-                            if(inputs.education!="" && inputs.education!=null)
-                            {
-                                education1.push({"name":inputs.education});
-                            }
-                            if(inputs.places_lived!="" && inputs.places_lived!=null)
-                            {
-                                places_lived1.push({"name":inputs.places_lived});
-                            }
+                mobile_no1=about1[0].contact_info;
+                console.log("work1",work1,"education1",education1,"places_lived1",places_lived1,"mobile_no1",mobile_no1);
+                if(inputs.work||inputs.education||inputs.places_lived||inputs.contact_info)
+                {    
+                        if(inputs.work!="" && inputs.work!=null)
+                        {
+                            work1.push({"name":inputs.work});
+                        }
+                        if(inputs.education!="" && inputs.education!=null)
+                        {
+                            education1.push({"name":inputs.education});
+                        }
+                        if(inputs.places_lived!="" && inputs.places_lived!=null)
+                        {
+                            places_lived1.push({"name":inputs.places_lived});
+                        }
+                        if(inputs.contact_info!="" && inputs.contact_info!=null)
+                        {
+                            mobile_no1.push({"name":inputs.contact_info});
+                        }
                     const about3=Aboutus.updateMany( //updates records in created record
                         {user_id:inputs.id}, 
                         {work:work1,
                         education:education1,
                         places_lived:places_lived1,
-                        contact_info : note[0].mobile_no||''
+                        contact_info : mobile_no1
                     },function(err,about3) {
                         if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                         }else{
-                            res.status(200).send({result:"success",message:"About details updated successfully",data:about1[0]});
+                            res.status(200).send({result:"success",message:"About details updated successfully"});
                         }                             
                         }).catch(err => {
                             res.status(500).send({
@@ -142,14 +154,14 @@ exports.showaboutdetails = (req, res) => {
                             json["work"]=[];
                             json["education"]=[];
                             json["places_lived"]=[];
-                            json["contact_info"]='';
+                            json["contact_info"]=[];
                        
                         res.status(200).send({result:"success",message:"No data found",data:json});
                     }else{
                         var work=[];
                         var education=[];
                         var places_lived=[];
-                        var contact_info=0;
+                        var contact_info=[];
                         var json={};
                         work=about1[0].work;
                         education=about1[0].education;
@@ -185,7 +197,7 @@ exports.showaboutdetails = (req, res) => {
                         }
                         else
                         {
-                            json["contact_info"]='';
+                            json["contact_info"]=[];
                         }
                         res.status(200).send({result:"success",message:"Data found",data:json});
                     }

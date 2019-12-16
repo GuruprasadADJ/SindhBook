@@ -117,5 +117,5 @@ module.exports = (app) => {
 
     //search friend
     const searchfriend=require('../controllers/Friends/SearchFriend.js');
-    app.get('/searchFriend/:input',searchfriend.searchfriend);
+    app.get('/searchFriend/:id/:input',searchfriend.searchfriend);
 }
