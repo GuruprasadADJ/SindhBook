@@ -32,15 +32,15 @@ else
                     var work1=[];
                     var education1=[];
                     var places_lived1=[];
-                        if(inputs.work)
+                            if(inputs.work!="")
                             {
                                 work1.push({"name":inputs.work});
                             }
-                            if(inputs.education)
+                            if(inputs.education!="")
                             {
                                 education1.push({"name":inputs.education});
                             }
-                            if(inputs.places_lived)
+                            if(inputs.places_lived!="")
                             {
                                 places_lived1.push({"name":inputs.places_lived});
                             }
