@@ -32,15 +32,15 @@ else
                     var work1=[];
                     var education1=[];
                     var places_lived1=[];
-                            if(inputs.work!="")
+                            if(inputs.work!="" && inputs.work!=null)
                             {
                                 work1.push({"name":inputs.work});
                             }
-                            if(inputs.education!="")
+                            if(inputs.education!="" && inputs.education!=null)
                             {
                                 education1.push({"name":inputs.education});
                             }
-                            if(inputs.places_lived!="")
+                            if(inputs.places_lived!="" && inputs.places_lived!=null)
                             {
                                 places_lived1.push({"name":inputs.places_lived});
                             }
@@ -79,15 +79,15 @@ else
                 ph_no=note[0].mobile_no;
                 if(inputs.work||inputs.education||inputs.places_lived||note[0].mobile_no)
                 {
-                            if(inputs.work!="")
+                            if(inputs.work!="" && inputs.work!=null)
                             {
                                 work1.push({"name":inputs.work});
                             }
-                            if(inputs.education!="")
+                            if(inputs.education!="" && inputs.education!=null)
                             {
                                 education1.push({"name":inputs.education});
                             }
-                            if(inputs.places_lived!="")
+                            if(inputs.places_lived!="" && inputs.places_lived!=null)
                             {
                                 places_lived1.push({"name":inputs.places_lived});
                             }
