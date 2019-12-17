@@ -88,6 +88,7 @@ module.exports = (app) => {
     const request_list=require('../controllers/Friends/RequestedFriendList.js');
     const all_users=require('../controllers/Friends/AllUsersList.js');
     const block_user=require('../controllers/Friends/BlockFriend.js');
+    const suggestions=require('../controllers/Friends/Suggestions.js');
     app.post('/sendFriendRequest1',new_friends.SendFriendRequest1); //**** */
     app.post('/rejectFriendRequest1',new_rejectfrnds.RejectFriendReuest1)//********** */
     app.post('/acceptFriendRequest1',accept_friends.AcceptFriendRequest1); //**** */
@@ -96,6 +97,7 @@ module.exports = (app) => {
     app.get('/requestedList1/:userId',request_list.RequestedFriendList); //**** */
     app.get('/allUsersList1/:userId',all_users.GetAllUsersList); //***** */
     app.post('/blockFriend1',block_user.BlockFriend1);
+    app.get('/suggestionsList/:userId',suggestions.suggestions);
 
     //API'S FOR RELATIVES UnRelative
     const Relativesrelations=require('../controllers/Relatives/getAllRelationsList.js');/**** */
