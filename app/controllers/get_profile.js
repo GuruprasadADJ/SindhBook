@@ -31,13 +31,19 @@ exports.getProfileDetails = (req, res) => {
         }
         else
         {
-            profile_picture=note[0].profile_picture;
-            if(note[0].id==user_id){
-                var name=note[1].first_name+" "+note[1].last_name;
-            }else{
+            if(note.length==1){
                 var name=note[0].first_name+" "+note[0].last_name;
+                profile_picture=note[0].profile_picture;
             }
-            
+            else if(note.length>1){
+                if(note[0].id==user_id){
+                    var name=note[1].first_name+" "+note[1].last_name;
+                    profile_picture=note[1].profile_picture;
+                }else{
+                    var name=note[0].first_name+" "+note[0].last_name;
+                    profile_picture=note[0].profile_picture;
+                }
+            }
             console.log("Test1");
             find_friend_status(user_id,friend_id,function(response){
                 //f_status=response;
@@ -55,10 +61,11 @@ exports.getProfileDetails = (req, res) => {
                 });              
             });  
         }
-    }).catch(err => {
-        return res.status(200).send({result:'failed',
-                message: "There is an exception ",errorMessage:err.message});
     })
+    // .catch(err => {
+    //     return res.status(200).send({result:'failed',
+    //             message: "There is an exception12 ",errorMessage:err.message});
+    // })
 //this function find status whether the user friend or not
     function find_friend_status(user_id,friend_id,callback)
     { //add status in f_status whther accepted or blocked
@@ -93,8 +100,7 @@ exports.getProfileDetails = (req, res) => {
             }
         }).catch(err => {
             res.status(500).send({
-              result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-        });
+              result:"failed",message:"There was an exception1",errorMessage: err.message});
         });
     }
 //find privacy of post
@@ -116,7 +122,7 @@ exports.getProfileDetails = (req, res) => {
             }
             }).catch(err => {
                 res.status(500).send({
-                result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
+                result:"failed",message:"There was an exception2",errorMessage: err.message || "Some error occurred while creating the Note."
             });
             });
     }
@@ -138,7 +144,7 @@ exports.getProfileDetails = (req, res) => {
             }
             }).catch(err => {
                 res.status(500).send({
-                result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
+                result:"failed",message:"There was an exception3",errorMessage: err.message || "Some error occurred while creating the Note."
             });
             });
     }
@@ -289,7 +295,7 @@ exports.getProfileDetails = (req, res) => {
                 return res.status(200).send({result:'success',message: "User Profile Details",data:data});
             }).catch(err => {
                 return res.status(200).send({result:'failed',
-                message: "There is an exception ",errorMessage:err.message});
+                message: "There is an exception5 ",errorMessage:err.message});
             })
         } 
     }        
