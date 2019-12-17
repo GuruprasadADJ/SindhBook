@@ -10,6 +10,7 @@ exports.GetAllUsersList = (req, res) => {
     var user_id=inputs.userId;
     var ids=[];
     var data=[];
+   
     Note.find({
         "_id": user_id
     }).then(note=>{
@@ -19,112 +20,29 @@ exports.GetAllUsersList = (req, res) => {
            //retrive all users to ids    
            function findids()
            {
-              Friend.find({
-                  "user_id":user_id
-              }).then(request=>{ 
-                if(request.length>0)
-                {
-                    var temp_ids=[];
-                    var acc_list=request[0].accepted_list;
-                    for(var i=0;i<acc_list.length;i++){
-                        temp_ids.push(acc_list[i].id);
-                    }
-                    //to find friends of friends *temp_ids are friends of user_id
-                    Friend.find({
-                        "user_id":{"$in": temp_ids},
-                    }).then(request11=>{
-                        if(request11.length>1)
-                        {
-                            var flag=0;
-                            console.log("friends  length  :",request11.length);
-                            for(var j=0;j<request11.length;j++)
-                            {
-                                console.log("j----",j);
-                                var acc_list=request11[j].accepted_list;
-                                if(acc_list.length>1)
-                                {
-                                    for(var i=0;i<acc_list.length;i++)
-                                    {
-                                        if(ids.includes(acc_list[i].id))
-                                        {
-
-                                        }else{
-                                            if(acc_list[i].id!=user_id){
-                                                ids.push(acc_list[i].id);
-                                            }   
-                                        }
-                                    }
-                                }
-                               else{
-                                   flag=1;
-                               }
-                            }
-                           if(flag==1){
-                               console.log("flag");
-                               all_user_list();
-                           }
-                            checkinfrnds();
-                        }
-                        if(request11.length==1)
-                        {
-                            console.log("this length is 1");
-                            var acc_list=request11[0].accepted_list;
-                            if(acc_list.length==1)
-                            {
-                                all_user_list();
-                            }
-                            else if(acc_list.length>1)
-                            {
-                                for(var i=0;i<acc_list.length;i++){
-                                    if(ids.includes(acc_list[i].id)){
-
-                                    }else{
-                                        if(acc_list[i].id!=user_id){
-                                            ids.push(acc_list[i].id);
-                                        }
-                                    }
-                                }
-                            }
-                            checkinfrnds();
-                        }
-                    })
-                }
-                else
-                {
-                    all_user_list();
-                }
-            })
-           }
-
-            function all_user_list()
-            {
                 Note.find()
                 .then(result=>{
-                for(var i=0;i<result.length;i++)
-                {
-                    
-                    if(result[i].id==user_id)
+                    lengtr=result.length;
+                    for(var i=0;i<result.length;i++)
                     {
-                        console.log("all users",result[i]);
-                    }
-                    else
-                    {
-                        if(ids.includes(result[i].id)){
-
-                        }else{
-                            ids.push(result[i].id);
+                        if(result[i].id==user_id)
+                        {
+                            console.log("all users",result[i]);
+                        }
+                        else
+                        {
+                        ids.push(result[i].id);
+                        }
+                        if(result.length-1==ids.length){
+                            console.log("display this");
+                            checkinfrnds();
                         }
                     }
-                    if(result.length-1==ids.length){
-                        console.log("display this");
-                        checkinfrnds();
-                    }
-                }
-            })
+                }).catch(err => {
+                    res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
+                });
             }
-
-            /************************chech in frnds function***********************/
-            /******************************************************************** */
+            //chech in frnds function
             function checkinfrnds()
             {
                 /*******CHECKING IN FRIENDS TABLE */
@@ -140,6 +58,7 @@ exports.GetAllUsersList = (req, res) => {
                     }
                     else
                     {
+                        console.log("og");
                         var requested_list=[],requested_by_me=[],accepted_list=[],blocked_list=[];
                         requested_list=request[0].requested_list;
                         requested_by_me=request[0].requested_by_me;
@@ -180,8 +99,7 @@ exports.GetAllUsersList = (req, res) => {
                         }
                         three();
                     }
-                })
-                .catch(err => {
+                }).catch(err => {
                     res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                 });
 
@@ -227,8 +145,7 @@ exports.GetAllUsersList = (req, res) => {
 
 
     //display all final users
-    function show_list()
-    {
+    function show_list(){
         console.log("third_function_call")
         Note.find({
             "_id":  {"$in": ids},
@@ -257,12 +174,12 @@ exports.GetAllUsersList = (req, res) => {
                     return res.status(200).send({result:"success",message:"Showing all users List",data:data}); 
                 }
             }
-        })
-        .catch(err=>{res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message})
+        }).catch(err=>{res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message})
         });
     }
-})
-.catch(err => {
-    res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
+}).catch(err => {
+    res.status(500).send({
+      result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
+});
 });
 }
