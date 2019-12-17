@@ -77,7 +77,7 @@ module.exports = (app) => {
 
     // GET PROFILE DETAILS
     const profile=require('../controllers/get_profile.js');
-    app.get('/getProfileDetails/:user_id/:friend_id',profile.getProfileDetails); //onclick profile gets profile details
+    app.get('/getProfileDetails/:user_id/:friend_id',profile.getProfileDetails); //onclick  gets profile details
 
     //new frnds api 
     const new_friends=require('../controllers/Friends/SendFriendRequest.js');//******* */
@@ -106,6 +106,7 @@ module.exports = (app) => {
     const GetAllRelativesList=require('../controllers/Relatives/AllRelativesList.js');/*** */
     const UnRelative=require('../controllers/Relatives/UnRelative.js');/***** */
     const GetRelativesList=require('../controllers/Relatives/GetRelativesList.js');/***** */
+    const BlockRelative=require('../controllers/Relatives/BlockRelative.js');
     app.get('/getAllRelationsList',Relativesrelations.getAllRelationsList); /****RELATIONS LIST*** */
     app.post('/sendRelativeRequest',SendRelativeRequest.SendRelativeRequest);/*****REQUEST****** */
     app.post('/acceptRelativeRequest',AcceptRelativeRequest.AcceptRelativeRequest);/****ACCEPT ***** */
@@ -114,8 +115,9 @@ module.exports = (app) => {
     app.get('/getAllRelativesList/:userId',GetAllRelativesList.GetAllRelativesList);/***REQUESTED LIST****** */
     app.post('/unRelative',UnRelative.UnRelative); /**** UNRELATIVE *** */
     app.get('/getRelativesList/:noteId',GetRelativesList.GetRelativesList);/****MY RELATIVES LIST****** */
+    app.post('/blockRelative',BlockRelative.BlockRelative1);/************ BLOCK RELATIVE  */
 
     //search friend
-    const searchfriend=require('../controllers/Friends/SearchFriend.js');
-    app.get('/searchUser/:id/:input',searchfriend.searchfriend);
+    const searchfriend=require('../controllers/Friends/SearchFriend.js');/******* */
+    app.get('/searchUser/:id/:input',searchfriend.searchfriend);/*******seacrh any user, displays except blocked one's */
 }

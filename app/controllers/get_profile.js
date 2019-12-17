@@ -32,7 +32,12 @@ exports.getProfileDetails = (req, res) => {
         else
         {
             profile_picture=note[0].profile_picture;
-            var name=note[0].first_name+" "+note[0].last_name;
+            if(note[0].id==user_id){
+                var name=note[1].first_name+" "+note[1].last_name;
+            }else{
+                var name=note[0].first_name+" "+note[0].last_name;
+            }
+            
             console.log("Test1");
             find_friend_status(user_id,friend_id,function(response){
                 //f_status=response;
