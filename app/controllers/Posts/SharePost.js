@@ -6,14 +6,19 @@ var dt = datetime.create();
 exports.SharePost = (req, res) => {
     var post_id=req.body.post_id;
     var from_id=req.body.from_id;
+    var from_name='';
+    var from_profile_picture='';
     var to_id=req.body.to_id;
+    var to_name='';
+    var to_profile_picture='';
     var deviceId=req.body.deviceId;
     var sharetitle=req.body.share_title;
     var json={};
     var json1={};
     var share_list=[];
     var share_list1=[];
-    var title,content;
+    var title;
+    var content;
     var images=[];
     var device_array=[];
 
@@ -72,6 +77,7 @@ exports.SharePost = (req, res) => {
             {
                     json={};
                     json["from_id"]=from_id;
+
                     json["from_name"]=note[0].first_name+" "+note[0].last_name;
                     json["from_picture"]=note[0].profile_picture;
                     json["to_id"]=to_id;
@@ -105,7 +111,7 @@ exports.SharePost = (req, res) => {
                             });
                         }
                         else{
-                            res.status(200).send({result:'failed',message:'Data not found in database with this id '+user_id + "or" +_id});
+                            res.status(200).send({result:'failed',message:'Data not found in database with this id1'});
                         }
                     }).catch(err => {
                         res.status(500).send({
@@ -135,7 +141,7 @@ exports.SharePost = (req, res) => {
                             }
                       }
                       else{
-                            res.status(200).send({result:'failed',message:'Data not found in database with this id '+user_id + "or post_id" +_id});
+                            res.status(200).send({result:'failed',message:'Data not found in database with this id 2'});
                       }
                   }).catch(err => {
                       res.status(500).send({
@@ -145,6 +151,10 @@ exports.SharePost = (req, res) => {
                     
                     function share_post_data(note1,note2)
                     {
+                        from_name=note1.first_name+" "+note1.last_name;
+                        from_profile_picture=note1.profile_picture;
+                        to_name=note2.first_name+" "+note2.last_name;
+                        to_profile_picture=note2.profile_picture;
                         json={};
                         json["from_id"]=note1.id;
                         json["from_name"]=note1.first_name+" "+note1.last_name;
@@ -189,7 +199,7 @@ exports.SharePost = (req, res) => {
                                  });
                             }
                             else{
-                                    res.status(200).send({result:'failed',message:'Data not found in database with this id '+from_id + "or" +_id});
+                                    res.status(200).send({result:'failed',message:'Data not found in database with this id '});
                             }
                             }).catch(err => {
                                 res.status(500).send({
@@ -210,7 +220,11 @@ exports.SharePost = (req, res) => {
                                     share:share_list1,
                                     isShared:2,
                                     to_id:to_id,
-                                    from_id:from_id
+                                    to_name:to_name,
+                                    to_profile_picture:to_profile_picture,
+                                    from_id:from_id,
+                                    from_name:from_name,
+                                    from_profile_picture:from_profile_picture
                                 },function(err,postuse){
                                     if (err) return res.status(500).send({result:"failed",message:"There Was A problem Inserting Post",errorMessage:err.message});
                                 });

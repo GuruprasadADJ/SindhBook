@@ -18,7 +18,10 @@ const NoteSchema = mongoose.Schema({
         deviceId:String,
         isShared : Number,
         to_id:String,
-        from_id:String
-
+        to_name:String,
+        to_profile_picture:String,
+        from_id:String,
+        from_name:String,
+        from_profile_picture:String
 });
 module.exports = mongoose.model('post', NoteSchema);
