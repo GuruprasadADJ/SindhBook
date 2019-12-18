@@ -9,6 +9,7 @@ var dt = datetime.create();
 exports.createPost = (req, res) => {
     var _id=req.body.id;
     var file=req.files;
+    console.log("file",file);
     if(!req.body.id){
       res.status(500).json({result:"failed",message:"please enter valid id"});
     }
@@ -132,7 +133,7 @@ exports.createPost = (req, res) => {
         else
         {
           console.log("Test3");
-            res.status(200).send({result:"failed",message:"Please insert File or Content"});
+            res.status(200).send({result:"failed",message:"Please insert File or Content",filecontent:file});
         }
     }
     }

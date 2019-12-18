@@ -10,6 +10,8 @@ var toid=inputs.to_id;
 var deviceId=inputs.deviceId;
 var json={};
 var json1={};
+var devicetoken=[];
+var device_token1='';
 if(fromid && toid)
 {
     Note.find({
@@ -21,6 +23,15 @@ if(fromid && toid)
        {    
         if(note[0].id==fromid)
         {
+            //for devicetoken
+            devicetoken=note[1].devicetoken;
+            for(var i=0;i<devicetoken.length;i++)
+            {
+                if(devicetoken.length-1){
+                    device_token1=devicetoken[i];
+                }
+            }
+            
             //update device token
             var device_array=[];
             device_array=(note[0].deviceId);
@@ -61,6 +72,15 @@ if(fromid && toid)
         }
         else
         {
+            //for devicetoken
+            devicetoken=note[0].devicetoken;
+            for(var i=0;i<devicetoken.length;i++)
+            {
+                if(devicetoken.length-1){
+                    device_token1=devicetoken[i];
+                }
+            }
+
             //update device token
             var device_array=[];
             device_array=(note[1].deviceId);
@@ -270,4 +290,37 @@ if(fromid && toid)
             res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
         });
     }
+}
+
+
+
+/***************************************************************************************** */
+/***************************************************************************************** */
+function notify(device_token1, title1, body1){
+    var FCM = require('fcm-node');
+    var serverKey = 'AAAAylA0pUE:APA91bG7ifK49cCTv0ORKIs1jvFZ56TUCBvo0o-cN6KmVkppObqb6gmkKzAIjM3Ts3Shs_3M96x0-77Ofxp-m4G6h34T7yfVUrQiTmb2ly5SLUUTXjHf_rmaFYIc5l1kIj8OwXQsOBdS'; //put your server key here
+    var fcm = new FCM(serverKey);
+        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+    to: device_token1, 
+    // collapse_key: 'your_collapse_key',
+    
+    // notification: {
+    // title: 'Test Notification', 
+    // message: 'Hello World' ,
+    // order_id:'7485asdf'
+    // }//, 
+    data: { //you can send only notification or only data(or include both)
+    // my_key: 'my value',
+    // my_another_key: 'my another value'
+    title: title1, 
+    body: body1,
+    }
+    };
+    fcm.send(message, function(err, response){
+    if (err) {
+    console.log("Something has gone wrong!"+err);
+    } else {
+    console.log("Successfully sent with response: ", response);
+    }
+    });
 }
