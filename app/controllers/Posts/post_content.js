@@ -91,7 +91,11 @@ exports.createPost = (req, res) => {
                   amazon();
                 }
               
+              }).catch(err => {
+                res.status(500).send({result:"failed",message:"Not Inserted Post",errorMessage: err.message});
               });
+            }).catch(err => {
+              res.status(500).send({result:"failed",message:"Not Inserted Post",errorMessage: err.message});
             });
             function amazon()
             {

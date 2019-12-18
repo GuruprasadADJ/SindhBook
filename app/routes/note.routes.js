@@ -96,8 +96,8 @@ module.exports = (app) => {
     app.post('/unFriend1',UnFriend.UnFriend1);//**** */
     app.get('/requestedList1/:userId',request_list.RequestedFriendList); //**** */
     app.get('/allUsersList1/:userId',all_users.GetAllUsersList); //***** */
-    app.post('/blockFriend1',block_user.BlockFriend1);
-    app.get('/suggestionsList/:userId',suggestions.suggestions);
+    app.post('/blockFriend1',block_user.BlockFriend1);//***** */
+    app.get('/suggestionsList/:userId',suggestions.suggestions);//******* */
 
     //API'S FOR RELATIVES UnRelative
     const Relativesrelations=require('../controllers/Relatives/getAllRelationsList.js');/**** */
@@ -108,7 +108,8 @@ module.exports = (app) => {
     const GetAllRelativesList=require('../controllers/Relatives/AllRelativesList.js');/*** */
     const UnRelative=require('../controllers/Relatives/UnRelative.js');/***** */
     const GetRelativesList=require('../controllers/Relatives/GetRelativesList.js');/***** */
-    const BlockRelative=require('../controllers/Relatives/BlockRelative.js');
+    const BlockRelative=require('../controllers/Relatives/BlockRelative.js');//******* */
+    const R_suggestions=require('../controllers/Relatives/R_suggestions.js');//*******RELATIVE SUGGESTIONS */
     app.get('/getAllRelationsList',Relativesrelations.getAllRelationsList); /****RELATIONS LIST*** */
     app.post('/sendRelativeRequest',SendRelativeRequest.SendRelativeRequest);/*****REQUEST****** */
     app.post('/acceptRelativeRequest',AcceptRelativeRequest.AcceptRelativeRequest);/****ACCEPT ***** */
@@ -118,6 +119,8 @@ module.exports = (app) => {
     app.post('/unRelative',UnRelative.UnRelative); /**** UNRELATIVE *** */
     app.get('/getRelativesList/:noteId',GetRelativesList.GetRelativesList);/****MY RELATIVES LIST****** */
     app.post('/blockRelative',BlockRelative.BlockRelative1);/************ BLOCK RELATIVE  */
+    app.get('/relativeSuggestions/:userId',R_suggestions.relativeSuggestions);///*******RELATIVE SUGGESTIONS */
+
 
     //search friend
     const searchfriend=require('../controllers/Friends/SearchFriend.js');/******* */
