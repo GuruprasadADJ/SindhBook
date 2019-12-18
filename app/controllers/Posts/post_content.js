@@ -133,7 +133,7 @@ exports.createPost = (req, res) => {
         else
         {
           console.log("Test3");
-            res.status(200).send({result:"failed",message:"Please insert File or Content",filecontent:file});
+            res.status(200).send({result:"failed",message:"Please insert File or Content",filecontent:file/"no file"});
         }
     }
     }
