@@ -12,6 +12,7 @@ var json={};
 var json1={};
 var devicetoken=[];
 var device_token1='';
+var u_name='';
 if(fromid && toid)
 {
     Note.find({
@@ -23,14 +24,13 @@ if(fromid && toid)
        {    
         if(note[0].id==fromid)
         {
-            //for devicetoken
-            devicetoken=note[1].devicetoken;
-            for(var i=0;i<devicetoken.length;i++)
-            {
-                if(devicetoken.length-1){
-                    device_token1=devicetoken[i];
-                }
-            }
+            //for devicetoken and username
+            devicetoken=note[1].device_token;
+            console.log("device_token.length :",devicetoken);    
+            device_token1=devicetoken[devicetoken.length-1];
+            console.log("device_token1 :",device_token1);
+            u_name=note[0].first_name+" "+note[0].last_name;
+            console.log("u_name :",u_name);
             
             //update device token
             var device_array=[];
@@ -73,13 +73,11 @@ if(fromid && toid)
         else
         {
             //for devicetoken
-            devicetoken=note[0].devicetoken;
-            for(var i=0;i<devicetoken.length;i++)
-            {
-                if(devicetoken.length-1){
-                    device_token1=devicetoken[i];
-                }
-            }
+            devicetoken=note[0].device_token;
+            console.log("device_token.length",devicetoken)
+            device_token1=devicetoken[devicetoken.length-1];
+            u_name=note[1].first_name+" "+note[1].last_name;
+            console.log("u_name :",u_name);
 
             //update device token
             var device_array=[];
@@ -195,6 +193,10 @@ if(fromid && toid)
                                     }
                                     else
                                     {
+                                        var title1='SINDHBOOK';
+                                        var body1='Friend request Accepted by  '+u_name;
+                                        console.log("notify device token -",device_token1);
+                                        notify(device_token1,title1,body1);
                                         return res.status(200).send({result:"success",message:"Accepted friend request successfully"}); 
                                     }                         
                                     }).catch(err => {
@@ -267,6 +269,10 @@ if(fromid && toid)
                                     }
                                     else
                                     {
+                                        var title1='SINDHBOOK';
+                                        var body1='Friend request Accepted by  '+u_name;
+                                        console.log("notify device token -",device_token1);
+                                        notify(device_token1,title1,body1);
                                         return res.status(200).send({result:"success",message:"Accepted friend request successfully"}); 
                                     }                          
                                     }).catch(err => {
@@ -279,7 +285,8 @@ if(fromid && toid)
                 else{
                     res.status(200).send({result:"success",message:"from_id or to_id does not exist in friend table"})
                 }
-            }).catch(err => {
+            })
+            .catch(err => {
                 res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
             });
         }
@@ -296,12 +303,13 @@ if(fromid && toid)
 
 /***************************************************************************************** */
 /***************************************************************************************** */
-function notify(device_token1, title1, body1){
+function notify(device, title, body){
     var FCM = require('fcm-node');
-    var serverKey = 'AAAAylA0pUE:APA91bG7ifK49cCTv0ORKIs1jvFZ56TUCBvo0o-cN6KmVkppObqb6gmkKzAIjM3Ts3Shs_3M96x0-77Ofxp-m4G6h34T7yfVUrQiTmb2ly5SLUUTXjHf_rmaFYIc5l1kIj8OwXQsOBdS'; //put your server key here
+    var serverKey = 'AAAAbYE2_zI:APA91bHpSd0DZ25MMpEOhOiQfBzAgpCbqtQtBbpvJJyxLswjHzmX372Ck7Oo5AHT_BuiUuVbmQhcQa48uZ2WqURPigHmajStwPWoTbJLDOcvifKaeTjChwLyghEZFj2WcUxr944dYHQBGNWxHvpwBtYvA3KFfhtsRQ'; //put your server key here
     var fcm = new FCM(serverKey);
+    console.log("getting devicee token",device);
         var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-    to: device_token1, 
+    to: device, 
     // collapse_key: 'your_collapse_key',
     
     // notification: {
@@ -312,8 +320,8 @@ function notify(device_token1, title1, body1){
     data: { //you can send only notification or only data(or include both)
     // my_key: 'my value',
     // my_another_key: 'my another value'
-    title: title1, 
-    body: body1,
+    title: title||"title", 
+    body: body||"body",
     }
     };
     fcm.send(message, function(err, response){

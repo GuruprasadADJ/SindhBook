@@ -10,6 +10,9 @@ var toid=inputs.to_id;
 var deviceId=inputs.deviceId;
 var json={};
 var json1={};
+var devicetoken=[];
+var device_token1='';
+var u_name='';
 if(fromid && toid)
 {
     Note.find({
@@ -22,6 +25,14 @@ if(fromid && toid)
             //console.log("entered in to note :",note)
             if(note[0].id==fromid)
             {
+                 //for devicetoken and username
+                devicetoken=note[1].device_token;
+                console.log("device_token.length :",devicetoken);    
+                device_token1=devicetoken[devicetoken.length-1];
+                console.log("device_token1 :",device_token1);
+                u_name=note[0].first_name+" "+note[0].last_name;
+                console.log("u_name :",u_name);
+
                 json={};
                 console.log("id_use=note[0].id=",note[0].id);
                 json["id"]=note[0].id;
@@ -39,6 +50,13 @@ if(fromid && toid)
             }
             else
             {
+                 //for devicetoken
+                devicetoken=note[0].device_token;
+                console.log("device_token.length",devicetoken)
+                device_token1=devicetoken[devicetoken.length-1];
+                u_name=note[1].first_name+" "+note[1].last_name;
+                console.log("u_name :",u_name);
+
                 json={};
                 console.log("id_use=note[1].id=",note[1].id);
                 json["id"]=note[1].id;
@@ -128,9 +146,7 @@ if(fromid && toid)
                         if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                         }                           
                         }).catch(err => {
-                            res.status(500).send({
-                            result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                        });
+                            res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                         });
                         console.log("Test1");  
                 }
@@ -180,12 +196,14 @@ if(fromid && toid)
                                                    }
                                                    else
                                                    {
-                                                    return res.status(200).send({result:"success",message:"Sent friend request successfully"}); 
+                                                    var title1='SINDHBOOK';
+                                                    var body1='You have friend request from '+u_name;
+                                                    console.log("notify device token -",device_token1);
+                                                    notify(device_token1,title1,body1);
+                                                    return res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                                    }                           
                                                 }).catch(err => {
-                                                    res.status(500).send({
-                                                      result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                                });
+                                                    res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                                                 });
                                         }
                                         else
@@ -200,24 +218,22 @@ if(fromid && toid)
                                             })
                                             trans1.save()
                                             .then(data=>{
+                                                var title1='SINDHBOOK';
+                                                var body1='You have friend request from '+u_name;
+                                                console.log("notify device token -",device_token1);
+                                                notify(device_token1,title1,body1);
                                                 res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                             }).catch(err => {
-                                                res.status(500).send({
-                                                  result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                            });
+                                                res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                                             });
                                         }
                                     }).catch(err => {
-                                        res.status(500).send({
-                                          result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                    });
+                                        res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                                     });
                                     //
                                    }                           
                                 }).catch(err => {
-                                    res.status(500).send({
-                                      result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                });
+                                    res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                                 });
                     }
                     else
@@ -279,12 +295,14 @@ if(fromid && toid)
                                                    }
                                                    else
                                                    {
-                                                    return res.status(200).send({result:"success",message:"Sent friend request successfully"}); 
+                                                    var title1='SINDHBOOK';
+                                                    var body1='You have friend request from '+u_name;
+                                                    console.log("notify device token -",device_token1);
+                                                    notify(device_token1,title1,body1);
+                                                    return res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                                    }                           
                                                 }).catch(err => {
-                                                    res.status(500).send({
-                                                      result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                                });
+                                                    res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                                                 });
                                         }
                                         else
@@ -299,23 +317,21 @@ if(fromid && toid)
                                             })
                                             trans1.save()
                                             .then(data=>{
+                                                var title1='SINDHBOOK';
+                                                    var body1='You have friend request from '+u_name;
+                                                    console.log("notify device token -",device_token1);
+                                                    notify(device_token1,title1,body1);
                                                 res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                             }).catch(err => {
-                                                res.status(500).send({
-                                                  result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                            });
+                                                res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                                             });
                                         }
                                     }).catch(err => {
-                                        res.status(500).send({
-                                          result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                    });
+                                        res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                                     });
                                                        
                                 }).catch(err => {
-                                    res.status(500).send({
-                                      result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                });
+                                    res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                                 });
                                 
                         }
@@ -348,12 +364,14 @@ if(fromid && toid)
                                        }
                                        else
                                        {
-                                        return res.status(200).send({result:"success",message:"Sent friend request successfully"}); 
+                                        var title1='SINDHBOOK';
+                                        var body1='You have friend request from '+u_name;
+                                        console.log("notify device token -",device_token1);
+                                        notify(device_token1,title1,body1);
+                                        return res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                        }                           
                                     }).catch(err => {
-                                        res.status(500).send({
-                                          result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                    });
+                                        res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                                     });
                             }
                             else
@@ -367,23 +385,21 @@ if(fromid && toid)
                                 })
                                 trans1.save()
                                 .then(data=>{
+                                    var title1='SINDHBOOK';
+                                    var body1='You have friend request from '+u_name;
+                                    console.log("notify device token -",device_token1);
+                                    notify(device_token1,title1,body1);
                                     res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                 }).catch(err => {
-                                    res.status(500).send({
-                                      result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                                });
+                                    res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                                 });
                             }
                         }).catch(err => {
-                            res.status(500).send({
-                              result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                        });
+                            res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
                         });
                         //res.status(200).send({result:"success",message:"Friend request sent successfully",data:data}); 
                     }).catch(err => {
-                        res.status(500).send({
-                          result:"failed",message:"There was an exception",errorMessage: err.message || "Some error occurred while creating the Note."
-                    });
+                        res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message });
                     });
                 }
 
@@ -398,4 +414,37 @@ if(fromid && toid)
             res.status(500).send({ result:"failed",message:"There was an exception",errorMessage: err.message});
         });
     }
+}
+
+
+/***************************************************************************************** */
+/***************************************************************************************** */
+function notify(device, title, body){
+    var FCM = require('fcm-node');
+    var serverKey = 'AAAAbYE2_zI:APA91bHpSd0DZ25MMpEOhOiQfBzAgpCbqtQtBbpvJJyxLswjHzmX372Ck7Oo5AHT_BuiUuVbmQhcQa48uZ2WqURPigHmajStwPWoTbJLDOcvifKaeTjChwLyghEZFj2WcUxr944dYHQBGNWxHvpwBtYvA3KFfhtsRQ'; //put your server key here
+    var fcm = new FCM(serverKey);
+    console.log("getting devicee token",device);
+        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+    to: device, 
+    // collapse_key: 'your_collapse_key',
+    
+    // notification: {
+    // title: 'Test Notification', 
+    // message: 'Hello World' ,
+    // order_id:'7485asdf'
+    // }//, 
+    data: { //you can send only notification or only data(or include both)
+    // my_key: 'my value',
+    // my_another_key: 'my another value'
+    title: title||"title", 
+    body: body||"body",
+    }
+    };
+    fcm.send(message, function(err, response){
+    if (err) {
+    console.log("Something has gone wrong!"+err);
+    } else {
+    console.log("Successfully sent with response: ", response);
+    }
+    });
 }
