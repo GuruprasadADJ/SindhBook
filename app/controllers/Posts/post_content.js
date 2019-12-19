@@ -11,7 +11,7 @@ exports.createPost = (req, res) => {
     var file=req.files;
     console.log("file ----- ",file)
     if(!req.body.id){
-      res.status(500).json({result:"failed",message:"please enter valid id"});
+      res.status(500).json({result:"failed",message:"please enter valid id",Content:req.body});
     }
     else
     {
