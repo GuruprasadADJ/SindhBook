@@ -45,14 +45,14 @@ exports.createPost = (req, res) => {
                 });
                     postcreate.save()
                     .then(data => {
-                            res.status(200).send({result:"success",message:"content Posted Successfully",Content:req.body.content,data:data});
+                            res.status(200).send({result:"success",message:"content Posted Successfully",Content:req.body,data:data});
                     }).catch(err => {
-                            res.status(500).send({result:"failed",message:"There was an exception",Content:req.body.content,errorMessage: err.message});
+                            res.status(500).send({result:"failed",message:"There was an exception",Content:req.body,errorMessage: err.message});
                     });
             }
             }).catch(err => {
                 res.status(500).send({
-                result:"failed",message:"There was an exception",Content:req.body.content,errorMessage: err.message});
+                result:"failed",message:"There was an exception",Content:req.body,errorMessage: err.message});
             });
         }
         else if(req.files)
