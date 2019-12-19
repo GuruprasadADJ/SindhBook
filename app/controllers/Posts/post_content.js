@@ -9,7 +9,7 @@ var dt = datetime.create();
 exports.createPost = (req, res) => {
     var _id=req.body.id;
     var file=req.files;
-    console.log("file",file);
+    console.log("file ----- ",file)
     if(!req.body.id){
       res.status(500).json({result:"failed",message:"please enter valid id"});
     }
@@ -45,14 +45,14 @@ exports.createPost = (req, res) => {
                 });
                     postcreate.save()
                     .then(data => {
-                            res.status(200).send({result:"success",message:"content Posted Successfully",data:data});
+                            res.status(200).send({result:"success",message:"content Posted Successfully",Content:req.body.content,data:data});
                     }).catch(err => {
-                            res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
+                            res.status(500).send({result:"failed",message:"There was an exception",Content:req.body.content,errorMessage: err.message});
                     });
             }
             }).catch(err => {
                 res.status(500).send({
-                result:"failed",message:"There was an exception",errorMessage: err.message});
+                result:"failed",message:"There was an exception",Content:req.body.content,errorMessage: err.message});
             });
         }
         else if(req.files)
@@ -81,7 +81,8 @@ exports.createPost = (req, res) => {
                 
                 s3Client.upload(params, (err, data) => {
                 if (err) {
-                  res.status(500).json({result:"failed",message:"Not Posted",error:"Error -> " + err});
+                  console.log("err",err);
+                  //res.status(500).json({result:"failed",message:"Not Posted",errorMessage: err.message});
                 }
                 else
                 {

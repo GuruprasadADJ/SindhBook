@@ -1,6 +1,7 @@
 const Note=require('../../models/note.model.js');
 const Friend=require('../../models/Friends/friends.model1.js');
 const moment = require('moment'); //to parse the default date of mongodb
+const another=require('../General/Notification.js');
 
 exports.SendFriendRequest1 = (req, res) => {    
     console.log("start......");
@@ -10,7 +11,6 @@ var toid=inputs.to_id;
 var deviceId=inputs.deviceId;
 var json={};
 var json1={};
-var devicetoken=[];
 var device_token1='';
 var u_name='';
 if(fromid && toid)
@@ -25,10 +25,8 @@ if(fromid && toid)
             //console.log("entered in to note :",note)
             if(note[0].id==fromid)
             {
-                 //for devicetoken and username
-                devicetoken=note[1].device_token;
-                console.log("device_token.length :",devicetoken);    
-                device_token1=devicetoken[devicetoken.length-1];
+                //for devicetoken and username
+                device_token1=note[1].device_token;
                 console.log("device_token1 :",device_token1);
                 u_name=note[0].first_name+" "+note[0].last_name;
                 console.log("u_name :",u_name);
@@ -50,10 +48,9 @@ if(fromid && toid)
             }
             else
             {
-                 //for devicetoken
-                devicetoken=note[0].device_token;
-                console.log("device_token.length",devicetoken)
-                device_token1=devicetoken[devicetoken.length-1];
+                //for devicetoken
+                device_token1=note[0].device_token;
+                console.log("device_token1",devicetoken1);
                 u_name=note[1].first_name+" "+note[1].last_name;
                 console.log("u_name :",u_name);
 
@@ -198,8 +195,7 @@ if(fromid && toid)
                                                    {
                                                     var title1='SINDHBOOK';
                                                     var body1='You have friend request from '+u_name;
-                                                    console.log("notify device token -",device_token1);
-                                                    notify(device_token1,title1,body1);
+                                                    another.notify(device_token1, title1, body1);
                                                     return res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                                    }                           
                                                 }).catch(err => {
@@ -220,8 +216,7 @@ if(fromid && toid)
                                             .then(data=>{
                                                 var title1='SINDHBOOK';
                                                 var body1='You have friend request from '+u_name;
-                                                console.log("notify device token -",device_token1);
-                                                notify(device_token1,title1,body1);
+                                                another.notify(device_token1, title1, body1);
                                                 res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                             }).catch(err => {
                                                 res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
@@ -297,8 +292,7 @@ if(fromid && toid)
                                                    {
                                                     var title1='SINDHBOOK';
                                                     var body1='You have friend request from '+u_name;
-                                                    console.log("notify device token -",device_token1);
-                                                    notify(device_token1,title1,body1);
+                                                    another.notify(device_token1, title1, body1);
                                                     return res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                                    }                           
                                                 }).catch(err => {
@@ -318,9 +312,8 @@ if(fromid && toid)
                                             trans1.save()
                                             .then(data=>{
                                                 var title1='SINDHBOOK';
-                                                    var body1='You have friend request from '+u_name;
-                                                    console.log("notify device token -",device_token1);
-                                                    notify(device_token1,title1,body1);
+                                                var body1='You have friend request from '+u_name;
+                                                another.notify(device_token1, title1, body1);
                                                 res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                             }).catch(err => {
                                                 res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
@@ -366,8 +359,7 @@ if(fromid && toid)
                                        {
                                         var title1='SINDHBOOK';
                                         var body1='You have friend request from '+u_name;
-                                        console.log("notify device token -",device_token1);
-                                        notify(device_token1,title1,body1);
+                                        another.notify(device_token1, title1, body1);
                                         return res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                        }                           
                                     }).catch(err => {
@@ -387,8 +379,7 @@ if(fromid && toid)
                                 .then(data=>{
                                     var title1='SINDHBOOK';
                                     var body1='You have friend request from '+u_name;
-                                    console.log("notify device token -",device_token1);
-                                    notify(device_token1,title1,body1);
+                                    another.notify(device_token1, title1, body1);
                                     res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                 }).catch(err => {
                                     res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
@@ -414,37 +405,4 @@ if(fromid && toid)
             res.status(500).send({ result:"failed",message:"There was an exception",errorMessage: err.message});
         });
     }
-}
-
-
-/***************************************************************************************** */
-/***************************************************************************************** */
-function notify(device, title, body){
-    var FCM = require('fcm-node');
-    var serverKey = 'AAAAbYE2_zI:APA91bHpSd0DZ25MMpEOhOiQfBzAgpCbqtQtBbpvJJyxLswjHzmX372Ck7Oo5AHT_BuiUuVbmQhcQa48uZ2WqURPigHmajStwPWoTbJLDOcvifKaeTjChwLyghEZFj2WcUxr944dYHQBGNWxHvpwBtYvA3KFfhtsRQ'; //put your server key here
-    var fcm = new FCM(serverKey);
-    console.log("getting devicee token",device);
-        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-    to: device, 
-    // collapse_key: 'your_collapse_key',
-    
-    // notification: {
-    // title: 'Test Notification', 
-    // message: 'Hello World' ,
-    // order_id:'7485asdf'
-    // }//, 
-    data: { //you can send only notification or only data(or include both)
-    // my_key: 'my value',
-    // my_another_key: 'my another value'
-    title: title||"title", 
-    body: body||"body",
-    }
-    };
-    fcm.send(message, function(err, response){
-    if (err) {
-    console.log("Something has gone wrong!"+err);
-    } else {
-    console.log("Successfully sent with response: ", response);
-    }
-    });
 }

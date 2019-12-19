@@ -1,6 +1,7 @@
 const Note=require('../../models/note.model.js');
 const Relative=require('../../models/Relative_models/relatives.model.js');
 const moment = require('moment'); //to parse the default date of mongodb
+const another=require('../General/Notification.js');
 
 exports.SendRelativeRequest = (req, res) => {    
     console.log("start......SendRelativeRequest");
@@ -12,6 +13,10 @@ var to_relation=inputs.to_relation;
 var deviceId=inputs.deviceId;
 var json={};
 var json1={};
+var device_token1='';
+var u_name='';
+var title1='';
+var body1='';
 if(fromid && toid)
 {
     Note.find({
@@ -21,9 +26,16 @@ if(fromid && toid)
     }).then(note=>{
        if(note.length==2)
        {    
-            //console.log("entered in to note :",note)
             if(note[0].id==fromid)
             {
+                //for devicetoken and username
+                device_token1=note[1].device_token;
+                console.log("device_token1 :",device_token1);
+                u_name=note[0].first_name+" "+note[0].last_name;
+                console.log("u_name :",u_name);
+                title1='SINDHBOOK';
+                body1='You have a new Relative request from '+u_name;
+                                                   
                 json={};
                 console.log("id_use=note[0].id=",note[0].id);
                 json["id"]=note[0].id;
@@ -45,6 +57,14 @@ if(fromid && toid)
             }
             else
             {
+                //for devicetoken
+                device_token1=note[0].device_token;
+                console.log("device_token1",devicetoken1);
+                u_name=note[1].first_name+" "+note[1].last_name;
+                console.log("u_name :",u_name);
+                title1='SINDHBOOK';
+                body1='You have a new Relative request from '+u_name;
+
                 json={};
                 console.log("id_use=note[1].id=",note[1].id);
                 json["id"]=note[1].id;
@@ -170,8 +190,6 @@ if(fromid && toid)
                                    }
                                    else
                                    {
-                                   // return res.status(200).send({result:"success",message:"Sent friend request successfully"}); 
-                                    //adds data also in from user record in requested by me
                                     Relative.find({
                                         "user_id": fromid
                                       }).then(request1=>{
@@ -190,7 +208,8 @@ if(fromid && toid)
                                                    }
                                                    else
                                                    {
-                                                    return res.status(200).send({result:"success",message:"Sent relative request successfully"}); 
+                                                    another.notify(device_token1, title1, body1);
+                                                    return res.status(200).send({result:"success",message:"Relative request sent successfullly"}); 
                                                    }                           
                                                 }).catch(err => {
                                                     res.status(500).send({result:"failed",message:"There was an exception3",errorMessage: err.message});
@@ -208,11 +227,10 @@ if(fromid && toid)
                                             })
                                             trans1.save()
                                             .then(data=>{
-                                                res.status(200).send({result:"success",message:"Sent relative request successfully"}); 
+                                                another.notify(device_token1, title1, body1);
+                                                res.status(200).send({result:"success",message:"Relative request sent successfully"}); 
                                             }).catch(err => {
-                                                res.status(500).send({
-                                                  result:"failed",message:"There was an exception4",errorMessage: err.message || "Some error occurred while creating the Note."
-                                            });
+                                                res.status(500).send({result:"failed",message:"There was an exception4",errorMessage: err.message});
                                             });
                                         }
                                     }).catch(err => {
@@ -265,8 +283,6 @@ if(fromid && toid)
                                 },function(err,updatedevice) {
                                    if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information to the database."});
                                    }
-                                      //return res.status(200).send({result:"success",message:"Sent friend request successfully"}); 
-                                      //adds record also in from user record in requested by me 
                                       Relative.find({
                                         "user_id": fromid
                                       }).then(request1=>{
@@ -285,12 +301,11 @@ if(fromid && toid)
                                                    }
                                                    else
                                                    {
-                                                    return res.status(200).send({result:"success",message:"Sent relative request successfully"}); 
+                                                    another.notify(device_token1, title1, body1);
+                                                    return res.status(200).send({result:"success",message:"Relative request sent successfully"}); 
                                                    }                           
                                                 }).catch(err => {
-                                                    res.status(500).send({
-                                                      result:"failed",message:"There was an exception6",errorMessage: err.message || "Some error occurred while creating the Note."
-                                                });
+                                                    res.status(500).send({result:"failed",message:"There was an exception6",errorMessage: err.message});
                                                 });
                                         }
                                         else
@@ -305,7 +320,8 @@ if(fromid && toid)
                                             })
                                             trans1.save()
                                             .then(data=>{
-                                                res.status(200).send({result:"success",message:"Sent relative request successfully"}); 
+                                                another.notify(device_token1, title1, body1);
+                                                res.status(200).send({result:"success",message:"Relative request sent successfully"}); 
                                             }).catch(err => {
                                                 res.status(500).send({
                                                   result:"failed",message:"There was an exception7",errorMessage: err.message});
@@ -351,7 +367,8 @@ if(fromid && toid)
                                        }
                                        else
                                        {
-                                        return res.status(200).send({result:"success",message:"Sent relative request successfully"}); 
+                                        another.notify(device_token1, title1, body1);
+                                        return res.status(200).send({result:"success",message:"Relative request sent successfully"}); 
                                        }                           
                                     }).catch(err => {
                                         res.status(500).send({
@@ -369,7 +386,8 @@ if(fromid && toid)
                                 })
                                 trans1.save()
                                 .then(data=>{
-                                    res.status(200).send({result:"success",message:"Sent relative request successfully"}); 
+                                    another.notify(device_token1, title1, body1);
+                                    res.status(200).send({result:"success",message:"Relative request sent successfully"}); 
                                 }).catch(err => {
                                     res.status(500).send({
                                       result:"failed",message:"There was an exception11",errorMessage: err.message});
@@ -379,7 +397,6 @@ if(fromid && toid)
                             res.status(500).send({
                               result:"failed",message:"There was an exception12",errorMessage: err.message});
                         });
-                        //res.status(200).send({result:"success",message:"Friend request sent successfully",data:data}); 
                     }).catch(err => {
                         res.status(500).send({
                           result:"failed",message:"There was an exception13",errorMessage: err.message});

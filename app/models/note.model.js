@@ -5,7 +5,7 @@ const NoteSchema = mongoose.Schema({
     mobile_no: String,
     otp: String,
     otp_status: Number,
-    device_token: Array,
+    device_token: String,
     profile_update_status: Number,
     paid_user_status: Number,
     user_type: Number,

@@ -1,6 +1,7 @@
 const Note=require('../../models/note.model.js');
 const Relative=require('../../models/Relative_models/relatives.model.js');
 const moment = require('moment'); //to parse the default date of mongodb
+const another=require('../General/Notification.js');
 
 exports.AcceptRelativeRequest = (req, res) => {    
     console.log("start......");
@@ -10,6 +11,10 @@ var toid=inputs.to_id;
 var deviceId=inputs.deviceId;
 var json={};
 var json1={};
+var device_token1='';
+var u_name='';
+var title1='';
+var body1='';
 if(fromid && toid)
 {
     Note.find({
@@ -68,6 +73,14 @@ if(fromid && toid)
                 {
                     if(request[0].user_id==fromid)
                     {
+                        //for devicetoken and username
+                        device_token1=note[1].device_token;
+                        console.log("device_token1 :",device_token1);
+                        u_name=note[0].first_name+" "+note[0].last_name;
+                        console.log("u_name :",u_name);
+                        title1='SINDHBOOK';
+                        body1='You have a new Relative request from '+u_name;
+
                         // code to insert requested list to accepted list
                         var request_list_array=[];
                         var accepted_list=[];
@@ -138,6 +151,7 @@ if(fromid && toid)
                                     }
                                     else
                                     {
+                                        another.notify(device_token1, title1, body1);
                                         return res.status(200).send({result:"success",message:"Accepted relative request successfully"}); 
                                     }                         
                                     })
@@ -150,6 +164,14 @@ if(fromid && toid)
                     }
                     else if(request[1].user_id==fromid )
                     {
+                        //for devicetoken
+                        device_token1=note[0].device_token;
+                        console.log("device_token1",devicetoken1);
+                        u_name=note[1].first_name+" "+note[1].last_name;
+                        console.log("u_name :",u_name);
+                        title1='SINDHBOOK';
+                        body1='You have a new Relative request from '+u_name;
+
                         // code to insert requested list to accepted list
                         var request_list_array=[];
                         var accepted_list=[];
@@ -217,6 +239,7 @@ if(fromid && toid)
                                     }
                                     else
                                     {
+                                        another.notify(device_token1, title1, body1);
                                         return res.status(200).send({result:"success",message:"Accepted relative request successfully"}); 
                                     }                          
                                     }).catch(err => {
