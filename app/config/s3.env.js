@@ -1,6 +1,6 @@
 const env = {
-  AWS_ACCESS_KEY: 'AKIAIYVXFMS5XJHXDKIA', // change to yours
-  AWS_SECRET_ACCESS_KEY: 'xuqg9va4UFuz+0n6JqT3uIhGQ3/rFQj0teT1fGmT', // change to yours
+  AWS_ACCESS_KEY: 'AKIAIOS7EZTWW5SK7LRA', // change to yours
+  AWS_SECRET_ACCESS_KEY: 'lIIlQTlwhnkADDGZv12vTYEIwuGYK8eBF9jaxoTE', // change to yours
   REGION : 'ap-south-1', // change to yours
   Bucket: 'sindh-book' // change to yours
   };
