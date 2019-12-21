@@ -27,7 +27,7 @@ if(fromid && toid)
             {
                 //for devicetoken and username
                 device_token1=note[1].device_token;
-                console.log("device_token1 :",device_token1);
+                console.log("device_token1 :",device_token1||"fdsdf");
                 u_name=note[0].first_name+" "+note[0].last_name;
                 console.log("u_name :",u_name);
 
@@ -50,7 +50,7 @@ if(fromid && toid)
             {
                 //for devicetoken
                 device_token1=note[0].device_token;
-                console.log("device_token1",devicetoken1);
+                console.log("device_token1",device_token1);
                 u_name=note[1].first_name+" "+note[1].last_name;
                 console.log("u_name :",u_name);
 
@@ -195,7 +195,7 @@ if(fromid && toid)
                                                    {
                                                     var title1='SINDHBOOK';
                                                     var body1='You have friend request from '+u_name;
-                                                    another.notify(device_token1, title1, body1);
+                                                 //   another.notify(device_token1, title1, body1);
                                                     return res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                                    }                           
                                                 }).catch(err => {
@@ -216,7 +216,7 @@ if(fromid && toid)
                                             .then(data=>{
                                                 var title1='SINDHBOOK';
                                                 var body1='You have friend request from '+u_name;
-                                                another.notify(device_token1, title1, body1);
+                                              //  another.notify(device_token1, title1, body1);
                                                 res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                             }).catch(err => {
                                                 res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
@@ -292,7 +292,7 @@ if(fromid && toid)
                                                    {
                                                     var title1='SINDHBOOK';
                                                     var body1='You have friend request from '+u_name;
-                                                    another.notify(device_token1, title1, body1);
+                                                   // another.notify(device_token1, title1, body1);
                                                     return res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                                    }                           
                                                 }).catch(err => {
@@ -313,7 +313,7 @@ if(fromid && toid)
                                             .then(data=>{
                                                 var title1='SINDHBOOK';
                                                 var body1='You have friend request from '+u_name;
-                                                another.notify(device_token1, title1, body1);
+                                              //  another.notify(device_token1, title1, body1);
                                                 res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                             }).catch(err => {
                                                 res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
@@ -359,7 +359,7 @@ if(fromid && toid)
                                        {
                                         var title1='SINDHBOOK';
                                         var body1='You have friend request from '+u_name;
-                                        another.notify(device_token1, title1, body1);
+                                      //  another.notify(device_token1, title1, body1);
                                         return res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                        }                           
                                     }).catch(err => {
@@ -379,7 +379,7 @@ if(fromid && toid)
                                 .then(data=>{
                                     var title1='SINDHBOOK';
                                     var body1='You have friend request from '+u_name;
-                                    another.notify(device_token1, title1, body1);
+                                   // another.notify(device_token1, title1, body1);
                                     res.status(200).send({result:"success",message:"Friend request sent successfully"}); 
                                 }).catch(err => {
                                     res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});

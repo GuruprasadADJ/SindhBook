@@ -5,6 +5,7 @@ var flag=0;
 exports.createabout = (req, res) => {    
 console.log("inputs coming", req.body.id);
 var inputs=req.body;
+var deviceId=req.body.deviceId;
 
 if(!inputs.id){
     console.log("not found input");
@@ -13,18 +14,59 @@ if(!inputs.id){
 else
 {
     console.log("got input");
-    Note.find({             //checks  weather the user_id exist in register table
-        "_id": inputs.id
-    })
+    Note.findById(inputs.id)
     .then(note => {
         console.log("checked");
         if(!note) {
             return res.status(200).send({result:"failed",message: "Data not found in register table with this id "+inputs.id});            
-        }else{
-        console.log("data found");
-        Aboutus.find({          
-            "user_id": inputs.id
-        }).then(about1 => {
+        }
+        else
+        {
+            if(deviceId){
+            //update device token
+            var device_array=[];
+            device_array=(note.deviceId);            
+            if(device_array.includes(deviceId)){
+                console.log("Token Found");
+            }
+            else if(device_array.length==0){
+                device_array.push(deviceId);
+                console.log("Token Not Found");
+                const updatedevice=Note.updateOne( 
+                    {_id: inputs.id}, 
+                    {deviceId: device_array}
+                    ,function(err,updatedevice) {
+                        console.log("Test");
+                    if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information"});
+                    }                           
+                    }).catch(err => {
+                        res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message });
+                    });
+                    console.log("Test1");  
+            }
+            else{
+                device_array.push(deviceId);
+                console.log("Token Not Found");
+                const updatedevice=Note.updateOne( 
+                    {_id: inputs.id}, 
+                    {$set: { deviceId: device_array}}
+                    ,function(err,updatedevice) {
+                        console.log("Test");
+                    if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information"});
+                    }                           
+                    }).catch(err => {
+                        res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
+                    });
+                    console.log("Test1");  
+            }
+        }
+
+
+
+            console.log("data found");
+            Aboutus.find({          
+                "user_id": inputs.id
+            }).then(about1 => {
             if(about1.length==0) 
             {     
                 if(inputs.work||inputs.education||inputs.places_lived||inputs.contact_info)
@@ -54,7 +96,8 @@ else
                             work:work1,
                             education:education1,
                             places_lived:places_lived1,
-                            contact_info : mobile_no1
+                            contact_info : mobile_no1,
+                            deviceId:deviceId
                         },function(err,about2) {
                         if (err) return res.status(500).send({
                             result:"failed",message:"There was a problem inserting data into database",errorMessage: err.message
@@ -108,7 +151,8 @@ else
                         {work:work1,
                         education:education1,
                         places_lived:places_lived1,
-                        contact_info : mobile_no1
+                        contact_info : mobile_no1,
+                        deviceId:deviceId
                     },function(err,about3) {
                         if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                         }else{

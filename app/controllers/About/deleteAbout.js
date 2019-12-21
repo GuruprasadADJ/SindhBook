@@ -5,18 +5,56 @@ exports.deleteAboutDetails = (req, res) => {
 
 console.log("start... about delete");
 var inputs=req.body;
+var deviceId=req.body.deviceId;
 var workindex=inputs.workindex;
 var educationindex=inputs.educationindex;
 var places_livedindex=inputs.places_livedindex;
 var contact_infoindex=inputs.contact_infoindex;
 console.log("got input");
-    Note.find({             //checks  weather the user_id exist in register table
-        "_id": inputs.user_id
-    })
+    Note.findById(inputs.user_id)
     .then(note => {
-        console.log(note.length);
-        if(note.length!=0)
+        console.log(note);
+        if(note)
         {
+            if(deviceId){
+            //update device token
+            var device_array=[];
+            device_array=(note.deviceId);            
+            if(device_array.includes(deviceId)){
+                console.log("Token Found");
+            }
+            else if(device_array.length==0){
+                device_array.push(deviceId);
+                console.log("Token Not Found");
+                const updatedevice=Note.updateOne( 
+                    {_id: inputs.user_id}, 
+                    {deviceId: device_array}
+                    ,function(err,updatedevice) {
+                        console.log("Test");
+                    if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information"});
+                    }                           
+                    }).catch(err => {
+                        res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message });
+                    });
+                    console.log("Test1");  
+            }
+            else{
+                device_array.push(deviceId);
+                console.log("Token Not Found");
+                const updatedevice=Note.updateOne( 
+                    {_id: inputs.user_id}, 
+                    {$set: { deviceId: device_array}}
+                    ,function(err,updatedevice) {
+                        console.log("Test");
+                    if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information"});
+                    }                           
+                    }).catch(err => {
+                        res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
+                    });
+                    console.log("Test1");  
+             }
+            }
+
             Aboutus.find({          
                 "user_id": inputs.user_id
             }).then(about1 => {
@@ -33,9 +71,10 @@ console.log("got input");
                     {
                             work.splice(workindex,1);
                             console.log("a",work);
-                            const about3=Aboutus.updateOne( //updates records in created record
+                            const about3=Aboutus.updateMany( //updates records in created record
                                 {user_id:inputs.user_id}, 
-                                {work:work
+                                {work:work,
+                                 deviceId:deviceId
                             },function(err,about3) {
                                 if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                                 }else{
@@ -48,9 +87,10 @@ console.log("got input");
                     {
                             education.splice(educationindex,1);
                             console.log("a",education);
-                            const about3=Aboutus.updateOne( //updates records in created record
+                            const about3=Aboutus.updateMany( //updates records in created record
                                 {user_id:inputs.user_id}, 
-                                {education:education
+                                {education:education,
+                                 deviceId:deviceId
                             },function(err,about3) {
                                 if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                                 }else{
@@ -62,9 +102,10 @@ console.log("got input");
                     {
                             places_lived.splice(places_livedindex,1);
                             console.log("places_lived :",places_lived);
-                            const about3=Aboutus.updateOne( //updates records in created record
+                            const about3=Aboutus.updateMany( //updates records in created record
                                 {user_id:inputs.user_id}, 
-                                {places_lived:places_lived
+                                {places_lived:places_lived,
+                                 deviceId:deviceId
                             },function(err,about3) {
                                 if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                                 }else{
@@ -79,9 +120,10 @@ console.log("got input");
                     {
                             contact_info.splice(contact_infoindex,1);
                             console.log("contact_info :",contact_info);
-                            const about3=Aboutus.updateOne( //updates records in created record
+                            const about3=Aboutus.updateMany( //updates records in created record
                                 {user_id:inputs.user_id}, 
-                                {contact_info:contact_info
+                                {contact_info:contact_info,
+                                 deviceId:deviceId
                             },function(err,about3) {
                                 if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                                 }else{

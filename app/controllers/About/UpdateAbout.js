@@ -4,6 +4,7 @@ const Note = require('../../models/note.model.js');
 exports.updateAboutDetails = (req, res) => {
 console.log("strt.........")
 var inputs=req.body;
+var deviceId=req.body.deviceId;
 var workindex=inputs.workindex;
 var educationindex=inputs.educationindex;
 var places_livedindex=inputs.places_livedindex;
@@ -13,13 +14,52 @@ var education1=inputs.education;
 var places_lived1=inputs.places_lived;
 var contact_info1=inputs.contact_info;
 console.log("got input");
-    Note.find({             //checks  weather the user_id exist in register table
-        "_id": inputs.user_id
-    })
+    Note.findById(inputs.user_id)
     .then(note => {
         console.log(note.length);
-        if(note.length!=0)
+        if(note)
         {
+
+            if(deviceId){
+                //update device token
+                var device_array=[];
+                device_array=(note.deviceId);            
+                if(device_array.includes(deviceId)){
+                    console.log("Token Found");
+                }
+                else if(device_array.length==0){
+                    device_array.push(deviceId);
+                    console.log("Token Not Found");
+                    const updatedevice=Note.updateOne( 
+                        {_id: inputs.user_id}, 
+                        {deviceId: device_array}
+                        ,function(err,updatedevice) {
+                            console.log("Test");
+                        if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information"});
+                        }                           
+                        }).catch(err => {
+                            res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message });
+                        });
+                        console.log("Test1");  
+                }
+                else{
+                    device_array.push(deviceId);
+                    console.log("Token Not Found");
+                    const updatedevice=Note.updateOne( 
+                        {_id: inputs.user_id}, 
+                        {$set: { deviceId: device_array}}
+                        ,function(err,updatedevice) {
+                            console.log("Test");
+                        if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information"});
+                        }                           
+                        }).catch(err => {
+                            res.status(500).send({result:"failed",message:"There was an exception",errorMessage: err.message});
+                        });
+                        console.log("Test1");  
+                 }
+            }
+    
+
             Aboutus.find({          
                 "user_id": inputs.user_id
             }).then(about1 => {
@@ -43,9 +83,10 @@ console.log("got input");
                                 }
                             }
                             console.log("a : ",work);
-                            const about3=Aboutus.updateOne( //updates records in created record
+                            const about3=Aboutus.updateMany( //updates records in created record
                                 {user_id:inputs.user_id},
-                                {work:work
+                                {work:work,
+                                 deviceId:deviceId
                             },function(err,about3) {
                                 if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                                 }else{
@@ -67,9 +108,10 @@ console.log("got input");
                             }
                         }
                         console.log("a : ",education);
-                        const about3=Aboutus.updateOne( //updates records in created record
+                        const about3=Aboutus.updateMany( //updates records in created record
                             {user_id:inputs.user_id},
-                            {education:education
+                            {education:education,
+                             deviceId:deviceId
                         },function(err,about3) {
                             if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                             }else{
@@ -90,9 +132,10 @@ console.log("got input");
                             }
                         }
                         console.log("a : ",places_lived);
-                        const about3=Aboutus.updateOne( //updates records in created record
+                        const about3=Aboutus.updateMany( //updates records in created record
                             {user_id:inputs.user_id},
-                            {places_lived:places_lived
+                            {places_lived:places_lived,
+                             deviceId:deviceId
                         },function(err,about3) {
                             if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                             }else{
@@ -111,9 +154,10 @@ console.log("got input");
                             }
                         }
                         console.log("a : ",contact_info);
-                        const about3=Aboutus.updateOne( //updates records in created record
+                        const about3=Aboutus.updateMany( //updates records in created record
                             {user_id:inputs.user_id},
-                            {contact_info:contact_info
+                            {contact_info:contact_info,
+                             deviceId:deviceId
                         },function(err,about3) {
                             if (err){ return res.status(500).send({result:"failed",message:"There was a problem adding the information into the database."});
                             }else{
